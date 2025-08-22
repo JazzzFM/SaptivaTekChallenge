@@ -182,6 +182,12 @@ pytest tests/test_seed_integration.py
 
 # Tests de API completos
 pytest tests/test_api.py
+
+# Excluye rutas que no forman parte del reto o son utilería
+pytest --cov --cov-report=term-missing --cov-config=.coveragerc
+
+# (Opcional) reporte HTML
+coverage html && xdg-open htmlcov/index.html
 ```
 
 ---

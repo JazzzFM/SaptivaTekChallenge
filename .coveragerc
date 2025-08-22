@@ -1,0 +1,23 @@
+[run]
+branch = True
+
+source =
+    api
+    core
+    domain
+    infra
+    use_cases
+
+omit =
+    scripts/*
+    infra/saptiva_*_adapter.py
+
+[report]
+exclude_lines =
+    pragma: no cover
+    if __name__ == .__main__.:
+    raise NotImplementedError
+
+[html]
+directory = htmlcov
+
