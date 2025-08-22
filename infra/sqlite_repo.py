@@ -1,16 +1,15 @@
 # infra/sqlite_repo.py
 from __future__ import annotations
 
-from typing import Optional
+from typing import Optional, Tuple, List
 
-from sqlmodel import SQLModel, Field, Session, create_engine
+from sqlmodel import SQLModel, Field, Session, create_engine, select, func
 
 from domain.entities import PromptRecord
 from domain.ports import PromptRepository
 
 
-# mypy no entiende el metaclass de SQLModel; ignoramos el call-arg de "table=True".
-class PromptModel(SQLModel, table=True):  # type: ignore[call-arg]
+class PromptModel(SQLModel, table=True):
     id: str = Field(primary_key=True, index=True)
     prompt: str
     response: str
@@ -45,3 +44,54 @@ class SQLitePromptRepository(PromptRepository):
                 response=model.response,
                 created_at=model.created_at,
             )
+    
+    def find_paginated(self, offset: int = 0, limit: int = 10) -> Tuple[List[PromptRecord], int]:
+        """Find records with pagination."""
+        with Session(self.engine) as session:
+            # Get total count
+            total_stmt = select(func.count(PromptModel.id))  # type: ignore
+            total = session.exec(total_stmt).one()
+            
+            # Get paginated records
+            stmt = (
+                select(PromptModel)
+                .order_by(PromptModel.created_at.desc())  # type: ignore
+                .offset(offset)
+                .limit(limit)
+            )
+            models = session.exec(stmt).all()
+            
+            # Convert to domain objects
+            records = [
+                PromptRecord(
+                    id=model.id,
+                    prompt=model.prompt,
+                    response=model.response,
+                    created_at=model.created_at,
+                )
+                for model in models
+            ]
+            
+            return records, total
+    
+    def find_all(self) -> List[PromptRecord]:
+        """Find all records (use with caution in production)."""
+        with Session(self.engine) as session:
+            stmt = select(PromptModel).order_by(PromptModel.created_at.desc())  # type: ignore
+            models = session.exec(stmt).all()
+            
+            return [
+                PromptRecord(
+                    id=model.id,
+                    prompt=model.prompt,
+                    response=model.response,
+                    created_at=model.created_at,
+                )
+                for model in models
+            ]
+    
+    def count(self) -> int:
+        """Get total count of records."""
+        with Session(self.engine) as session:
+            stmt = select(func.count(PromptModel.id))  # type: ignore
+            return session.exec(stmt).one()

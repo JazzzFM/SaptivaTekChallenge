@@ -1,0 +1,715 @@
+# Documentación Técnica - Microservicio de Prompts
+
+## Índice
+
+1. [Arquitectura del Sistema](#arquitectura-del-sistema)
+2. [Documentación de Código](#documentación-de-código)
+3. [Casos de Uso](#casos-de-uso)
+4. [Adaptadores de Infraestructura](#adaptadores-de-infraestructura)
+5. [Sistema de Seguridad](#sistema-de-seguridad)
+6. [Observabilidad y Monitoreo](#observabilidad-y-monitoreo)
+7. [Testing Strategy](#testing-strategy)
+
+---
+
+## Arquitectura del Sistema
+
+### Principios de Diseño
+
+El sistema implementa **Arquitectura Hexagonal (Ports & Adapters)** con los siguientes principios:
+
+- **Separation of Concerns**: Cada componente tiene una responsabilidad específica
+- **Dependency Inversion**: Las dependencias apuntan hacia abstracciones, no implementaciones
+- **Single Responsibility**: Cada clase tiene una única razón para cambiar
+- **Open/Closed**: Abierto para extensión, cerrado para modificación
+
+### Estructura de Capas
+
+```
+┌─────────────────────────────────────────┐
+│           API Layer (FastAPI)           │
+├─────────────────────────────────────────┤
+│          Application Layer              │
+│         (Use Cases + DTOs)              │
+├─────────────────────────────────────────┤
+│           Domain Layer                  │
+│      (Entities + Ports/Interfaces)     │
+├─────────────────────────────────────────┤
+│        Infrastructure Layer            │
+│     (Adapters + External Services)     │
+└─────────────────────────────────────────┘
+```
+
+---
+
+## Documentación de Código
+
+### Domain Layer
+
+#### Entities (`domain/entities.py`)
+
+```python
+@dataclass(frozen=True)
+class PromptRecord:
+    """
+    Entidad principal del dominio que representa un registro de prompt procesado.
+    
+    Características:
+    - Inmutable (frozen=True): Una vez creado no puede modificarse
+    - Value Object: Su identidad se basa en sus valores
+    - Agregado raíz: Encapsula la lógica de negocio principal
+    
+    Attributes:
+        id (str): Identificador único UUID v4
+        prompt (str): Texto del prompt original del usuario
+        response (str): Respuesta generada por el LLM
+        created_at (str): Timestamp ISO8601 de creación
+    
+    Business Rules:
+    - El ID debe ser único en todo el sistema
+    - El prompt no puede estar vacío
+    - El timestamp debe seguir formato ISO8601
+    - La respuesta debe contener el formato [SimResponse-X]
+    """
+```
+
+#### Ports (`domain/ports.py`)
+
+```python
+class PromptRepository(ABC):
+    """
+    Puerto (interfaz) para persistencia de registros de prompts.
+    
+    Define el contrato que deben cumplir todos los adaptadores de persistencia.
+    Permite cambiar entre SQLite, PostgreSQL, MongoDB, etc. sin afectar
+    la lógica de negocio.
+    
+    Responsabilidades:
+    - Persistir registros de prompts
+    - Recuperar registros por ID
+    - Paginación de resultados
+    - Conteo de registros
+    """
+    
+    @abstractmethod
+    def save(self, record: PromptRecord) -> None:
+        """Persiste un registro de prompt en el almacén de datos."""
+        
+    @abstractmethod
+    def find_by_id(self, id: str) -> Optional[PromptRecord]:
+        """Busca un registro por su ID único."""
+        
+    @abstractmethod
+    def find_paginated(self, offset: int = 0, limit: int = 10) -> Tuple[List[PromptRecord], int]:
+        """Recupera registros paginados con conteo total."""
+
+class VectorIndex(ABC):
+    """
+    Puerto para operaciones de índice vectorial.
+    
+    Abstrae las operaciones de búsqueda vectorial permitiendo
+    intercambiar entre FAISS, ChromaDB, Pinecone, etc.
+    
+    Características:
+    - Agnóstico al motor vectorial específico
+    - Optimizado para búsqueda de similaridad coseno
+    - Soporte para persistencia en disco
+    """
+    
+    @abstractmethod
+    def add(self, id: str, vector: list[float]) -> None:
+        """Añade un vector al índice con su identificador."""
+        
+    @abstractmethod
+    def search(self, vector: list[float], k: int) -> list[tuple[str, float]]:
+        """Busca los k vectores más similares."""
+
+class Embedder(ABC):
+    """
+    Puerto para generación de embeddings de texto.
+    
+    Encapsula la lógica de transformar texto a vectores numéricos,
+    permitiendo cambiar entre diferentes modelos (SentenceTransformers,
+    OpenAI, HuggingFace, etc.) sin afectar el resto del sistema.
+    """
+    
+    @abstractmethod
+    def embed(self, text: str) -> list[float]:
+        """Convierte texto a vector numérico normalizado L2."""
+        
+    @abstractmethod
+    def get_dimension(self) -> int:
+        """Retorna la dimensión del espacio vectorial."""
+
+class LLMProvider(ABC):
+    """
+    Puerto para generación de respuestas LLM.
+    
+    Abstrae la interacción con modelos de lenguaje, permitiendo
+    intercambiar entre simulador, GPT, Claude, modelos locales, etc.
+    """
+    
+    @abstractmethod
+    def generate(self, prompt: str) -> str:
+        """Genera respuesta para un prompt dado."""
+```
+
+#### Exceptions (`domain/exceptions.py`)
+
+```python
+class PromptServiceError(Exception):
+    """
+    Excepción base para errores del servicio de prompts.
+    
+    Establece la jerarquía de excepciones del dominio,
+    permitiendo manejo granular de errores específicos.
+    """
+
+class ValidationError(PromptServiceError):
+    """
+    Errores de validación de entrada.
+    
+    Se lanza cuando:
+    - El prompt está vacío o excede límites
+    - Datos de entrada no cumplen reglas de negocio
+    - Formato de entrada inválido
+    """
+
+class EmbeddingError(PromptServiceError):
+    """
+    Errores en generación de embeddings.
+    
+    Casos de uso:
+    - Fallo en modelo de embeddings
+    - Vector con dimensión incorrecta
+    - GPU sin memoria suficiente
+    """
+```
+
+### Application Layer
+
+#### Use Cases (`use_cases/`)
+
+```python
+class CreatePrompt:
+    """
+    Caso de uso para crear y procesar un nuevo prompt.
+    
+    Responsabilidades:
+    1. Validar entrada del usuario
+    2. Generar respuesta con LLM
+    3. Crear embedding del prompt
+    4. Persistir en base de datos
+    5. Indexar vector para búsqueda
+    6. Manejar errores de forma robusta
+    
+    Flujo de ejecución:
+    Input Validation → LLM Generation → Embedding Creation → 
+    Persistence → Vector Indexing → Return Record
+    
+    Error Handling:
+    - ValidationError: Entrada inválida
+    - LLMError: Fallo en generación
+    - EmbeddingError: Fallo en embedding
+    - RepositoryError: Fallo en persistencia
+    - VectorIndexError: Fallo en indexing
+    """
+    
+    def __init__(self, llm: LLMProvider, repository: PromptRepository, 
+                 vector_index: VectorIndex, embedder: Embedder):
+        self.llm = llm
+        self.repository = repository
+        self.vector_index = vector_index
+        self.embedder = embedder
+    
+    def execute(self, prompt: str) -> PromptRecord:
+        """
+        Ejecuta el caso de uso completo de creación de prompt.
+        
+        Args:
+            prompt: Texto del prompt del usuario
+            
+        Returns:
+            PromptRecord: Registro creado con respuesta generada
+            
+        Raises:
+            ValidationError: Si el prompt es inválido
+            PromptServiceError: Para otros errores del servicio
+        """
+
+class SearchSimilar:
+    """
+    Caso de uso para búsqueda de prompts similares.
+    
+    Implementa búsqueda semántica utilizando:
+    1. Generación de embedding para query
+    2. Búsqueda vectorial en índice
+    3. Recuperación de registros completos
+    4. Ordenamiento por relevancia
+    
+    Características:
+    - Búsqueda por similaridad coseno
+    - Resultados ordenados por score
+    - Paginación opcional
+    - Manejo de casos edge (sin resultados)
+    """
+```
+
+### Infrastructure Layer
+
+#### Database Adapter (`infra/sqlite_repo.py`)
+
+```python
+class SQLitePromptRepository(PromptRepository):
+    """
+    Adaptador de persistencia para SQLite usando SQLModel.
+    
+    Características técnicas:
+    - ORM con SQLModel para type safety
+    - Sesiones automáticas con context managers
+    - Paginación eficiente con OFFSET/LIMIT
+    - Índices en ID para búsqueda rápida
+    - Timestamps ordenados por defecto
+    
+    Performance Optimizations:
+    - Connection pooling implícito de SQLite
+    - Índice automático en primary key
+    - Queries preparadas para prevenir SQL injection
+    - Transacciones automáticas por sesión
+    """
+    
+    def __init__(self, db_url: str):
+        """
+        Inicializa repositorio con URL de base de datos.
+        
+        Args:
+            db_url: URL de conexión SQLite (sqlite:///path/to/db.db)
+        """
+        self.engine = create_engine(db_url, echo=False)
+        SQLModel.metadata.create_all(self.engine)
+    
+    def save(self, record: PromptRecord) -> None:
+        """
+        Persiste un registro usando transacción automática.
+        
+        Manejo de errores:
+        - IntegrityError: ID duplicado
+        - OperationalError: Problema de base de datos
+        - DataError: Datos inválidos
+        """
+
+class PromptModel(SQLModel, table=True):
+    """
+    Modelo de datos SQLModel para persistencia.
+    
+    Mapea la entidad de dominio PromptRecord a tabla SQL.
+    Incluye índices y constraints necesarios para performance.
+    
+    Table Schema:
+    - id: VARCHAR PRIMARY KEY (UUID)
+    - prompt: TEXT NOT NULL
+    - response: TEXT NOT NULL  
+    - created_at: VARCHAR (ISO8601 timestamp)
+    """
+```
+
+#### Vector Indexes (`infra/faiss_index.py`, `infra/chroma_index.py`)
+
+```python
+class FaissVectorIndex(VectorIndex):
+    """
+    Adaptador de índice vectorial usando FAISS.
+    
+    Características:
+    - IndexFlatIP para búsqueda exacta por producto interno
+    - Thread safety con locks
+    - Auto-save por lotes para performance
+    - Persistencia en disco
+    - Validación de dimensiones
+    
+    Technical Details:
+    - Metric: Inner Product (equivale a coseno con vectores normalizados)
+    - Index Type: Flat (fuerza bruta, exacto)
+    - Storage: Binario en disco
+    - Memory: Carga completa en RAM
+    """
+    
+    def __init__(self, index_path: str, dim: int = 384, auto_save_interval: int = 100):
+        """
+        Inicializa índice FAISS con configuración optimizada.
+        
+        Args:
+            index_path: Ruta para persistencia en disco
+            dim: Dimensión de vectores (384 para all-MiniLM-L6-v2)
+            auto_save_interval: Número de ops antes de auto-save
+        """
+        self.index_path = index_path
+        self.dim = dim
+        self.auto_save_interval = auto_save_interval
+        self._lock = threading.Lock()  # Thread safety
+        self.operations_since_save = 0
+        
+    def add(self, id: str, vector: list[float]) -> None:
+        """
+        Añade vector al índice con validación y thread safety.
+        
+        Validaciones:
+        - Dimensión correcta (384)
+        - Valores finitos (no NaN/Inf)
+        - ID único
+        
+        Performance:
+        - Auto-save cada N operaciones
+        - Batch operations cuando sea posible
+        """
+
+class ChromaVectorIndex(VectorIndex):
+    """
+    Adaptador alternativo usando ChromaDB.
+    
+    Ventajas sobre FAISS:
+    - Metadatos asociados a vectores
+    - Filtros complejos
+    - Escalabilidad distribuida
+    - API más simple
+    
+    Configuración:
+    - Distance: Cosine similarity
+    - Persistence: Directorio local
+    - Collections: Una por instancia
+    """
+```
+
+#### Embedder (`infra/embedder.py`)
+
+```python
+class SentenceTransformerEmbedder(Embedder):
+    """
+    Embedder usando SentenceTransformers con optimizaciones.
+    
+    Características:
+    - Singleton pattern para evitar múltiples cargas del modelo
+    - Thread safety con locks
+    - Normalización L2 manual para garantizar coseno
+    - GPU acceleration cuando disponible
+    - Validación exhaustiva de outputs
+    
+    Model Details:
+    - Model: all-MiniLM-L6-v2
+    - Dimension: 384
+    - Max sequence length: 256 tokens
+    - Language: Multilingual (optimizado inglés)
+    """
+    
+    _instance: Optional['SentenceTransformerEmbedder'] = None
+    _lock = threading.Lock()
+    
+    def __new__(cls, model_name: str = "all-MiniLM-L6-v2"):
+        """
+        Implementa singleton thread-safe.
+        
+        Previene múltiples cargas del modelo pesado,
+        optimizando memoria y tiempo de inicialización.
+        """
+        
+    def embed(self, text: str) -> list[float]:
+        """
+        Genera embedding normalizado L2.
+        
+        Process:
+        1. Text preprocessing (strip whitespace)
+        2. Model inference con torch.no_grad()
+        3. Manual L2 normalization
+        4. Validation (finite values, correct dimension)
+        5. GPU memory cleanup
+        
+        Returns:
+            Vector de 384 dimensiones normalizado (norma = 1.0)
+        """
+```
+
+### Core Services
+
+#### Dependency Injection Container (`core/container.py`)
+
+```python
+class Container:
+    """
+    Contenedor de inyección de dependencias thread-safe.
+    
+    Responsabilidades:
+    - Gestión de lifecycle de componentes
+    - Singleton management para recursos pesados
+    - Thread safety para acceso concurrente
+    - Cleanup automático de recursos
+    - Factory methods para casos de uso
+    
+    Patterns Implemented:
+    - Singleton: Para Embedder y configuración
+    - Factory: Para casos de uso
+    - Service Locator: Para adaptadores
+    """
+    
+    def __init__(self, settings: Settings):
+        self.settings = settings
+        self._instances: Dict[str, Any] = {}
+        self._lock = threading.Lock()
+    
+    def _get_singleton(self, key: str, factory):
+        """
+        Obtiene instancia singleton thread-safe.
+        
+        Double-checked locking pattern para evitar
+        múltiples inicializaciones concurrentes.
+        """
+        if key not in self._instances:
+            with self._lock:
+                if key not in self._instances:
+                    self._instances[key] = factory()
+        return self._instances[key]
+```
+
+#### Security System (`core/security.py`)
+
+```python
+class InputValidator:
+    """
+    Sistema de validación y sanitización de entrada.
+    
+    Security Features:
+    - HTML escaping para prevenir XSS
+    - Length limits para prevenir DoS
+    - Content filtering para contenido malicioso
+    - Character encoding validation
+    """
+    
+    @classmethod
+    def validate_prompt(cls, prompt: str, max_length: int = 2000) -> str:
+        """
+        Valida y sanitiza prompt de entrada.
+        
+        Security Checks:
+        1. Non-empty validation
+        2. Length limits (DoS prevention)
+        3. HTML escaping (XSS prevention)
+        4. Encoding validation (injection prevention)
+        """
+
+class RateLimiter:
+    """
+    Rate limiter basado en sliding window.
+    
+    Implementation:
+    - Sliding window algorithm
+    - Per-IP tracking
+    - Memory efficient (auto-cleanup)
+    - Thread safe operations
+    """
+    
+    def is_allowed(self, client_id: str, limit: int, window_seconds: int) -> bool:
+        """
+        Verifica si request está dentro de límites.
+        
+        Algorithm:
+        1. Get current timestamp
+        2. Clean old entries outside window
+        3. Count requests in current window
+        4. Allow if under limit
+        """
+```
+
+#### Performance Monitoring (`core/logging.py`)
+
+```python
+class PerformanceMonitor:
+    """
+    Sistema de monitoreo de performance thread-safe.
+    
+    Metrics Tracked:
+    - Response times por operación
+    - Request counts
+    - Error rates
+    - Resource utilization
+    
+    Features:
+    - Thread-safe operations
+    - Memory efficient storage
+    - Statistical calculations (avg, p95, p99)
+    - Automatic cleanup de métricas antiguas
+    """
+    
+    def record_duration(self, operation: str, duration: float):
+        """Registra duración de operación."""
+        
+    def get_stats(self) -> Dict[str, Any]:
+        """
+        Calcula estadísticas aggregadas.
+        
+        Returns:
+            - average_times: Tiempo promedio por operación
+            - total_requests: Conteo total de requests
+            - operations: Detalle por tipo de operación
+        """
+```
+
+---
+
+## Testing Strategy
+
+### Test Categories
+
+#### Unit Tests
+- **Domain entities**: Validación de reglas de negocio
+- **Use cases**: Lógica de aplicación aislada
+- **Adapters**: Funcionamiento de adaptadores individuales
+
+#### Integration Tests
+- **Database integration**: Persistencia end-to-end
+- **Vector search**: Búsqueda semántica completa
+- **API endpoints**: Funcionalidad completa de endpoints
+
+#### Performance Tests
+- **Load testing**: Comportamiento bajo carga
+- **Concurrency**: Thread safety verification
+- **Memory usage**: Leak detection
+
+#### Security Tests
+- **Input validation**: XSS, injection prevention
+- **Rate limiting**: DoS protection
+- **Error handling**: Information disclosure prevention
+
+### Test Implementation Details
+
+#### Similarity Validation Tests
+
+```python
+class TestSimilarityValidation:
+    """
+    Tests para verificar correctness de búsqueda vectorial.
+    
+    Test Cases:
+    1. Vector similarity order (FAISS)
+    2. Vector similarity order (ChromaDB)  
+    3. Real text similarity with embeddings
+    4. Embedding normalization validation
+    5. Deterministic LLM responses
+    6. Cosine similarity calculations
+    7. Similarity transitivity
+    """
+    
+    def test_vector_similarity_order_faiss(self):
+        """
+        Verifica que FAISS retorna vectores en orden correcto de similaridad.
+        
+        Test Strategy:
+        1. Crear vectores con relaciones conocidas de similaridad
+        2. Indexar en FAISS
+        3. Realizar búsqueda
+        4. Verificar orden de resultados
+        5. Validar scores en orden descendente
+        """
+        
+    def test_embedding_normalization_validation(self):
+        """
+        Valida que embeddings estén correctamente normalizados L2.
+        
+        Validations:
+        - L2 norm ≈ 1.0 (tolerance 0.001)
+        - Dimension = 384
+        - No zero vectors
+        - No NaN/Inf values
+        - Proper float types
+        """
+```
+
+#### ChromaDB Integration Tests
+
+```python
+class TestChromaIntegration:
+    """
+    Suite completa de tests para ChromaDB como backend alternativo.
+    
+    Coverage:
+    - Basic CRUD operations
+    - Data persistence across instances
+    - Large dataset handling (100+ vectors)
+    - Real embeddings integration
+    - Full use case integration
+    - Concurrent access safety
+    - Performance characteristics
+    - Error handling scenarios
+    """
+    
+    def test_chroma_integration_with_use_cases(self):
+        """
+        Test de integración completa con casos de uso.
+        
+        Flow:
+        1. Setup ChromaDB con casos de uso
+        2. Crear múltiples prompts
+        3. Ejecutar búsqueda semántica
+        4. Verificar resultados correctos
+        5. Validar estructura de datos
+        """
+```
+
+---
+
+## Deployment & Operations
+
+### Configuration Management
+
+```yaml
+# .env.example structure
+DATABASE_URL: "sqlite:///./data/prompts.db"
+VECTOR_BACKEND: "faiss"  # faiss | chroma
+VECTOR_INDEX_PATH: "./data/vector_index"
+ENABLE_RATE_LIMITING: true
+RATE_LIMIT_PER_MINUTE: 60
+MAX_PROMPT_LENGTH: 2000
+LOG_LEVEL: "INFO"
+```
+
+### Health Checks
+
+```python
+# Health check endpoints
+GET /health          # Basic liveness probe
+GET /health/detailed # Component health verification  
+GET /health/ready    # Readiness probe for K8s
+GET /stats          # Performance metrics
+```
+
+### Performance Tuning
+
+- **Embedder**: Singleton pattern para modelo pesado
+- **FAISS**: Auto-save por lotes para reducir I/O
+- **SQLite**: WAL mode para mejor concurrencia
+- **Rate Limiting**: Sliding window para accuracy
+
+### Security Measures
+
+- **Input Validation**: XSS y injection prevention
+- **Rate Limiting**: DoS protection per-IP
+- **Error Handling**: No stack trace exposure
+- **Logging**: Sensitive data sanitization
+
+---
+
+## Metrics & Monitoring
+
+### Key Performance Indicators
+
+- **Response Time**: < 50ms p95 para endpoints principales
+- **Throughput**: 60+ requests/minute sostenido
+- **Memory Usage**: < 500MB RSS en steady state
+- **Error Rate**: < 1% en condiciones normales
+
+### Observability Stack
+
+- **Logging**: Structured JSON con context
+- **Metrics**: Performance monitoring integrado
+- **Health**: Multi-level health checks
+- **Tracing**: Request correlation IDs
+
+Este sistema está diseñado para ser **production-ready** con enfoque en **reliability**, **performance**, **security** y **maintainability**.

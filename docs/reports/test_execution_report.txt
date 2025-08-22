@@ -1,0 +1,1250 @@
+============================= test session starts ==============================
+platform linux -- Python 3.12.5, pytest-8.4.1, pluggy-1.6.0 -- /home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/bin/python
+cachedir: .pytest_cache
+rootdir: /home/jazzzfm/Documents/JazzDataSolutions/SaptivaTekChallenge
+configfile: pyproject.toml
+plugins: cov-6.2.1, anyio-4.10.0
+collecting ... collected 90 items
+
+tests/test_api.py::test_read_docs PASSED                                 [  1%]
+tests/test_api.py::test_health_check PASSED                              [  2%]
+tests/test_api.py::test_stats_endpoint FAILED                            [  3%]
+tests/test_api.py::test_create_prompt_success FAILED                     [  4%]
+tests/test_api.py::test_create_prompt_with_sanitization FAILED           [  5%]
+tests/test_api.py::test_create_prompt_deterministic_response FAILED      [  6%]
+tests/test_api.py::test_search_similar_success PASSED                    [  7%]
+tests/test_api.py::test_search_similar_with_sanitization FAILED          [  8%]
+tests/test_api.py::test_search_similar_edge_cases PASSED                 [ 10%]
+tests/test_api.py::test_create_prompt_validation_errors FAILED           [ 11%]
+tests/test_api.py::test_create_prompt_with_dangerous_content FAILED      [ 12%]
+tests/test_api.py::test_search_similar_with_no_results PASSED            [ 13%]
+tests/test_api.py::test_integration_create_and_search FAILED             [ 14%]
+tests/test_api.py::test_error_response_format FAILED                     [ 15%]
+tests/test_api.py::test_response_time_header PASSED                      [ 16%]
+tests/test_api.py::test_concurrent_requests FAILED                       [ 17%]
+tests/test_chroma_integration.py::TestChromaIntegration::test_chroma_basic_operations PASSED [ 18%]
+tests/test_chroma_integration.py::TestChromaIntegration::test_chroma_persistence PASSED [ 20%]
+tests/test_chroma_integration.py::TestChromaIntegration::test_chroma_large_dataset PASSED [ 21%]
+tests/test_chroma_integration.py::TestChromaIntegration::test_chroma_with_real_embeddings PASSED [ 22%]
+tests/test_chroma_integration.py::TestChromaIntegration::test_chroma_empty_index_search PASSED [ 23%]
+tests/test_chroma_integration.py::TestChromaIntegration::test_chroma_integration_with_use_cases PASSED [ 24%]
+tests/test_chroma_integration.py::TestChromaIntegration::test_chroma_concurrent_access PASSED [ 25%]
+tests/test_chroma_integration.py::TestChromaIntegration::test_chroma_metadata_support PASSED [ 26%]
+tests/test_chroma_integration.py::TestChromaIntegration::test_chroma_error_handling FAILED [ 27%]
+tests/test_chroma_integration.py::TestChromaIntegration::test_chroma_vector_validation PASSED [ 28%]
+tests/test_chroma_integration.py::TestChromaIntegration::test_chroma_performance_characteristics PASSED [ 30%]
+tests/test_security.py::TestInputValidator::test_validate_prompt_success PASSED [ 31%]
+tests/test_security.py::TestInputValidator::test_validate_prompt_empty PASSED [ 32%]
+tests/test_security.py::TestInputValidator::test_validate_prompt_whitespace_only PASSED [ 33%]
+tests/test_security.py::TestInputValidator::test_validate_prompt_too_long PASSED [ 34%]
+tests/test_security.py::TestInputValidator::test_validate_prompt_sql_injection FAILED [ 35%]
+tests/test_security.py::TestInputValidator::test_validate_prompt_control_characters PASSED [ 36%]
+tests/test_security.py::TestInputValidator::test_validate_prompt_html_escape PASSED [ 37%]
+tests/test_security.py::TestInputValidator::test_validate_prompt_excessive_whitespace PASSED [ 38%]
+tests/test_security.py::TestInputValidator::test_sanitize_for_logging FAILED [ 40%]
+tests/test_security.py::TestInputValidator::test_sanitize_for_logging_empty PASSED [ 41%]
+tests/test_security.py::TestInputValidator::test_sanitize_for_logging_truncation PASSED [ 42%]
+tests/test_security.py::TestRateLimiter::test_rate_limiter_allows_requests_under_limit PASSED [ 43%]
+tests/test_security.py::TestRateLimiter::test_rate_limiter_blocks_requests_over_limit PASSED [ 44%]
+tests/test_security.py::TestRateLimiter::test_rate_limiter_different_clients PASSED [ 45%]
+tests/test_security.py::TestRateLimiter::test_rate_limiter_window_reset PASSED [ 46%]
+tests/test_security.py::TestRateLimiter::test_rate_limiter_get_stats PASSED [ 47%]
+tests/test_seed_integration.py::TestSeedIntegration::test_seed_data_reproducible PASSED [ 48%]
+tests/test_seed_integration.py::TestSeedIntegration::test_seed_data_idempotent PASSED [ 50%]
+tests/test_seed_integration.py::TestSeedIntegration::test_seed_verification_passes PASSED [ 51%]
+tests/test_seed_integration.py::TestSeedIntegration::test_seed_verification_fails_empty_db PASSED [ 52%]
+tests/test_seed_integration.py::TestSeedIntegration::test_seed_data_with_chroma_backend PASSED [ 53%]
+tests/test_seed_integration.py::TestSeedIntegration::test_migration_info PASSED [ 54%]
+tests/test_seed_integration.py::TestSeedIntegration::test_seed_data_content_quality PASSED [ 55%]
+tests/test_seed_integration.py::TestSeedIntegration::test_seed_vector_embeddings_quality PASSED [ 56%]
+tests/test_seed_integration.py::TestSeedIntegration::test_seed_semantic_relationships PASSED [ 57%]
+tests/test_seed_integration.py::TestSeedIntegration::test_seed_no_clear_existing PASSED [ 58%]
+tests/test_seed_integration.py::TestSeedIntegration::test_seed_concurrent_safety PASSED [ 60%]
+tests/test_seed_integration.py::TestSeedIntegration::test_seed_data_persistence PASSED [ 61%]
+tests/test_similarity_validation.py::TestSimilarityValidation::test_vector_similarity_order_faiss PASSED [ 62%]
+tests/test_similarity_validation.py::TestSimilarityValidation::test_vector_similarity_order_chroma PASSED [ 63%]
+tests/test_similarity_validation.py::TestSimilarityValidation::test_real_text_similarity_with_embedder PASSED [ 64%]
+tests/test_similarity_validation.py::TestSimilarityValidation::test_embedding_normalization_validation PASSED [ 65%]
+tests/test_similarity_validation.py::TestSimilarityValidation::test_deterministic_llm_responses PASSED [ 66%]
+tests/test_similarity_validation.py::TestSimilarityValidation::test_cosine_similarity_calculation PASSED [ 67%]
+tests/test_similarity_validation.py::TestSimilarityValidation::test_similarity_transitivity PASSED [ 68%]
+tests/test_use_cases.py::TestCreatePrompt::test_create_prompt_success PASSED [ 70%]
+tests/test_use_cases.py::TestCreatePrompt::test_create_prompt_empty_input PASSED [ 71%]
+tests/test_use_cases.py::TestCreatePrompt::test_create_prompt_whitespace_only PASSED [ 72%]
+tests/test_use_cases.py::TestCreatePrompt::test_create_prompt_llm_failure PASSED [ 73%]
+tests/test_use_cases.py::TestCreatePrompt::test_create_prompt_embedding_failure PASSED [ 74%]
+tests/test_use_cases.py::TestCreatePrompt::test_create_prompt_empty_embedding FAILED [ 75%]
+tests/test_use_cases.py::TestCreatePrompt::test_create_prompt_repository_failure PASSED [ 76%]
+tests/test_use_cases.py::TestSearchSimilar::test_search_similar_success PASSED [ 77%]
+tests/test_use_cases.py::TestSearchSimilar::test_search_similar_empty_query PASSED [ 78%]
+tests/test_use_cases.py::TestSearchSimilar::test_search_similar_invalid_k PASSED [ 80%]
+tests/test_use_cases.py::TestSearchSimilar::test_search_similar_embedding_failure PASSED [ 81%]
+tests/test_use_cases.py::TestSearchSimilar::test_search_similar_vector_search_failure PASSED [ 82%]
+tests/test_use_cases.py::TestSearchSimilar::test_search_similar_partial_record_retrieval PASSED [ 83%]
+tests/test_use_cases.py::TestSearchSimilar::test_search_similar_empty_embedding PASSED [ 84%]
+tests/test_vector_index.py::TestFaissVectorIndex::test_add_and_search_vectors PASSED [ 85%]
+tests/test_vector_index.py::TestFaissVectorIndex::test_add_invalid_dimension PASSED [ 86%]
+tests/test_vector_index.py::TestFaissVectorIndex::test_search_invalid_dimension PASSED [ 87%]
+tests/test_vector_index.py::TestFaissVectorIndex::test_add_invalid_vector_values PASSED [ 88%]
+tests/test_vector_index.py::TestFaissVectorIndex::test_search_invalid_vector_values PASSED [ 90%]
+tests/test_vector_index.py::TestFaissVectorIndex::test_search_empty_index PASSED [ 91%]
+tests/test_vector_index.py::TestFaissVectorIndex::test_search_k_larger_than_available PASSED [ 92%]
+tests/test_vector_index.py::TestFaissVectorIndex::test_persistence PASSED [ 93%]
+tests/test_vector_index.py::TestFaissVectorIndex::test_get_stats PASSED  [ 94%]
+tests/test_vector_index.py::TestFaissVectorIndex::test_batch_operations_thread_safety PASSED [ 95%]
+tests/test_vector_index.py::TestChromaVectorIndex::test_add_and_search_vectors PASSED [ 96%]
+tests/test_vector_index.py::TestChromaVectorIndex::test_search_empty_index PASSED [ 97%]
+tests/test_vector_index.py::TestChromaVectorIndex::test_persistence PASSED [ 98%]
+tests/test_vector_index.py::test_vector_index_compatibility PASSED       [100%]
+
+=================================== FAILURES ===================================
+_____________________________ test_stats_endpoint ______________________________
+tests/test_api.py:19: in test_stats_endpoint
+    assert response.status_code == 200
+E   assert 500 == 200
+E    +  where 500 = <Response [500 Internal Server Error]>.status_code
+----------------------------- Captured stdout call -----------------------------
+2025-08-21 21:57:12,298 - infra.faiss_index - INFO - Creating new FAISS index: Error in faiss::FileIOReader::FileIOReader(const char*) at /project/thi...
+2025-08-21 21:57:12,299 - infra.embedder - INFO - Loading sentence transformer model: all-MiniLM-L6-v2
+2025-08-21 21:57:13,735 - infra.embedder - INFO - Model all-MiniLM-L6-v2 loaded successfully
+2025-08-21 21:57:13,811 - root - ERROR - Failed to get stats: 'Settings' object has no attribute 'database_url'
+2025-08-21 21:57:13,812 - httpx - INFO - HTTP Request: GET http://testserver/stats "HTTP/1.1 500 Internal Server Error"
+------------------------------ Captured log call -------------------------------
+INFO     infra.faiss_index:logging.py:50 Creating new FAISS index: Error in faiss::FileIOReader::FileIOReader(const char*) at /project/thi...
+INFO     infra.embedder:logging.py:50 Loading sentence transformer model: all-MiniLM-L6-v2
+INFO     infra.embedder:logging.py:50 Model all-MiniLM-L6-v2 loaded successfully
+ERROR    root:main.py:358 Failed to get stats: 'Settings' object has no attribute 'database_url'
+INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/stats "HTTP/1.1 500 Internal Server Error"
+__________________________ test_create_prompt_success __________________________
+tests/test_api.py:27: in test_create_prompt_success
+    assert response.status_code == 200
+E   assert 500 == 200
+E    +  where 500 = <Response [500 Internal Server Error]>.status_code
+----------------------------- Captured stdout call -----------------------------
+2025-08-21 21:57:13,841 - use_cases.create_prompt - INFO - Creating prompt
+2025-08-21 21:57:13,843 - use_cases.create_prompt - ERROR - Repository save failed
+2025-08-21 21:57:13,843 - root - ERROR - Service error in create_prompt: Failed to save prompt: (sqlite3.OperationalError) attempt to write a readonly database
+[SQL: INSERT INTO promptmodel (id, prompt, response, created_at) VALUES (?, ?, ?, ?)]
+[parameters: ('f97be082-0359-4651-bc03-264250addd82', 'test prompt', '[SimResponse-4589] Respuesta generada sobre: test prompt', '2025-08-22T03:57:13.841488+00:00')]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2025-08-21 21:57:13,844 - httpx - INFO - HTTP Request: POST http://testserver/prompt "HTTP/1.1 500 Internal Server Error"
+------------------------------ Captured log call -------------------------------
+INFO     use_cases.create_prompt:logging.py:50 Creating prompt
+ERROR    use_cases.create_prompt:logging.py:54 Repository save failed
+ERROR    root:main.py:112 Service error in create_prompt: Failed to save prompt: (sqlite3.OperationalError) attempt to write a readonly database
+[SQL: INSERT INTO promptmodel (id, prompt, response, created_at) VALUES (?, ?, ?, ?)]
+[parameters: ('f97be082-0359-4651-bc03-264250addd82', 'test prompt', '[SimResponse-4589] Respuesta generada sobre: test prompt', '2025-08-22T03:57:13.841488+00:00')]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+INFO     httpx:_client.py:1025 HTTP Request: POST http://testserver/prompt "HTTP/1.1 500 Internal Server Error"
+_____________________ test_create_prompt_with_sanitization _____________________
+  + Exception Group Traceback (most recent call last):
+  |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/_utils.py", line 77, in collapse_excgroups
+  |     yield
+  |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/middleware/base.py", line 183, in __call__
+  |     async with anyio.create_task_group() as task_group:
+  |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/anyio/_backends/_asyncio.py", line 772, in __aexit__
+  |     raise BaseExceptionGroup(
+  | ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)
+  +-+---------------- 1 ----------------
+    | Traceback (most recent call last):
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/_pytest/runner.py", line 344, in from_call
+    |     result: TResult | None = func()
+    |                              ^^^^^^
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/_pytest/runner.py", line 246, in <lambda>
+    |     lambda: runtest_hook(item=item, **kwds), when=when, reraise=reraise
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/pluggy/_hooks.py", line 512, in __call__
+    |     return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/pluggy/_manager.py", line 120, in _hookexec
+    |     return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/pluggy/_callers.py", line 167, in _multicall
+    |     raise exception
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/pluggy/_callers.py", line 139, in _multicall
+    |     teardown.throw(exception)
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/_pytest/logging.py", line 850, in pytest_runtest_call
+    |     yield
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/pluggy/_callers.py", line 139, in _multicall
+    |     teardown.throw(exception)
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/_pytest/capture.py", line 900, in pytest_runtest_call
+    |     return (yield)
+    |             ^^^^^
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/pluggy/_callers.py", line 139, in _multicall
+    |     teardown.throw(exception)
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/_pytest/skipping.py", line 263, in pytest_runtest_call
+    |     return (yield)
+    |             ^^^^^
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/pluggy/_callers.py", line 121, in _multicall
+    |     res = hook_impl.function(*args)
+    |           ^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/_pytest/runner.py", line 178, in pytest_runtest_call
+    |     item.runtest()
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/_pytest/python.py", line 1671, in runtest
+    |     self.ihook.pytest_pyfunc_call(pyfuncitem=self)
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/pluggy/_hooks.py", line 512, in __call__
+    |     return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/pluggy/_manager.py", line 120, in _hookexec
+    |     return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/pluggy/_callers.py", line 167, in _multicall
+    |     raise exception
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/pluggy/_callers.py", line 121, in _multicall
+    |     res = hook_impl.function(*args)
+    |           ^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/_pytest/python.py", line 157, in pytest_pyfunc_call
+    |     result = testfunction(**testargs)
+    |              ^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/home/jazzzfm/Documents/JazzDataSolutions/SaptivaTekChallenge/tests/test_api.py", line 37, in test_create_prompt_with_sanitization
+    |     response = client.post("/prompt", json={"prompt": "test <script>alert('xss')</script> prompt"})
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/testclient.py", line 552, in post
+    |     return super().post(
+    |            ^^^^^^^^^^^^^
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/httpx/_client.py", line 1144, in post
+    |     return self.request(
+    |            ^^^^^^^^^^^^^
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/testclient.py", line 451, in request
+    |     return super().request(
+    |            ^^^^^^^^^^^^^^^^
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/httpx/_client.py", line 825, in request
+    |     return self.send(request, auth=auth, follow_redirects=follow_redirects)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/httpx/_client.py", line 914, in send
+    |     response = self._send_handling_auth(
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/httpx/_client.py", line 942, in _send_handling_auth
+    |     response = self._send_handling_redirects(
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/httpx/_client.py", line 979, in _send_handling_redirects
+    |     response = self._send_single_request(request)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/httpx/_client.py", line 1014, in _send_single_request
+    |     response = transport.handle_request(request)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/testclient.py", line 354, in handle_request
+    |     raise exc
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/testclient.py", line 351, in handle_request
+    |     portal.call(self.app, scope, receive, send)
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/anyio/from_thread.py", line 291, in call
+    |     return cast(T_Retval, self.start_task_soon(func, *args).result())
+    |                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/home/jazzzfm/.pyenv/versions/3.12.5/lib/python3.12/concurrent/futures/_base.py", line 456, in result
+    |     return self.__get_result()
+    |            ^^^^^^^^^^^^^^^^^^^
+    |   File "/home/jazzzfm/.pyenv/versions/3.12.5/lib/python3.12/concurrent/futures/_base.py", line 401, in __get_result
+    |     raise self._exception
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/anyio/from_thread.py", line 222, in _call_func
+    |     retval = await retval_or_awaitable
+    |              ^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/fastapi/applications.py", line 1054, in __call__
+    |     await super().__call__(scope, receive, send)
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/applications.py", line 113, in __call__
+    |     await self.middleware_stack(scope, receive, send)
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/middleware/errors.py", line 186, in __call__
+    |     raise exc
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    |     await self.app(scope, receive, _send)
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/middleware/base.py", line 182, in __call__
+    |     with recv_stream, send_stream, collapse_excgroups():
+    |   File "/home/jazzzfm/.pyenv/versions/3.12.5/lib/python3.12/contextlib.py", line 158, in __exit__
+    |     self.gen.throw(value)
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/_utils.py", line 83, in collapse_excgroups
+    |     raise exc
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/middleware/base.py", line 184, in __call__
+    |     response = await self.dispatch_func(request, call_next)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/home/jazzzfm/Documents/JazzDataSolutions/SaptivaTekChallenge/api/main.py", line 58, in rate_limit_middleware
+    |     response = await call_next(request)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/middleware/base.py", line 159, in call_next
+    |     raise app_exc
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/middleware/base.py", line 144, in coro
+    |     await self.app(scope, receive_or_disconnect, send_no_error)
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/middleware/trustedhost.py", line 51, in __call__
+    |     await self.app(scope, receive, send)
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/middleware/cors.py", line 85, in __call__
+    |     await self.app(scope, receive, send)
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    |     await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    |     raise exc
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    |     await app(scope, receive, sender)
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/routing.py", line 716, in __call__
+    |     await self.middleware_stack(scope, receive, send)
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/routing.py", line 736, in app
+    |     await route.handle(scope, receive, send)
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/routing.py", line 290, in handle
+    |     await self.app(scope, receive, send)
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/routing.py", line 78, in app
+    |     await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    |     raise exc
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    |     await app(scope, receive, sender)
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/routing.py", line 75, in app
+    |     response = await f(request)
+    |                ^^^^^^^^^^^^^^^^
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/fastapi/routing.py", line 292, in app
+    |     solved_result = await solve_dependencies(
+    |                     ^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/fastapi/dependencies/utils.py", line 666, in solve_dependencies
+    |     ) = await request_body_to_args(  # body_params checked above
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/fastapi/dependencies/utils.py", line 927, in request_body_to_args
+    |     v_, errors_ = _validate_value_with_model_field(
+    |                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/fastapi/dependencies/utils.py", line 706, in _validate_value_with_model_field
+    |     v_, errors_ = field.validate(value, values, loc=loc)
+    |                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/fastapi/_compat.py", line 130, in validate
+    |     self._type_adapter.validate_python(value, from_attributes=True),
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/pydantic/type_adapter.py", line 421, in validate_python
+    |     return self.validator.validate_python(
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/home/jazzzfm/Documents/JazzDataSolutions/SaptivaTekChallenge/api/main.py", line 82, in validate_prompt
+    |     return InputValidator.validate_prompt(v, settings.max_prompt_length)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/home/jazzzfm/Documents/JazzDataSolutions/SaptivaTekChallenge/core/security.py", line 48, in validate_prompt
+    |     raise ValidationError("Prompt contains potentially dangerous content")
+    | domain.exceptions.ValidationError: Prompt contains potentially dangerous content
+    +------------------------------------
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jazzzfm/Documents/JazzDataSolutions/SaptivaTekChallenge/tests/test_api.py", line 37, in test_create_prompt_with_sanitization
+    response = client.post("/prompt", json={"prompt": "test <script>alert('xss')</script> prompt"})
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/testclient.py", line 552, in post
+    return super().post(
+           ^^^^^^^^^^^^^
+  File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/httpx/_client.py", line 1144, in post
+    return self.request(
+           ^^^^^^^^^^^^^
+  File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/testclient.py", line 451, in request
+    return super().request(
+           ^^^^^^^^^^^^^^^^
+  File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/httpx/_client.py", line 825, in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/httpx/_client.py", line 914, in send
+    response = self._send_handling_auth(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/httpx/_client.py", line 942, in _send_handling_auth
+    response = self._send_handling_redirects(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/httpx/_client.py", line 979, in _send_handling_redirects
+    response = self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/httpx/_client.py", line 1014, in _send_single_request
+    response = transport.handle_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/testclient.py", line 354, in handle_request
+    raise exc
+  File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/testclient.py", line 351, in handle_request
+    portal.call(self.app, scope, receive, send)
+  File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/anyio/from_thread.py", line 291, in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jazzzfm/.pyenv/versions/3.12.5/lib/python3.12/concurrent/futures/_base.py", line 456, in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+  File "/home/jazzzfm/.pyenv/versions/3.12.5/lib/python3.12/concurrent/futures/_base.py", line 401, in __get_result
+    raise self._exception
+  File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/anyio/from_thread.py", line 222, in _call_func
+    retval = await retval_or_awaitable
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/fastapi/applications.py", line 1054, in __call__
+    await super().__call__(scope, receive, send)
+  File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/applications.py", line 113, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/middleware/errors.py", line 186, in __call__
+    raise exc
+  File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/middleware/base.py", line 182, in __call__
+    with recv_stream, send_stream, collapse_excgroups():
+  File "/home/jazzzfm/.pyenv/versions/3.12.5/lib/python3.12/contextlib.py", line 158, in __exit__
+    self.gen.throw(value)
+  File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/_utils.py", line 83, in collapse_excgroups
+    raise exc
+  File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/middleware/base.py", line 184, in __call__
+    response = await self.dispatch_func(request, call_next)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jazzzfm/Documents/JazzDataSolutions/SaptivaTekChallenge/api/main.py", line 58, in rate_limit_middleware
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/middleware/base.py", line 159, in call_next
+    raise app_exc
+  File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/middleware/base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/middleware/trustedhost.py", line 51, in __call__
+    await self.app(scope, receive, send)
+  File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/middleware/cors.py", line 85, in __call__
+    await self.app(scope, receive, send)
+  File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/routing.py", line 78, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/routing.py", line 75, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/fastapi/routing.py", line 292, in app
+    solved_result = await solve_dependencies(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/fastapi/dependencies/utils.py", line 666, in solve_dependencies
+    ) = await request_body_to_args(  # body_params checked above
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/fastapi/dependencies/utils.py", line 927, in request_body_to_args
+    v_, errors_ = _validate_value_with_model_field(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/fastapi/dependencies/utils.py", line 706, in _validate_value_with_model_field
+    v_, errors_ = field.validate(value, values, loc=loc)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/fastapi/_compat.py", line 130, in validate
+    self._type_adapter.validate_python(value, from_attributes=True),
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/pydantic/type_adapter.py", line 421, in validate_python
+    return self.validator.validate_python(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jazzzfm/Documents/JazzDataSolutions/SaptivaTekChallenge/api/main.py", line 82, in validate_prompt
+    return InputValidator.validate_prompt(v, settings.max_prompt_length)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jazzzfm/Documents/JazzDataSolutions/SaptivaTekChallenge/core/security.py", line 48, in validate_prompt
+    raise ValidationError("Prompt contains potentially dangerous content")
+domain.exceptions.ValidationError: Prompt contains potentially dangerous content
+
+During handling of the above exception, another exception occurred:
+tests/test_api.py:37: in test_create_prompt_with_sanitization
+    response = client.post("/prompt", json={"prompt": "test <script>alert('xss')</script> prompt"})
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/testclient.py:552: in post
+    return super().post(
+../../Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/httpx/_client.py:1144: in post
+    return self.request(
+../../Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/testclient.py:451: in request
+    return super().request(
+../../Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/httpx/_client.py:825: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/httpx/_client.py:914: in send
+    response = self._send_handling_auth(
+../../Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/httpx/_client.py:942: in _send_handling_auth
+    response = self._send_handling_redirects(
+../../Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/httpx/_client.py:979: in _send_handling_redirects
+    response = self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/httpx/_client.py:1014: in _send_single_request
+    response = transport.handle_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/testclient.py:354: in handle_request
+    raise exc
+../../Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/testclient.py:351: in handle_request
+    portal.call(self.app, scope, receive, send)
+../../Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/anyio/from_thread.py:291: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../../.pyenv/versions/3.12.5/lib/python3.12/concurrent/futures/_base.py:456: in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+../../../.pyenv/versions/3.12.5/lib/python3.12/concurrent/futures/_base.py:401: in __get_result
+    raise self._exception
+../../Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/anyio/from_thread.py:222: in _call_func
+    retval = await retval_or_awaitable
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+../../Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/fastapi/applications.py:1054: in __call__
+    await super().__call__(scope, receive, send)
+../../Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/applications.py:113: in __call__
+    await self.middleware_stack(scope, receive, send)
+../../Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/middleware/errors.py:186: in __call__
+    raise exc
+../../Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/middleware/errors.py:164: in __call__
+    await self.app(scope, receive, _send)
+../../Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/middleware/base.py:182: in __call__
+    with recv_stream, send_stream, collapse_excgroups():
+../../../.pyenv/versions/3.12.5/lib/python3.12/contextlib.py:158: in __exit__
+    self.gen.throw(value)
+../../Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/_utils.py:83: in collapse_excgroups
+    raise exc
+../../Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/middleware/base.py:184: in __call__
+    response = await self.dispatch_func(request, call_next)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+api/main.py:58: in rate_limit_middleware
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+../../Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/middleware/base.py:159: in call_next
+    raise app_exc
+../../Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/middleware/base.py:144: in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+../../Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/middleware/trustedhost.py:51: in __call__
+    await self.app(scope, receive, send)
+../../Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/middleware/cors.py:85: in __call__
+    await self.app(scope, receive, send)
+../../Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/middleware/exceptions.py:63: in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+../../Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/_exception_handler.py:53: in wrapped_app
+    raise exc
+../../Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/_exception_handler.py:42: in wrapped_app
+    await app(scope, receive, sender)
+../../Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/routing.py:716: in __call__
+    await self.middleware_stack(scope, receive, send)
+../../Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/routing.py:736: in app
+    await route.handle(scope, receive, send)
+../../Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/routing.py:290: in handle
+    await self.app(scope, receive, send)
+../../Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/routing.py:78: in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+../../Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/_exception_handler.py:53: in wrapped_app
+    raise exc
+../../Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/_exception_handler.py:42: in wrapped_app
+    await app(scope, receive, sender)
+../../Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/routing.py:75: in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+../../Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/fastapi/routing.py:292: in app
+    solved_result = await solve_dependencies(
+../../Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/fastapi/dependencies/utils.py:666: in solve_dependencies
+    ) = await request_body_to_args(  # body_params checked above
+../../Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/fastapi/dependencies/utils.py:927: in request_body_to_args
+    v_, errors_ = _validate_value_with_model_field(
+../../Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/fastapi/dependencies/utils.py:706: in _validate_value_with_model_field
+    v_, errors_ = field.validate(value, values, loc=loc)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/fastapi/_compat.py:130: in validate
+    self._type_adapter.validate_python(value, from_attributes=True),
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/pydantic/type_adapter.py:421: in validate_python
+    return self.validator.validate_python(
+api/main.py:82: in validate_prompt
+    return InputValidator.validate_prompt(v, settings.max_prompt_length)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+core/security.py:48: in validate_prompt
+    raise ValidationError("Prompt contains potentially dangerous content")
+E   domain.exceptions.ValidationError: Prompt contains potentially dangerous content
+__________________ test_create_prompt_deterministic_response ___________________
+tests/test_api.py:51: in test_create_prompt_deterministic_response
+    assert response1.status_code == 200
+E   assert 500 == 200
+E    +  where 500 = <Response [500 Internal Server Error]>.status_code
+----------------------------- Captured stdout call -----------------------------
+2025-08-21 21:57:14,285 - use_cases.create_prompt - INFO - Creating prompt
+2025-08-21 21:57:14,287 - use_cases.create_prompt - ERROR - Repository save failed
+2025-08-21 21:57:14,287 - root - ERROR - Service error in create_prompt: Failed to save prompt: (sqlite3.OperationalError) attempt to write a readonly database
+[SQL: INSERT INTO promptmodel (id, prompt, response, created_at) VALUES (?, ?, ?, ?)]
+[parameters: ('069deefd-fa83-4c3c-b607-e97e7c84d952', 'deterministic test prompt', '[SimResponse-318] Respuesta generada sobre: deterministic test prompt', '2025-08-22T03:57:14.285891+00:00')]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2025-08-21 21:57:14,287 - httpx - INFO - HTTP Request: POST http://testserver/prompt "HTTP/1.1 500 Internal Server Error"
+2025-08-21 21:57:14,289 - use_cases.create_prompt - INFO - Creating prompt
+2025-08-21 21:57:14,290 - use_cases.create_prompt - ERROR - Repository save failed
+2025-08-21 21:57:14,290 - root - ERROR - Service error in create_prompt: Failed to save prompt: (sqlite3.OperationalError) attempt to write a readonly database
+[SQL: INSERT INTO promptmodel (id, prompt, response, created_at) VALUES (?, ?, ?, ?)]
+[parameters: ('b7ff500a-903c-4744-b42c-3d7f31e1ff12', 'deterministic test prompt', '[SimResponse-318] Respuesta generada sobre: deterministic test prompt', '2025-08-22T03:57:14.289693+00:00')]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2025-08-21 21:57:14,291 - httpx - INFO - HTTP Request: POST http://testserver/prompt "HTTP/1.1 500 Internal Server Error"
+------------------------------ Captured log call -------------------------------
+INFO     use_cases.create_prompt:logging.py:50 Creating prompt
+ERROR    use_cases.create_prompt:logging.py:54 Repository save failed
+ERROR    root:main.py:112 Service error in create_prompt: Failed to save prompt: (sqlite3.OperationalError) attempt to write a readonly database
+[SQL: INSERT INTO promptmodel (id, prompt, response, created_at) VALUES (?, ?, ?, ?)]
+[parameters: ('069deefd-fa83-4c3c-b607-e97e7c84d952', 'deterministic test prompt', '[SimResponse-318] Respuesta generada sobre: deterministic test prompt', '2025-08-22T03:57:14.285891+00:00')]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+INFO     httpx:_client.py:1025 HTTP Request: POST http://testserver/prompt "HTTP/1.1 500 Internal Server Error"
+INFO     use_cases.create_prompt:logging.py:50 Creating prompt
+ERROR    use_cases.create_prompt:logging.py:54 Repository save failed
+ERROR    root:main.py:112 Service error in create_prompt: Failed to save prompt: (sqlite3.OperationalError) attempt to write a readonly database
+[SQL: INSERT INTO promptmodel (id, prompt, response, created_at) VALUES (?, ?, ?, ?)]
+[parameters: ('b7ff500a-903c-4744-b42c-3d7f31e1ff12', 'deterministic test prompt', '[SimResponse-318] Respuesta generada sobre: deterministic test prompt', '2025-08-22T03:57:14.289693+00:00')]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+INFO     httpx:_client.py:1025 HTTP Request: POST http://testserver/prompt "HTTP/1.1 500 Internal Server Error"
+____________________ test_search_similar_with_sanitization _____________________
+tests/test_api.py:77: in test_search_similar_with_sanitization
+    assert response.status_code == 200  # Should be sanitized, not rejected
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   assert 400 == 200
+E    +  where 400 = <Response [400 Bad Request]>.status_code
+----------------------------- Captured stdout call -----------------------------
+2025-08-21 21:57:14,325 - use_cases.create_prompt - INFO - Creating prompt
+2025-08-21 21:57:14,326 - use_cases.create_prompt - ERROR - Repository save failed
+2025-08-21 21:57:14,326 - root - ERROR - Service error in create_prompt: Failed to save prompt: (sqlite3.OperationalError) attempt to write a readonly database
+[SQL: INSERT INTO promptmodel (id, prompt, response, created_at) VALUES (?, ?, ?, ?)]
+[parameters: ('463d1af3-3ef4-4ec7-8713-589fc02b2293', 'normal prompt', '[SimResponse-4745] Respuesta generada sobre: normal prompt', '2025-08-22T03:57:14.325544+00:00')]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2025-08-21 21:57:14,327 - httpx - INFO - HTTP Request: POST http://testserver/prompt "HTTP/1.1 500 Internal Server Error"
+2025-08-21 21:57:14,328 - httpx - INFO - HTTP Request: GET http://testserver/similar?query=%3Cscript%3Emalicious%3C/script%3E&k=1 "HTTP/1.1 400 Bad Request"
+------------------------------ Captured log call -------------------------------
+INFO     use_cases.create_prompt:logging.py:50 Creating prompt
+ERROR    use_cases.create_prompt:logging.py:54 Repository save failed
+ERROR    root:main.py:112 Service error in create_prompt: Failed to save prompt: (sqlite3.OperationalError) attempt to write a readonly database
+[SQL: INSERT INTO promptmodel (id, prompt, response, created_at) VALUES (?, ?, ?, ?)]
+[parameters: ('463d1af3-3ef4-4ec7-8713-589fc02b2293', 'normal prompt', '[SimResponse-4745] Respuesta generada sobre: normal prompt', '2025-08-22T03:57:14.325544+00:00')]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+INFO     httpx:_client.py:1025 HTTP Request: POST http://testserver/prompt "HTTP/1.1 500 Internal Server Error"
+INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/similar?query=%3Cscript%3Emalicious%3C/script%3E&k=1 "HTTP/1.1 400 Bad Request"
+_____________________ test_create_prompt_validation_errors _____________________
+  + Exception Group Traceback (most recent call last):
+  |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/_utils.py", line 77, in collapse_excgroups
+  |     yield
+  |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/middleware/base.py", line 183, in __call__
+  |     async with anyio.create_task_group() as task_group:
+  |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/anyio/_backends/_asyncio.py", line 772, in __aexit__
+  |     raise BaseExceptionGroup(
+  | ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)
+  +-+---------------- 1 ----------------
+    | Traceback (most recent call last):
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/_pytest/runner.py", line 344, in from_call
+    |     result: TResult | None = func()
+    |                              ^^^^^^
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/_pytest/runner.py", line 246, in <lambda>
+    |     lambda: runtest_hook(item=item, **kwds), when=when, reraise=reraise
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/pluggy/_hooks.py", line 512, in __call__
+    |     return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/pluggy/_manager.py", line 120, in _hookexec
+    |     return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/pluggy/_callers.py", line 167, in _multicall
+    |     raise exception
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/pluggy/_callers.py", line 139, in _multicall
+    |     teardown.throw(exception)
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/_pytest/logging.py", line 850, in pytest_runtest_call
+    |     yield
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/pluggy/_callers.py", line 139, in _multicall
+    |     teardown.throw(exception)
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/_pytest/capture.py", line 900, in pytest_runtest_call
+    |     return (yield)
+    |             ^^^^^
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/pluggy/_callers.py", line 139, in _multicall
+    |     teardown.throw(exception)
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/_pytest/skipping.py", line 263, in pytest_runtest_call
+    |     return (yield)
+    |             ^^^^^
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/pluggy/_callers.py", line 121, in _multicall
+    |     res = hook_impl.function(*args)
+    |           ^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/_pytest/runner.py", line 178, in pytest_runtest_call
+    |     item.runtest()
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/_pytest/python.py", line 1671, in runtest
+    |     self.ihook.pytest_pyfunc_call(pyfuncitem=self)
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/pluggy/_hooks.py", line 512, in __call__
+    |     return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/pluggy/_manager.py", line 120, in _hookexec
+    |     return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/pluggy/_callers.py", line 167, in _multicall
+    |     raise exception
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/pluggy/_callers.py", line 121, in _multicall
+    |     res = hook_impl.function(*args)
+    |           ^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/_pytest/python.py", line 157, in pytest_pyfunc_call
+    |     result = testfunction(**testargs)
+    |              ^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/home/jazzzfm/Documents/JazzDataSolutions/SaptivaTekChallenge/tests/test_api.py", line 104, in test_create_prompt_validation_errors
+    |     response = client.post("/prompt", json={"prompt": prompt})
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/testclient.py", line 552, in post
+    |     return super().post(
+    |            ^^^^^^^^^^^^^
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/httpx/_client.py", line 1144, in post
+    |     return self.request(
+    |            ^^^^^^^^^^^^^
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/testclient.py", line 451, in request
+    |     return super().request(
+    |            ^^^^^^^^^^^^^^^^
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/httpx/_client.py", line 825, in request
+    |     return self.send(request, auth=auth, follow_redirects=follow_redirects)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/httpx/_client.py", line 914, in send
+    |     response = self._send_handling_auth(
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/httpx/_client.py", line 942, in _send_handling_auth
+    |     response = self._send_handling_redirects(
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/httpx/_client.py", line 979, in _send_handling_redirects
+    |     response = self._send_single_request(request)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/httpx/_client.py", line 1014, in _send_single_request
+    |     response = transport.handle_request(request)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/testclient.py", line 354, in handle_request
+    |     raise exc
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/testclient.py", line 351, in handle_request
+    |     portal.call(self.app, scope, receive, send)
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/anyio/from_thread.py", line 291, in call
+    |     return cast(T_Retval, self.start_task_soon(func, *args).result())
+    |                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/home/jazzzfm/.pyenv/versions/3.12.5/lib/python3.12/concurrent/futures/_base.py", line 456, in result
+    |     return self.__get_result()
+    |            ^^^^^^^^^^^^^^^^^^^
+    |   File "/home/jazzzfm/.pyenv/versions/3.12.5/lib/python3.12/concurrent/futures/_base.py", line 401, in __get_result
+    |     raise self._exception
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/anyio/from_thread.py", line 222, in _call_func
+    |     retval = await retval_or_awaitable
+    |              ^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/fastapi/applications.py", line 1054, in __call__
+    |     await super().__call__(scope, receive, send)
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/applications.py", line 113, in __call__
+    |     await self.middleware_stack(scope, receive, send)
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/middleware/errors.py", line 186, in __call__
+    |     raise exc
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    |     await self.app(scope, receive, _send)
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/middleware/base.py", line 182, in __call__
+    |     with recv_stream, send_stream, collapse_excgroups():
+    |   File "/home/jazzzfm/.pyenv/versions/3.12.5/lib/python3.12/contextlib.py", line 158, in __exit__
+    |     self.gen.throw(value)
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/_utils.py", line 83, in collapse_excgroups
+    |     raise exc
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/middleware/base.py", line 184, in __call__
+    |     response = await self.dispatch_func(request, call_next)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/home/jazzzfm/Documents/JazzDataSolutions/SaptivaTekChallenge/api/main.py", line 58, in rate_limit_middleware
+    |     response = await call_next(request)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/middleware/base.py", line 159, in call_next
+    |     raise app_exc
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/middleware/base.py", line 144, in coro
+    |     await self.app(scope, receive_or_disconnect, send_no_error)
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/middleware/trustedhost.py", line 51, in __call__
+    |     await self.app(scope, receive, send)
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/middleware/cors.py", line 85, in __call__
+    |     await self.app(scope, receive, send)
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    |     await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    |     raise exc
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    |     await app(scope, receive, sender)
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/routing.py", line 716, in __call__
+    |     await self.middleware_stack(scope, receive, send)
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/routing.py", line 736, in app
+    |     await route.handle(scope, receive, send)
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/routing.py", line 290, in handle
+    |     await self.app(scope, receive, send)
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/routing.py", line 78, in app
+    |     await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    |     raise exc
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    |     await app(scope, receive, sender)
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/routing.py", line 75, in app
+    |     response = await f(request)
+    |                ^^^^^^^^^^^^^^^^
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/fastapi/routing.py", line 292, in app
+    |     solved_result = await solve_dependencies(
+    |                     ^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/fastapi/dependencies/utils.py", line 666, in solve_dependencies
+    |     ) = await request_body_to_args(  # body_params checked above
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/fastapi/dependencies/utils.py", line 927, in request_body_to_args
+    |     v_, errors_ = _validate_value_with_model_field(
+    |                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/fastapi/dependencies/utils.py", line 706, in _validate_value_with_model_field
+    |     v_, errors_ = field.validate(value, values, loc=loc)
+    |                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/fastapi/_compat.py", line 130, in validate
+    |     self._type_adapter.validate_python(value, from_attributes=True),
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/pydantic/type_adapter.py", line 421, in validate_python
+    |     return self.validator.validate_python(
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/home/jazzzfm/Documents/JazzDataSolutions/SaptivaTekChallenge/api/main.py", line 82, in validate_prompt
+    |     return InputValidator.validate_prompt(v, settings.max_prompt_length)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/home/jazzzfm/Documents/JazzDataSolutions/SaptivaTekChallenge/core/security.py", line 57, in validate_prompt
+    |     raise ValidationError("Prompt is empty after sanitization")
+    | domain.exceptions.ValidationError: Prompt is empty after sanitization
+    +------------------------------------
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jazzzfm/Documents/JazzDataSolutions/SaptivaTekChallenge/tests/test_api.py", line 104, in test_create_prompt_validation_errors
+    response = client.post("/prompt", json={"prompt": prompt})
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/testclient.py", line 552, in post
+    return super().post(
+           ^^^^^^^^^^^^^
+  File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/httpx/_client.py", line 1144, in post
+    return self.request(
+           ^^^^^^^^^^^^^
+  File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/testclient.py", line 451, in request
+    return super().request(
+           ^^^^^^^^^^^^^^^^
+  File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/httpx/_client.py", line 825, in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/httpx/_client.py", line 914, in send
+    response = self._send_handling_auth(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/httpx/_client.py", line 942, in _send_handling_auth
+    response = self._send_handling_redirects(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/httpx/_client.py", line 979, in _send_handling_redirects
+    response = self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/httpx/_client.py", line 1014, in _send_single_request
+    response = transport.handle_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/testclient.py", line 354, in handle_request
+    raise exc
+  File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/testclient.py", line 351, in handle_request
+    portal.call(self.app, scope, receive, send)
+  File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/anyio/from_thread.py", line 291, in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jazzzfm/.pyenv/versions/3.12.5/lib/python3.12/concurrent/futures/_base.py", line 456, in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+  File "/home/jazzzfm/.pyenv/versions/3.12.5/lib/python3.12/concurrent/futures/_base.py", line 401, in __get_result
+    raise self._exception
+  File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/anyio/from_thread.py", line 222, in _call_func
+    retval = await retval_or_awaitable
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/fastapi/applications.py", line 1054, in __call__
+    await super().__call__(scope, receive, send)
+  File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/applications.py", line 113, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/middleware/errors.py", line 186, in __call__
+    raise exc
+  File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/middleware/base.py", line 182, in __call__
+    with recv_stream, send_stream, collapse_excgroups():
+  File "/home/jazzzfm/.pyenv/versions/3.12.5/lib/python3.12/contextlib.py", line 158, in __exit__
+    self.gen.throw(value)
+  File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/_utils.py", line 83, in collapse_excgroups
+    raise exc
+  File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/middleware/base.py", line 184, in __call__
+    response = await self.dispatch_func(request, call_next)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jazzzfm/Documents/JazzDataSolutions/SaptivaTekChallenge/api/main.py", line 58, in rate_limit_middleware
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/middleware/base.py", line 159, in call_next
+    raise app_exc
+  File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/middleware/base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/middleware/trustedhost.py", line 51, in __call__
+    await self.app(scope, receive, send)
+  File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/middleware/cors.py", line 85, in __call__
+    await self.app(scope, receive, send)
+  File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/routing.py", line 78, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/routing.py", line 75, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/fastapi/routing.py", line 292, in app
+    solved_result = await solve_dependencies(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/fastapi/dependencies/utils.py", line 666, in solve_dependencies
+    ) = await request_body_to_args(  # body_params checked above
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/fastapi/dependencies/utils.py", line 927, in request_body_to_args
+    v_, errors_ = _validate_value_with_model_field(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/fastapi/dependencies/utils.py", line 706, in _validate_value_with_model_field
+    v_, errors_ = field.validate(value, values, loc=loc)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/fastapi/_compat.py", line 130, in validate
+    self._type_adapter.validate_python(value, from_attributes=True),
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/pydantic/type_adapter.py", line 421, in validate_python
+    return self.validator.validate_python(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jazzzfm/Documents/JazzDataSolutions/SaptivaTekChallenge/api/main.py", line 82, in validate_prompt
+    return InputValidator.validate_prompt(v, settings.max_prompt_length)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jazzzfm/Documents/JazzDataSolutions/SaptivaTekChallenge/core/security.py", line 57, in validate_prompt
+    raise ValidationError("Prompt is empty after sanitization")
+domain.exceptions.ValidationError: Prompt is empty after sanitization
+
+During handling of the above exception, another exception occurred:
+tests/test_api.py:104: in test_create_prompt_validation_errors
+    response = client.post("/prompt", json={"prompt": prompt})
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/testclient.py:552: in post
+    return super().post(
+../../Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/httpx/_client.py:1144: in post
+    return self.request(
+../../Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/testclient.py:451: in request
+    return super().request(
+../../Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/httpx/_client.py:825: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/httpx/_client.py:914: in send
+    response = self._send_handling_auth(
+../../Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/httpx/_client.py:942: in _send_handling_auth
+    response = self._send_handling_redirects(
+../../Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/httpx/_client.py:979: in _send_handling_redirects
+    response = self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/httpx/_client.py:1014: in _send_single_request
+    response = transport.handle_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/testclient.py:354: in handle_request
+    raise exc
+../../Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/testclient.py:351: in handle_request
+    portal.call(self.app, scope, receive, send)
+../../Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/anyio/from_thread.py:291: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../../.pyenv/versions/3.12.5/lib/python3.12/concurrent/futures/_base.py:456: in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+../../../.pyenv/versions/3.12.5/lib/python3.12/concurrent/futures/_base.py:401: in __get_result
+    raise self._exception
+../../Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/anyio/from_thread.py:222: in _call_func
+    retval = await retval_or_awaitable
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+../../Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/fastapi/applications.py:1054: in __call__
+    await super().__call__(scope, receive, send)
+../../Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/applications.py:113: in __call__
+    await self.middleware_stack(scope, receive, send)
+../../Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/middleware/errors.py:186: in __call__
+    raise exc
+../../Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/middleware/errors.py:164: in __call__
+    await self.app(scope, receive, _send)
+../../Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/middleware/base.py:182: in __call__
+    with recv_stream, send_stream, collapse_excgroups():
+../../../.pyenv/versions/3.12.5/lib/python3.12/contextlib.py:158: in __exit__
+    self.gen.throw(value)
+../../Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/_utils.py:83: in collapse_excgroups
+    raise exc
+../../Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/middleware/base.py:184: in __call__
+    response = await self.dispatch_func(request, call_next)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+api/main.py:58: in rate_limit_middleware
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+../../Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/middleware/base.py:159: in call_next
+    raise app_exc
+../../Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/middleware/base.py:144: in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+../../Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/middleware/trustedhost.py:51: in __call__
+    await self.app(scope, receive, send)
+../../Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/middleware/cors.py:85: in __call__
+    await self.app(scope, receive, send)
+../../Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/middleware/exceptions.py:63: in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+../../Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/_exception_handler.py:53: in wrapped_app
+    raise exc
+../../Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/_exception_handler.py:42: in wrapped_app
+    await app(scope, receive, sender)
+../../Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/routing.py:716: in __call__
+    await self.middleware_stack(scope, receive, send)
+../../Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/routing.py:736: in app
+    await route.handle(scope, receive, send)
+../../Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/routing.py:290: in handle
+    await self.app(scope, receive, send)
+../../Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/routing.py:78: in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+../../Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/_exception_handler.py:53: in wrapped_app
+    raise exc
+../../Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/_exception_handler.py:42: in wrapped_app
+    await app(scope, receive, sender)
+../../Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/starlette/routing.py:75: in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+../../Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/fastapi/routing.py:292: in app
+    solved_result = await solve_dependencies(
+../../Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/fastapi/dependencies/utils.py:666: in solve_dependencies
+    ) = await request_body_to_args(  # body_params checked above
+../../Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/fastapi/dependencies/utils.py:927: in request_body_to_args
+    v_, errors_ = _validate_value_with_model_field(
+../../Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/fastapi/dependencies/utils.py:706: in _validate_value_with_model_field
+    v_, errors_ = field.validate(value, values, loc=loc)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/fastapi/_compat.py:130: in validate
+    self._type_adapter.validate_python(value, from_attributes=True),
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/pydantic/type_adapter.py:421: in validate_python
+    return self.validator.validate_python(
+api/main.py:82: in validate_prompt
+    return InputValidator.validate_prompt(v, settings.max_prompt_length)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+core/security.py:57: in validate_prompt
+    raise ValidationError("Prompt is empty after sanitization")
+E   domain.exceptions.ValidationError: Prompt is empty after sanitization
+----------------------------- Captured stdout call -----------------------------
+2025-08-21 21:57:14,348 - httpx - INFO - HTTP Request: POST http://testserver/prompt "HTTP/1.1 422 Unprocessable Entity"
+------------------------------ Captured log call -------------------------------
+INFO     httpx:_client.py:1025 HTTP Request: POST http://testserver/prompt "HTTP/1.1 422 Unprocessable Entity"
+__________________ test_create_prompt_with_dangerous_content ___________________
+tests/test_api.py:117: in test_create_prompt_with_dangerous_content
+    assert response.status_code == 400
+E   assert 500 == 400
+E    +  where 500 = <Response [500 Internal Server Error]>.status_code
+----------------------------- Captured stdout call -----------------------------
+2025-08-21 21:57:14,645 - use_cases.create_prompt - INFO - Creating prompt
+2025-08-21 21:57:14,646 - use_cases.create_prompt - ERROR - Repository save failed
+2025-08-21 21:57:14,646 - root - ERROR - Service error in create_prompt: Failed to save prompt: (sqlite3.OperationalError) attempt to write a readonly database
+[SQL: INSERT INTO promptmodel (id, prompt, response, created_at) VALUES (?, ?, ?, ?)]
+[parameters: ('b139a7d8-a166-4bc5-9ee0-0a8f824cae8c', 'SELECT * FROM users', '[SimResponse-9378] Respuesta generada sobre: select * from', '2025-08-22T03:57:14.645506+00:00')]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2025-08-21 21:57:14,647 - httpx - INFO - HTTP Request: POST http://testserver/prompt "HTTP/1.1 500 Internal Server Error"
+------------------------------ Captured log call -------------------------------
+INFO     use_cases.create_prompt:logging.py:50 Creating prompt
+ERROR    use_cases.create_prompt:logging.py:54 Repository save failed
+ERROR    root:main.py:112 Service error in create_prompt: Failed to save prompt: (sqlite3.OperationalError) attempt to write a readonly database
+[SQL: INSERT INTO promptmodel (id, prompt, response, created_at) VALUES (?, ?, ?, ?)]
+[parameters: ('b139a7d8-a166-4bc5-9ee0-0a8f824cae8c', 'SELECT * FROM users', '[SimResponse-9378] Respuesta generada sobre: select * from', '2025-08-22T03:57:14.645506+00:00')]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+INFO     httpx:_client.py:1025 HTTP Request: POST http://testserver/prompt "HTTP/1.1 500 Internal Server Error"
+______________________ test_integration_create_and_search ______________________
+tests/test_api.py:143: in test_integration_create_and_search
+    assert response.status_code == 200
+E   assert 500 == 200
+E    +  where 500 = <Response [500 Internal Server Error]>.status_code
+----------------------------- Captured stdout call -----------------------------
+2025-08-21 21:57:14,672 - use_cases.create_prompt - INFO - Creating prompt
+2025-08-21 21:57:14,673 - use_cases.create_prompt - ERROR - Repository save failed
+2025-08-21 21:57:14,674 - root - ERROR - Service error in create_prompt: Failed to save prompt: (sqlite3.OperationalError) attempt to write a readonly database
+[SQL: INSERT INTO promptmodel (id, prompt, response, created_at) VALUES (?, ?, ?, ?)]
+[parameters: ('d0580107-d64c-4fd7-b580-b0806c5a12ac', 'Python programming language', '[SimResponse-8980] Respuesta generada sobre: python programming language', '2025-08-22T03:57:14.673143+00:00')]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2025-08-21 21:57:14,674 - httpx - INFO - HTTP Request: POST http://testserver/prompt "HTTP/1.1 500 Internal Server Error"
+------------------------------ Captured log call -------------------------------
+INFO     use_cases.create_prompt:logging.py:50 Creating prompt
+ERROR    use_cases.create_prompt:logging.py:54 Repository save failed
+ERROR    root:main.py:112 Service error in create_prompt: Failed to save prompt: (sqlite3.OperationalError) attempt to write a readonly database
+[SQL: INSERT INTO promptmodel (id, prompt, response, created_at) VALUES (?, ?, ?, ?)]
+[parameters: ('d0580107-d64c-4fd7-b580-b0806c5a12ac', 'Python programming language', '[SimResponse-8980] Respuesta generada sobre: python programming language', '2025-08-22T03:57:14.673143+00:00')]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+INFO     httpx:_client.py:1025 HTTP Request: POST http://testserver/prompt "HTTP/1.1 500 Internal Server Error"
+__________________________ test_error_response_format __________________________
+tests/test_api.py:168: in test_error_response_format
+    assert response.status_code == 400
+E   assert 500 == 400
+E    +  where 500 = <Response [500 Internal Server Error]>.status_code
+----------------------------- Captured stdout call -----------------------------
+2025-08-21 21:57:14,683 - httpx - INFO - HTTP Request: POST http://testserver/prompt "HTTP/1.1 422 Unprocessable Entity"
+2025-08-21 21:57:14,684 - use_cases.create_prompt - INFO - Creating prompt
+2025-08-21 21:57:14,685 - use_cases.create_prompt - ERROR - Repository save failed
+2025-08-21 21:57:14,685 - root - ERROR - Service error in create_prompt: Failed to save prompt: (sqlite3.OperationalError) attempt to write a readonly database
+[SQL: INSERT INTO promptmodel (id, prompt, response, created_at) VALUES (?, ?, ?, ?)]
+[parameters: ('49a4d152-c08b-4290-8835-d2422c556f6b', 'SELECT * FROM users', '[SimResponse-9378] Respuesta generada sobre: select * from', '2025-08-22T03:57:14.684723+00:00')]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2025-08-21 21:57:14,686 - httpx - INFO - HTTP Request: POST http://testserver/prompt "HTTP/1.1 500 Internal Server Error"
+------------------------------ Captured log call -------------------------------
+INFO     httpx:_client.py:1025 HTTP Request: POST http://testserver/prompt "HTTP/1.1 422 Unprocessable Entity"
+INFO     use_cases.create_prompt:logging.py:50 Creating prompt
+ERROR    use_cases.create_prompt:logging.py:54 Repository save failed
+ERROR    root:main.py:112 Service error in create_prompt: Failed to save prompt: (sqlite3.OperationalError) attempt to write a readonly database
+[SQL: INSERT INTO promptmodel (id, prompt, response, created_at) VALUES (?, ?, ?, ?)]
+[parameters: ('49a4d152-c08b-4290-8835-d2422c556f6b', 'SELECT * FROM users', '[SimResponse-9378] Respuesta generada sobre: select * from', '2025-08-22T03:57:14.684723+00:00')]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+INFO     httpx:_client.py:1025 HTTP Request: POST http://testserver/prompt "HTTP/1.1 500 Internal Server Error"
+___________________________ test_concurrent_requests ___________________________
+tests/test_api.py:214: in test_concurrent_requests
+    assert all(status == 200 for status in results)
+E   assert False
+E    +  where False = all(<generator object test_concurrent_requests.<locals>.<genexpr> at 0x74a43ffb2a80>)
+----------------------------- Captured stdout call -----------------------------
+2025-08-21 21:57:14,703 - use_cases.create_prompt - INFO - Creating prompt
+2025-08-21 21:57:14,705 - use_cases.create_prompt - INFO - Creating prompt
+2025-08-21 21:57:14,705 - use_cases.create_prompt - INFO - Creating prompt
+2025-08-21 21:57:14,706 - use_cases.create_prompt - INFO - Creating prompt
+2025-08-21 21:57:14,707 - use_cases.create_prompt - ERROR - Repository save failed
+2025-08-21 21:57:14,707 - use_cases.create_prompt - ERROR - Repository save failed
+2025-08-21 21:57:14,707 - use_cases.create_prompt - INFO - Creating prompt
+2025-08-21 21:57:14,708 - use_cases.create_prompt - ERROR - Repository save failed
+2025-08-21 21:57:14,708 - use_cases.create_prompt - ERROR - Repository save failed
+2025-08-21 21:57:14,708 - root - ERROR - Service error in create_prompt: Failed to save prompt: (sqlite3.OperationalError) attempt to write a readonly database
+[SQL: INSERT INTO promptmodel (id, prompt, response, created_at) VALUES (?, ?, ?, ?)]
+[parameters: ('83a82001-882f-4f35-837b-da8ee17c1bd5', 'concurrent test 1755835034.698283', '[SimResponse-5185] Respuesta generada sobre: concurrent test 1755835034.698283', '2025-08-22T03:57:14.704239+00:00')]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2025-08-21 21:57:14,709 - root - ERROR - Service error in create_prompt: Failed to save prompt: (sqlite3.OperationalError) no such table: promptmodel
+[SQL: INSERT INTO promptmodel (id, prompt, response, created_at) VALUES (?, ?, ?, ?)]
+[parameters: ('044aff0a-3a28-4038-9031-d35c24507438', 'concurrent test 1755835034.6978152', '[SimResponse-6314] Respuesta generada sobre: concurrent test 1755835034.6978152', '2025-08-22T03:57:14.706122+00:00')]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2025-08-21 21:57:14,709 - use_cases.create_prompt - ERROR - Repository save failed
+2025-08-21 21:57:14,709 - root - ERROR - Service error in create_prompt: Failed to save prompt: (sqlite3.OperationalError) no such table: promptmodel
+[SQL: INSERT INTO promptmodel (id, prompt, response, created_at) VALUES (?, ?, ?, ?)]
+[parameters: ('c21058c6-ca15-48e5-9e9a-6817beae3df4', 'concurrent test 1755835034.699344', '[SimResponse-925] Respuesta generada sobre: concurrent test 1755835034.699344', '2025-08-22T03:57:14.708061+00:00')]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2025-08-21 21:57:14,709 - root - ERROR - Service error in create_prompt: Failed to save prompt: (sqlite3.OperationalError) attempt to write a readonly database
+[SQL: INSERT INTO promptmodel (id, prompt, response, created_at) VALUES (?, ?, ?, ?)]
+[parameters: ('997dbbfc-3ede-4337-9106-865a1cd22eeb', 'concurrent test 1755835034.6974938', '[SimResponse-6282] Respuesta generada sobre: concurrent test 1755835034.6974938', '2025-08-22T03:57:14.707289+00:00')]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2025-08-21 21:57:14,710 - httpx - INFO - HTTP Request: POST http://testserver/prompt "HTTP/1.1 500 Internal Server Error"
+2025-08-21 21:57:14,710 - root - ERROR - Service error in create_prompt: Failed to save prompt: (sqlite3.OperationalError) no such table: promptmodel
+[SQL: INSERT INTO promptmodel (id, prompt, response, created_at) VALUES (?, ?, ?, ?)]
+[parameters: ('8e7a79e4-f9c0-4c62-ac2d-7a2ebe3a115f', 'concurrent test 1755835034.6988618', '[SimResponse-2391] Respuesta generada sobre: concurrent test 1755835034.6988618', '2025-08-22T03:57:14.709112+00:00')]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2025-08-21 21:57:14,711 - httpx - INFO - HTTP Request: POST http://testserver/prompt "HTTP/1.1 500 Internal Server Error"
+2025-08-21 21:57:14,711 - httpx - INFO - HTTP Request: POST http://testserver/prompt "HTTP/1.1 500 Internal Server Error"
+2025-08-21 21:57:14,711 - httpx - INFO - HTTP Request: POST http://testserver/prompt "HTTP/1.1 500 Internal Server Error"
+2025-08-21 21:57:14,712 - httpx - INFO - HTTP Request: POST http://testserver/prompt "HTTP/1.1 500 Internal Server Error"
+------------------------------ Captured log call -------------------------------
+INFO     use_cases.create_prompt:logging.py:50 Creating prompt
+INFO     use_cases.create_prompt:logging.py:50 Creating prompt
+INFO     use_cases.create_prompt:logging.py:50 Creating prompt
+INFO     use_cases.create_prompt:logging.py:50 Creating prompt
+ERROR    use_cases.create_prompt:logging.py:54 Repository save failed
+ERROR    use_cases.create_prompt:logging.py:54 Repository save failed
+INFO     use_cases.create_prompt:logging.py:50 Creating prompt
+ERROR    use_cases.create_prompt:logging.py:54 Repository save failed
+ERROR    use_cases.create_prompt:logging.py:54 Repository save failed
+ERROR    root:main.py:112 Service error in create_prompt: Failed to save prompt: (sqlite3.OperationalError) attempt to write a readonly database
+[SQL: INSERT INTO promptmodel (id, prompt, response, created_at) VALUES (?, ?, ?, ?)]
+[parameters: ('83a82001-882f-4f35-837b-da8ee17c1bd5', 'concurrent test 1755835034.698283', '[SimResponse-5185] Respuesta generada sobre: concurrent test 1755835034.698283', '2025-08-22T03:57:14.704239+00:00')]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+ERROR    root:main.py:112 Service error in create_prompt: Failed to save prompt: (sqlite3.OperationalError) no such table: promptmodel
+[SQL: INSERT INTO promptmodel (id, prompt, response, created_at) VALUES (?, ?, ?, ?)]
+[parameters: ('044aff0a-3a28-4038-9031-d35c24507438', 'concurrent test 1755835034.6978152', '[SimResponse-6314] Respuesta generada sobre: concurrent test 1755835034.6978152', '2025-08-22T03:57:14.706122+00:00')]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+ERROR    use_cases.create_prompt:logging.py:54 Repository save failed
+ERROR    root:main.py:112 Service error in create_prompt: Failed to save prompt: (sqlite3.OperationalError) no such table: promptmodel
+[SQL: INSERT INTO promptmodel (id, prompt, response, created_at) VALUES (?, ?, ?, ?)]
+[parameters: ('c21058c6-ca15-48e5-9e9a-6817beae3df4', 'concurrent test 1755835034.699344', '[SimResponse-925] Respuesta generada sobre: concurrent test 1755835034.699344', '2025-08-22T03:57:14.708061+00:00')]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+ERROR    root:main.py:112 Service error in create_prompt: Failed to save prompt: (sqlite3.OperationalError) attempt to write a readonly database
+[SQL: INSERT INTO promptmodel (id, prompt, response, created_at) VALUES (?, ?, ?, ?)]
+[parameters: ('997dbbfc-3ede-4337-9106-865a1cd22eeb', 'concurrent test 1755835034.6974938', '[SimResponse-6282] Respuesta generada sobre: concurrent test 1755835034.6974938', '2025-08-22T03:57:14.707289+00:00')]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+INFO     httpx:_client.py:1025 HTTP Request: POST http://testserver/prompt "HTTP/1.1 500 Internal Server Error"
+ERROR    root:main.py:112 Service error in create_prompt: Failed to save prompt: (sqlite3.OperationalError) no such table: promptmodel
+[SQL: INSERT INTO promptmodel (id, prompt, response, created_at) VALUES (?, ?, ?, ?)]
+[parameters: ('8e7a79e4-f9c0-4c62-ac2d-7a2ebe3a115f', 'concurrent test 1755835034.6988618', '[SimResponse-2391] Respuesta generada sobre: concurrent test 1755835034.6988618', '2025-08-22T03:57:14.709112+00:00')]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+INFO     httpx:_client.py:1025 HTTP Request: POST http://testserver/prompt "HTTP/1.1 500 Internal Server Error"
+INFO     httpx:_client.py:1025 HTTP Request: POST http://testserver/prompt "HTTP/1.1 500 Internal Server Error"
+INFO     httpx:_client.py:1025 HTTP Request: POST http://testserver/prompt "HTTP/1.1 500 Internal Server Error"
+INFO     httpx:_client.py:1025 HTTP Request: POST http://testserver/prompt "HTTP/1.1 500 Internal Server Error"
+_______________ TestChromaIntegration.test_chroma_error_handling _______________
+tests/test_chroma_integration.py:250: in test_chroma_error_handling
+    with pytest.raises(Exception):
+E   Failed: DID NOT RAISE <class 'Exception'>
+____________ TestInputValidator.test_validate_prompt_sql_injection _____________
+tests/test_security.py:36: in test_validate_prompt_sql_injection
+    with pytest.raises(ValidationError, match="dangerous content"):
+E   Failed: DID NOT RAISE <class 'domain.exceptions.ValidationError'>
+_________________ TestInputValidator.test_sanitize_for_logging _________________
+tests/test_security.py:63: in test_sanitize_for_logging
+    assert "&lt;" in result
+E   AssertionError: assert '&lt;' in 'Some text with &l...'
+_____________ TestCreatePrompt.test_create_prompt_empty_embedding ______________
+use_cases/create_prompt.py:65: in execute
+    raise EmbeddingError("Empty embedding generated")
+E   domain.exceptions.EmbeddingError: Empty embedding generated
+
+The above exception was the direct cause of the following exception:
+tests/test_use_cases.py:74: in test_create_prompt_empty_embedding
+    self.use_case.execute("test prompt")
+use_cases/create_prompt.py:77: in execute
+    raise VectorIndexError(f"Failed to index prompt: {str(e)}") from e
+E   domain.exceptions.VectorIndexError: Failed to index prompt: Empty embedding generated
+----------------------------- Captured stdout call -----------------------------
+2025-08-21 21:57:33,574 - use_cases.create_prompt - INFO - Creating prompt
+2025-08-21 21:57:33,575 - use_cases.create_prompt - INFO - Saved prompt record
+2025-08-21 21:57:33,575 - use_cases.create_prompt - ERROR - Vector indexing failed
+------------------------------ Captured log call -------------------------------
+INFO     use_cases.create_prompt:logging.py:50 Creating prompt
+INFO     use_cases.create_prompt:logging.py:50 Saved prompt record
+ERROR    use_cases.create_prompt:logging.py:54 Vector indexing failed
+=============================== warnings summary ===============================
+<frozen importlib._bootstrap>:488
+  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type SwigPyPacked has no __module__ attribute
+
+<frozen importlib._bootstrap>:488
+  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type SwigPyObject has no __module__ attribute
+
+<frozen importlib._bootstrap>:488
+  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type swigvarlink has no __module__ attribute
+
+tests/test_api.py::test_stats_endpoint
+  /home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/torch/cuda/__init__.py:182: UserWarning: CUDA initialization: The NVIDIA driver on your system is too old (found version 11040). Please update your GPU driver by downloading and installing a new version from the URL: http://www.nvidia.com/Download/index.aspx Alternatively, go to: https://pytorch.org to install a PyTorch version that has been compiled with your version of the CUDA driver. (Triggered internally at /pytorch/c10/cuda/CUDAFunctions.cpp:109.)
+    return torch._C._cuda_getDeviceCount() > 0
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+============================= slowest 10 durations =============================
+4.21s call     tests/test_chroma_integration.py::TestChromaIntegration::test_chroma_large_dataset
+2.07s call     tests/test_chroma_integration.py::TestChromaIntegration::test_chroma_performance_characteristics
+1.52s call     tests/test_api.py::test_stats_endpoint
+1.23s call     tests/test_chroma_integration.py::TestChromaIntegration::test_chroma_concurrent_access
+1.10s call     tests/test_security.py::TestRateLimiter::test_rate_limiter_window_reset
+0.92s call     tests/test_seed_integration.py::TestSeedIntegration::test_seed_data_with_chroma_backend
+0.65s call     tests/test_seed_integration.py::TestSeedIntegration::test_seed_concurrent_safety
+0.65s call     tests/test_seed_integration.py::TestSeedIntegration::test_seed_data_reproducible
+0.62s call     tests/test_seed_integration.py::TestSeedIntegration::test_seed_data_idempotent
+0.42s call     tests/test_seed_integration.py::TestSeedIntegration::test_seed_vector_embeddings_quality
+=========================== short test summary info ============================
+FAILED tests/test_api.py::test_stats_endpoint - assert 500 == 200
+FAILED tests/test_api.py::test_create_prompt_success - assert 500 == 200
+FAILED tests/test_api.py::test_create_prompt_with_sanitization - domain.excep...
+FAILED tests/test_api.py::test_create_prompt_deterministic_response - assert ...
+FAILED tests/test_api.py::test_search_similar_with_sanitization - assert 400 ...
+FAILED tests/test_api.py::test_create_prompt_validation_errors - domain.excep...
+FAILED tests/test_api.py::test_create_prompt_with_dangerous_content - assert ...
+FAILED tests/test_api.py::test_integration_create_and_search - assert 500 == 200
+FAILED tests/test_api.py::test_error_response_format - assert 500 == 400
+FAILED tests/test_api.py::test_concurrent_requests - assert False
+FAILED tests/test_chroma_integration.py::TestChromaIntegration::test_chroma_error_handling
+FAILED tests/test_security.py::TestInputValidator::test_validate_prompt_sql_injection
+FAILED tests/test_security.py::TestInputValidator::test_sanitize_for_logging
+FAILED tests/test_use_cases.py::TestCreatePrompt::test_create_prompt_empty_embedding
+================== 14 failed, 76 passed, 4 warnings in 22.36s ==================
+--- Logging error ---
+Traceback (most recent call last):
+  File "/home/jazzzfm/Documents/JazzDataSolutions/SaptivaTekChallenge/infra/faiss_index.py", line 89, in _save_index
+    faiss.write_index(self.index, self.index_path)
+  File "/home/jazzzfm/Documents/Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/faiss/swigfaiss_avx512.py", line 11769, in write_index
+    return _swigfaiss_avx512.write_index(*args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: Error in faiss::FileIOWriter::FileIOWriter(const char*) at /project/third-party/faiss/faiss/impl/io.cpp:103: Error: 'f' failed: could not open ./test_data/faiss.index for writing: No such file or directory
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jazzzfm/.pyenv/versions/3.12.5/lib/python3.12/logging/__init__.py", line 1163, in emit
+    stream.write(msg + self.terminator)
+ValueError: I/O operation on closed file.
+Call stack:
+  File "/home/jazzzfm/Documents/JazzDataSolutions/SaptivaTekChallenge/core/container.py", line 174, in cleanup_container
+    _container.cleanup()
+  File "/home/jazzzfm/Documents/JazzDataSolutions/SaptivaTekChallenge/core/container.py", line 113, in cleanup
+    vector_index.save()
+  File "/home/jazzzfm/Documents/JazzDataSolutions/SaptivaTekChallenge/infra/faiss_index.py", line 101, in save
+    self._save_index()
+  File "/home/jazzzfm/Documents/JazzDataSolutions/SaptivaTekChallenge/infra/faiss_index.py", line 95, in _save_index
+    logger.error(f"Failed to save FAISS index: {e}")
+  File "/home/jazzzfm/Documents/JazzDataSolutions/SaptivaTekChallenge/core/logging.py", line 54, in error
+    self.logger.error(sanitized, extra={'extra_fields': kwargs} if kwargs else None)
+Message: 'Failed to save FAISS index: Error in faiss::FileIOWriter::FileIOWriter(const char*) at /project/t...'
+Arguments: ()

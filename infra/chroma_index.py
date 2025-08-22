@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Sequence, Optional, Any, cast
+from typing import Sequence, Optional, cast
 
 import chromadb
 
@@ -25,7 +25,7 @@ class ChromaVectorIndex(VectorIndex):
 
     def search(self, vector: Sequence[float], k: int) -> list[tuple[str, float]]:
         query_embeddings: list[Sequence[float]] = [vector]
-        res: dict[str, Any] = self.collection.query(
+        res = self.collection.query(
             query_embeddings=query_embeddings,
             n_results=k,
         )
