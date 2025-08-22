@@ -103,8 +103,8 @@ class PromptRecord:
 **Requisitos**: Python 3.9+, FAISS 1.7+, Torch 2.0+, pip 24+
 
 ```bash
-git clone https://github.com/<user>/prompt-service.git
-cd prompt-service
+git clone https://github.com/JazzzFM/SaptivaTekChallenge.git
+cd SaptivaTekChallenge
 
 python -m venv venv
 source venv/bin/activate
