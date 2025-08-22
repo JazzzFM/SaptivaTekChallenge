@@ -1,11 +1,17 @@
 # Reto Técnico – Microservicio de Prompts con FastAPI + FAISS (Core) + Chroma (Opcional)
 
 [![CI](https://github.com/JazzzFM/SaptivaTekChallenge/actions/workflows/ci.yml/badge.svg)](https://github.com/JazzzFM/SaptivaTekChallenge/actions/workflows/ci.yml)
+[![Python 3.11](https://img.shields.io/badge/python-3.11-blue.svg)](https://www.python.org/downloads/release/python-311/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.116.1-green.svg)](https://fastapi.tiangolo.com/)
+[![Docker](https://img.shields.io/badge/docker-ready-blue.svg)](https://www.docker.com/)
 
-Este proyecto responde a un **reto técnico** transformado en un **microservicio production-ready** con arquitectura hexagonal, seguridad y observabilidad completa.
-## 🎯 Objetivos Cumplidos
 
-1. **API REST robusta** con endpoints principales y auxiliares:
+Este proyecto responde a un reto técnico transformado en un microservicio production-ready con arquitectura hexagonal, seguridad y observabilidad completa.
+
+
+## Objetivos 
+
+1. **API REST** con endpoints principales y auxiliares:
    - `POST /prompt`: Procesa prompts con LLM simulado determinista
    - `GET /similar`: Búsqueda vectorial con FAISS/ChromaDB
    - `GET /health`: Health checks para load balancers
@@ -222,60 +228,136 @@ ENABLE_METRICS=true
 
 ### Instalación y Ejecución
 
-**Opción 1: Local Development**
+**Opción 1: Local Development (Verificado)**
 ```bash
 git clone https://github.com/JazzzFM/SaptivaTekChallenge.git
 cd SaptivaTekChallenge
 
+# Crear entorno virtual
 python -m venv venv
-source venv/bin/activate
+source venv/bin/activate  # Linux/Mac
+# venv\Scripts\activate  # Windows
+
+# Instalar dependencias actualizadas
 pip install -r requirements.txt
 
-# Poblar base de datos con datos reproducibles
+# Crear directorio de datos y configuración
+mkdir -p data
+cp .env.example .env
+
+# Poblar base de datos con datos reproducibles (10 registros)
 python scripts/seed_data.py
 
-# Ejecutar servicio
-uvicorn api.main:app --reload
+# Ejecutar servicio en desarrollo
+export ENVIRONMENT=development
+uvicorn api.main:app --host 127.0.0.1 --port 8001 --reload
+
+# Servicio disponible en: http://127.0.0.1:8001
 ```
 
-**Opción 2: Docker**
+**Opción 2: Docker (Probado y Casi Funcional)**
 ```bash
+# Construir imagen
 docker build -t prompt-service .
-docker run -p 8000:8000 \
+
+# Ejecutar contenedor
+docker run -p 8080:8080 \
+  -e PORT=8080 \
+  -e ENVIRONMENT=production \
+  -e DATABASE_URL=sqlite:///./data/prompts.db \
   -e VECTOR_BACKEND=faiss \
   -e ENABLE_RATE_LIMITING=true \
+  -e RATE_LIMIT_PER_MINUTE=60 \
   prompt-service
+
+# Servicio disponible en: http://localhost:8080
+```
+
+**Opción 3: Cloud Run (Production Ready)**
+```bash
+# Ver guía completa en hardening.txt
+export PROJECT_ID="tu-project-id"
+export SERVICE_NAME="prompt-service"
+export REGION="us-central1"
+
+# Construir y subir imagen
+docker buildx build --platform linux/amd64 -t gcr.io/$PROJECT_ID/$SERVICE_NAME .
+docker push gcr.io/$PROJECT_ID/$SERVICE_NAME
+
+# Deploy a Cloud Run
+gcloud run deploy $SERVICE_NAME \
+  --image gcr.io/$PROJECT_ID/$SERVICE_NAME \
+  --platform managed \
+  --region $REGION \
+  --allow-unauthenticated \
+  --port 8080 \
+  --memory 2Gi \
+  --set-env-vars="DATABASE_URL=sqlite:///./data/prompts.db,VECTOR_BACKEND=faiss"
 ```
 
 ---
 
 ## Endpoints y Ejemplos
 
-### API Principa
+### API Principal
+
+** Endpoints Verificados y Funcionales:**
 
 ```bash
-# Crear prompt
-curl -X POST http://localhost:8000/prompt \
+# Crear prompt (Respuesta inmediata con LLM simulado)
+curl -X POST http://localhost:8080/prompt \
   -H "Content-Type: application/json" \
   -d '{"prompt":"¿Cómo optimizo un pipeline de ML con PyTorch?"}'
+# Respuesta: {"id":"bf01d6b9-...","prompt":"...","response":"[SimResponse-9759]..."}
 
-# Buscar similares con paginación
-curl "http://localhost:8000/similar?query=machine learning optimization&k=5&page=1"
+# Búsqueda vectorial FAISS (Funcional con 11+ registros)
+curl "http://localhost:8080/similar?query=machine%20learning&k=3"
+# Respuesta: Array de prompts similares ordenados por relevancia
 
 # Listar prompts con paginación
-curl "http://localhost:8000/prompts?page=1&page_size=10"
+curl "http://localhost:8080/prompts?page=1&page_size=10"
+
+# Cambiar backend a ChromaDB
+curl "http://localhost:8080/similar?query=deep%20learning&k=5" \
+  -H "X-Vector-Backend: chroma"
 ```
 
 ### Monitoreo y Health Checks
+
 ```bash
-# Health check básico
-curl http://localhost:8000/health
+# Health check básico (Load Balancer Ready)
+curl http://localhost:8080/health
+# Respuesta: {"status":"healthy","service":"prompt-service","timestamp":1755894068.09}
 
-# Health check detallado
-curl http://localhost:8000/health/detailed
+# Health check detallado (Verificación completa de componentes)
+curl http://localhost:8080/health/detailed
+# Respuesta: Status de DB, Vector Index, Embedder, LLM
 
-# Estadísticas del servicio
-curl http://localhost:8000/stats
+# Readiness probe (Kubernetes Ready)
+curl http://localhost:8080/health/ready
+
+# Estadísticas completas del servicio
+curl http://localhost:8080/stats
+# Respuesta: Métricas de performance, salud de componentes, configuración
+```
+
+** Ejemplo de respuesta de /stats:**
+
+```json
+{
+  "service": "prompt-service",
+  "status": "active",
+  "health": {
+    "vector_index": {"status": "healthy", "backend": "faiss", "total_vectors": 13},
+    "embedder": {"model_name": "all-MiniLM-L6-v2", "dimension": 384},
+    "database": {"status": "healthy", "type": "sqlite"}
+  },
+  "performance": {
+    "create_prompt_total": {"avg_duration": 0.045, "count": 1},
+    "counters": {"prompts_created_success": 1}
+  },
+  "data": {"total_prompts": 11}
+}
 ```
 
 ---
@@ -428,4 +510,10 @@ MIT. Proyecto desarrollado como respuesta a un reto técnico, transformado en mi
 
 ---
 
-**🎯 Este proyecto demuestra la implementación completa de un microservicio enterprise con arquitectura hexagonal, seguridad robusta, observabilidad completa y calidad production-ready.**
+
+### 🌐 URLs y Puertos Verificados
+- **Desarrollo Local**: http://127.0.0.1:8001 (puerto 8001 para evitar conflictos)
+- **Docker Local**: http://localhost:8080
+- **Cloud Run**: https://[SERVICE_NAME]-[HASH]-[REGION].a.run.app
+- **Health Check**: Disponible en `/health`, `/health/detailed`, `/health/ready`
+- **API Docs**: `/docs` (Swagger UI automático)

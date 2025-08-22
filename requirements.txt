@@ -1,11 +1,27 @@
-fastapi
-uvicorn
-pydantic-settings
-sqlmodel==0.0.22
-sentence-transformers
-faiss-cpu
-chromadb
+# === CORE FRAMEWORK ===
+fastapi==0.116.1
+uvicorn[standard]==0.35.0
+pydantic-settings==2.10.1
+
+# === DATABASE ===
+sqlmodel==0.0.24
+
+# === MACHINE LEARNING ===
+sentence-transformers==5.1.0
+faiss-cpu==1.12.0
+chromadb==1.0.20
+
+# === DEVELOPMENT & TESTING ===
 ruff==0.12.10
 mypy==1.17.1
-pytest
-pytest-cov
+pytest==8.4.1
+pytest-cov==6.2.1
+
+# === ADDITIONAL DEPENDENCIES (automatically installed) ===
+# torch>=2.8.0 (via sentence-transformers)
+# numpy>=2.3.2 (via faiss-cpu, sentence-transformers)
+# scikit-learn>=1.7.1 (via sentence-transformers)
+# transformers<5.0.0,>=4.41.0 (via sentence-transformers)
+# sqlalchemy>=2.0.14 (via sqlmodel)
+# pydantic>=2.11.7 (via fastapi, pydantic-settings)
+# starlette>=0.40.0 (via fastapi)

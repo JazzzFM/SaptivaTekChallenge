@@ -31,7 +31,7 @@ class SeedDataManager:
     
     def __init__(self, settings=None):
         self.settings = settings or get_settings()
-        self.repo = SQLitePromptRepository(self.settings.db_url)
+        self.repo = SQLitePromptRepository(self.settings.database_url)
         self.embedder = SentenceTransformerEmbedder()
         self.llm = LLMSimulator()
         
@@ -107,17 +107,17 @@ class SeedDataManager:
         # Note: SQLitePromptRepository doesn't have a clear method, so we recreate the engine
         try:
             import os
-            db_path = self.settings.db_url.replace("sqlite:///", "")
+            db_path = self.settings.database_url.replace("sqlite:///", "")
             if os.path.exists(db_path):
                 os.remove(db_path)
                 logger.info(f"Removed existing database: {db_path}")
             
             # Also remove from the set of created dbs
-            if self.settings.db_url in SQLitePromptRepository._created_dbs:
-                SQLitePromptRepository._created_dbs.remove(self.settings.db_url)
+            if self.settings.database_url in SQLitePromptRepository._created_dbs:
+                SQLitePromptRepository._created_dbs.remove(self.settings.database_url)
 
             # Recreate repository
-            self.repo = SQLitePromptRepository(self.settings.db_url)
+            self.repo = SQLitePromptRepository(self.settings.database_url)
         except Exception as e:
             logger.warning(f"Could not clear database: {e}")
         
@@ -228,7 +228,7 @@ class SeedDataManager:
         """Get information about the current migration state."""
         vector_path = self.settings.chroma_path if self.settings.vector_backend == "chroma" else self.settings.faiss_index_path
         return {
-            "database_url": self.settings.db_url,
+            "database_url": self.settings.database_url,
             "vector_backend": self.settings.vector_backend,
             "vector_index_path": vector_path,
             "total_records": self.repo.count(),
