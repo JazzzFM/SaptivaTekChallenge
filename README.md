@@ -2,8 +2,6 @@
 
 [![CI](https://github.com/JazzzFM/SaptivaTekChallenge/actions/workflows/ci.yml/badge.svg)](https://github.com/JazzzFM/SaptivaTekChallenge/actions/workflows/ci.yml)
 
-> **Enfoque de ingeniería**: Programación Orientada a Objetos (POO), principios **SOLID**, tipado estático y **`@dataclass`** para entidades de dominio. Arquitectura hexagonal con puertos y adaptadores.
-
 Este proyecto responde a un **reto técnico** con objetivo explícito:
 
 1. Exponer una **API REST** con dos endpoints:
@@ -193,14 +191,7 @@ docker build -t prompt-service .
 docker run -p 8000:8000 -e VECTOR_BACKEND=faiss prompt-service
 ```
 
----
 
-## 📌 Roadmap
-
-- [x] API key simple (rate limit + CORS).
-- [x] Exportar embeddings a Parquet.
-- [x] Backend alternativo **Chroma** (activable por env) con filtros de metadata.
-- [x] Stubs de `SaptivaLLMAdapter` y `SaptivaRAGAdapter` + docs.
 
 ---
 
