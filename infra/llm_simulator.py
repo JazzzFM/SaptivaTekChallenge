@@ -1,5 +1,7 @@
 from hashlib import sha256
+
 from domain.ports import LLMProvider
+
 
 class LLMSimulator(LLMProvider):
     def generate(self, prompt: str) -> str:

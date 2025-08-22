@@ -1,6 +1,8 @@
 from abc import ABC, abstractmethod
 from typing import List
+
 from domain.entities import PromptRecord
+
 
 class LLMProvider(ABC):
     @abstractmethod

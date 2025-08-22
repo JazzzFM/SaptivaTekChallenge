@@ -1,11 +1,13 @@
 """Tests for vector similarity validation and correctness."""
 
-import numpy as np
-import tempfile
 import os
-from infra.faiss_index import FaissVectorIndex
+import tempfile
+
+import numpy as np
+
 from infra.chroma_index import ChromaVectorIndex
 from infra.embedder import SentenceTransformerEmbedder
+from infra.faiss_index import FaissVectorIndex
 from infra.llm_simulator import LLMSimulator
 
 

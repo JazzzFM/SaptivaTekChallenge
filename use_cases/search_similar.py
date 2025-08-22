@@ -1,7 +1,12 @@
-from domain.ports import VectorIndex, Embedder, PromptRepository
-from domain.entities import PromptRecord
-from domain.exceptions import ValidationError, EmbeddingError, VectorIndexError, RepositoryError
 from core.logging import get_logger
+from domain.entities import PromptRecord
+from domain.exceptions import (
+    EmbeddingError,
+    RepositoryError,
+    ValidationError,
+    VectorIndexError,
+)
+from domain.ports import Embedder, PromptRepository, VectorIndex
 
 logger = get_logger(__name__)
 
@@ -50,9 +55,9 @@ class SearchSimilar:
             results = []
             failed_lookups = 0
             
-            for id, score in similar_ids:
+            for _id, _score in similar_ids:
                 try:
-                    record = self.prompt_repo.find_by_id(id)
+                    record = self.prompt_repo.find_by_id(_id)
                     if record:
                         results.append(record)
                     else:

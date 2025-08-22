@@ -4,24 +4,24 @@ Script de migración y seed reproducible con timestamps ISO8601.
 Criterio de aceptación: Seeds reproducibles y verificados en tests de integración.
 """
 
+import logging
 import os
 import sys
-import logging
-from datetime import datetime, timezone
-from typing import List, Dict, Any
 import uuid
+from datetime import datetime, timezone
+from typing import Any, Dict, List
 
 # Add the parent directory to the Python path
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from infra.sqlite_repo import SQLitePromptRepository
-from infra.faiss_index import FaissVectorIndex
+from core.logging import get_logger
+from core.settings import get_settings
+from domain.entities import PromptRecord
 from infra.chroma_index import ChromaVectorIndex
 from infra.embedder import SentenceTransformerEmbedder
+from infra.faiss_index import FaissVectorIndex
 from infra.llm_simulator import LLMSimulator
-from domain.entities import PromptRecord
-from core.config import Settings
-from core.logging import get_logger
+from infra.sqlite_repo import SQLitePromptRepository
 
 logger = get_logger(__name__)
 
@@ -29,17 +29,17 @@ logger = get_logger(__name__)
 class SeedDataManager:
     """Manages database seeding with reproducible data."""
     
-    def __init__(self, settings: Settings):
-        self.settings = settings
-        self.repo = SQLitePromptRepository(settings.db_url)
+    def __init__(self, settings=None):
+        self.settings = settings or get_settings()
+        self.repo = SQLitePromptRepository(self.settings.db_url)
         self.embedder = SentenceTransformerEmbedder()
         self.llm = LLMSimulator()
         
         # Initialize vector index based on backend
-        if settings.vector_backend == "chroma":
-            self.vector_index = ChromaVectorIndex(settings.chroma_path)
+        if self.settings.vector_backend == "chroma":
+            self.vector_index = ChromaVectorIndex(self.settings.chroma_path)
         else:
-            self.vector_index = FaissVectorIndex(settings.faiss_index_path, dim=384)  # type: ignore
+            self.vector_index = FaissVectorIndex(self.settings.faiss_index_path, dim=384)
     
     def get_seed_data(self) -> List[Dict[str, Any]]:
         """Get reproducible seed data with deterministic UUIDs."""
@@ -112,6 +112,10 @@ class SeedDataManager:
                 os.remove(db_path)
                 logger.info(f"Removed existing database: {db_path}")
             
+            # Also remove from the set of created dbs
+            if self.settings.db_url in SQLitePromptRepository._created_dbs:
+                SQLitePromptRepository._created_dbs.remove(self.settings.db_url)
+
             # Recreate repository
             self.repo = SQLitePromptRepository(self.settings.db_url)
         except Exception as e:
@@ -252,8 +256,7 @@ def main():
     )
     
     try:
-        settings = Settings()
-        seed_manager = SeedDataManager(settings)
+        seed_manager = SeedDataManager()
         
         if args.info:
             info = seed_manager.get_migration_info()

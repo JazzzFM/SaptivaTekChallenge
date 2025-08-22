@@ -4,8 +4,6 @@ Generador simple de PDF usando pypandoc con configuración básica.
 """
 
 import os
-import sys
-from pathlib import Path
 from datetime import datetime
 
 try:
@@ -31,7 +29,7 @@ def generate_simple_pdf(markdown_file: str, output_file: str, title: str = "Docu
         
         print(f"🔄 Generando PDF: {title}")
         
-        output = pypandoc.convert_file(
+        pypandoc.convert_file(
             markdown_file, 
             'pdf', 
             outputfile=output_file,
@@ -163,18 +161,18 @@ def main():
     if create_combined_report():
         success_count += 1
     
-    print(f"\n📊 Resumen:")
+    print("\n📊 Resumen:")
     print(f"✅ PDFs generados: {success_count}")
-    print(f"📁 Ubicación: docs/reports/")
+    print("📁 Ubicación: docs/reports/")
     
     # Listar archivos generados
     pdf_files = [f for f in os.listdir("docs/reports") if f.endswith('.pdf')]
     if pdf_files:
-        print(f"\n📄 Archivos PDF generados:")
+        print("\n📄 Archivos PDF generados:")
         for pdf_file in sorted(pdf_files):
             print(f"   📄 docs/reports/{pdf_file}")
     
-    print(f"\n🎯 Generación de PDFs completada!")
+    print("\n🎯 Generación de PDFs completada!")
 
 
 if __name__ == "__main__":

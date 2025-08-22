@@ -1,17 +1,25 @@
 """Security utilities for input validation and sanitization."""
 
-import re
 import html
+import re
+
 from domain.exceptions import ValidationError
+
 
 class InputValidator:
     """Validates and sanitizes user inputs."""
     
     # Patterns for potentially dangerous content
-    SQL_INJECTION_PATTERNS = [
-        r"(?i)(union\s+select|drop\s+table|delete\s+from|insert\s+into)",
-        r"(?i)<script[^>]*>.*?</script>",
-        r"(?i)(exec\s*\(|eval\s*\()",
+    DANGEROUS_PATTERNS = [
+        r"(?i)\bSELECT\b.*\bFROM\b",
+        r"(?i)\bUNION\b.+\bSELECT\b",
+        r"(?i)\bDROP\s+TABLE\b",
+        r"(?i)\bINSERT\s+INTO\b",
+        r"(?i)\bUPDATE\b.+\bSET\b",
+        r"(?i)\bDELETE\s+FROM\b",
+        r"(--|\#|/\*)\s*\w+",  
+        r"(?i)\bOR\b\s+1\s*=\s*1\b",
+        r"(?i)<\s*script\b.*?>.*?<\s*/\s*script\s*>",
     ]
     
     # Control characters and non-printable chars (except basic whitespace)
@@ -32,7 +40,7 @@ class InputValidator:
         Raises:
             ValidationError: If validation fails
         """
-        if not prompt:
+        if prompt is None or prompt == "":
             raise ValidationError("Prompt cannot be empty")
         
         # Check length
@@ -43,7 +51,7 @@ class InputValidator:
         sanitized = cls.CONTROL_CHARS.sub('', prompt)
         
         # Check for suspicious patterns
-        for pattern in cls.SQL_INJECTION_PATTERNS:
+        for pattern in cls.DANGEROUS_PATTERNS:
             if re.search(pattern, sanitized):
                 raise ValidationError("Prompt contains potentially dangerous content")
         

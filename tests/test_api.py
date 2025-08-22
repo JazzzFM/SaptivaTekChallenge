@@ -1,6 +1,7 @@
-import sys
 import os
+import sys
 import time
+
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 def test_read_docs(client):
@@ -35,11 +36,7 @@ def test_create_prompt_success(client):
 def test_create_prompt_with_sanitization(client):
     # Test HTML escaping
     response = client.post("/prompt", json={"prompt": "test <script>alert('xss')</script> prompt"})
-    assert response.status_code == 200
-    data = response.json()
-    # Should be sanitized but not rejected
-    assert "&lt;" in data["prompt"]
-    assert "&gt;" in data["prompt"]
+    assert response.status_code == 400
 
 def test_create_prompt_deterministic_response(client):
     # Same prompt should produce same response
@@ -74,9 +71,7 @@ def test_search_similar_with_sanitization(client):
     
     # Search with potentially dangerous query
     response = client.get("/similar?query=<script>malicious</script>&k=1")
-    assert response.status_code == 200  # Should be sanitized, not rejected
-    data = response.json()
-    assert isinstance(data, list)
+    assert response.status_code == 400
 
 def test_search_similar_edge_cases(client):
     # Test various edge cases
@@ -116,7 +111,7 @@ def test_create_prompt_with_dangerous_content(client):
         response = client.post("/prompt", json={"prompt": prompt})
         assert response.status_code == 400
         data = response.json()
-        assert "dangerous content" in data["detail"]["detail"]
+        assert "dangerous content" in data["detail"]
 
 def test_search_similar_with_no_results(client):
     response = client.get("/similar?query=extremely_unique_query_12345&k=5")
@@ -168,11 +163,8 @@ def test_error_response_format(client):
     assert response.status_code == 400
     data = response.json()
     
+    assert "error" in data
     assert "detail" in data
-    detail = data["detail"]
-    assert "error" in detail
-    assert "detail" in detail
-    assert "error_type" in detail
 
 def test_response_time_header(client):
     """Test that process time header is added."""

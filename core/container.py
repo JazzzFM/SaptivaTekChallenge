@@ -1,15 +1,14 @@
 """Dependency injection container for the application."""
 
-from typing import Optional
 import threading
 
-from core.config import settings
-from domain.ports import LLMProvider, PromptRepository, VectorIndex, Embedder
-from infra.sqlite_repo import SQLitePromptRepository
-from infra.faiss_index import FaissVectorIndex
+from core.settings import get_settings
+from domain.ports import Embedder, LLMProvider, PromptRepository, VectorIndex
 from infra.chroma_index import ChromaVectorIndex
 from infra.embedder import SentenceTransformerEmbedder
+from infra.faiss_index import FaissVectorIndex
 from infra.llm_simulator import LLMSimulator
+from infra.sqlite_repo import SQLitePromptRepository
 from use_cases.create_prompt import CreatePrompt
 from use_cases.search_similar import SearchSimilar
 
@@ -18,6 +17,8 @@ class Container:
     """Dependency injection container with singleton management."""
     
     def __init__(self):
+        self.settings = get_settings()
+        self.database_url = self.settings.database_url
         self._lock = threading.Lock()
         self._instances = {}
     
@@ -34,20 +35,20 @@ class Container:
         """Get the prompt repository singleton."""
         return self._get_singleton(
             "prompt_repo",
-            lambda: SQLitePromptRepository(db_url=settings.db_url)
+            lambda: SQLitePromptRepository(db_url = self.database_url)
         )
     
     @property
     def vector_index(self) -> VectorIndex:
         """Get the vector index singleton."""
         def create_index():
-            backend = settings.vector_backend.lower()
+            backend = self.settings.vector_backend.lower()
             if backend == "chroma":
-                return ChromaVectorIndex(path=settings.chroma_path)
+                return ChromaVectorIndex(path=self.settings.chroma_path)
             return FaissVectorIndex(
-                index_path=settings.faiss_index_path,
-                dim=settings.embedding_dim,
-                auto_save_interval=settings.faiss_auto_save_interval
+                index_path=self.settings.faiss_index_path,
+                dim=self.settings.embedding_dim,
+                auto_save_interval=self.settings.faiss_auto_save_interval
             )
         
         return self._get_singleton("vector_index", create_index)
@@ -123,7 +124,7 @@ class Container:
             index_stats = self.vector_index.get_stats() if hasattr(self.vector_index, 'get_stats') else {}
             health["vector_index"] = {
                 "status": "healthy",
-                "backend": settings.vector_backend,
+                "backend": self.settings.vector_backend,
                 **index_stats
             }
         except Exception as e:
@@ -150,26 +151,12 @@ class Container:
         return health
 
 
-# Global container instance
-_container: Optional[Container] = None
-_container_lock = threading.Lock()
-
 
 def get_container() -> Container:
     """Get the global container instance."""
-    global _container
-    if _container is None:
-        with _container_lock:
-            if _container is None:
-                _container = Container()
-    return _container
+    return Container()
 
 
 def cleanup_container():
     """Cleanup the global container."""
-    global _container
-    if _container is not None:
-        with _container_lock:
-            if _container is not None:
-                _container.cleanup()
-                _container = None
+    pass

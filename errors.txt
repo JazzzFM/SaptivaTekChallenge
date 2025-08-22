@@ -1,0 +1,1205 @@
+jazzzfm@jazzzfm [23:34:21] [~/Documents/JazzDataSolutions/SaptivaTekChallenge] [main *]
+-> % # 0) entorno temporal para que nada sea read-only
+export TEST_TMP_DIR="$(mktemp -d)"
+
+# 1) Arregla config Ruff (pyproject o ruff.toml) y corre:
+ruff check . --fix
+
+# 2) Corre type-check
+mypy . --python-version=3.11
+
+# 3) Ejecuta tests (ahora con DB/paths escribibles)
+pytest -q
+
+E501 Line too long (92 > 88)
+  --> api/main.py:43:89
+   |
+41 | app.add_middleware(
+42 |     CORSMiddleware,
+43 |     allow_origins=["http://localhost:3000", "http://localhost:8080"],  # Configure as needed
+   |                                                                                         ^^^^
+44 |     allow_credentials=False,
+45 |     allow_methods=["GET", "POST"],
+   |
+
+E501 Line too long (130 > 88)
+  --> api/main.py:51:89
+   |
+49 | app.add_middleware(
+50 |     TrustedHostMiddleware, 
+51 |     allowed_hosts=["localhost", "127.0.0.1", "*.example.com", "testserver"]  # Configure as needed, including testserver for tests
+   |                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+52 | )
+   |
+
+F821 Undefined name `JSONResponse`
+  --> api/main.py:56:12
+   |
+54 | @app.exception_handler(HTTPException)
+55 | async def http_exc_handler(request, exc: HTTPException):
+56 |     return JSONResponse(status_code=exc.status_code, content={
+   |            ^^^^^^^^^^^^
+57 |         "error": "http_error",
+58 |         "detail": exc.detail
+   |
+
+E501 Line too long (94 > 88)
+  --> api/main.py:77:89
+   |
+75 |                 detail={
+76 |                     "error": "Rate limit exceeded",
+77 |                     "detail": f"Maximum {settings.rate_limit_per_minute} requests per minute",
+   |                                                                                         ^^^^^^
+78 |                     "error_type": "RateLimitError"
+79 |                 }
+   |
+
+B008 Do not perform function call `Depends` in argument defaults; instead, perform the call within the function, or read the default from a module-level singleton variable
+   --> api/main.py:126:30
+    |
+124 | def create_prompt(
+125 |     request: CreatePromptRequest,
+126 |     use_case: CreatePrompt = Depends(get_create_prompt_use_case),
+    |                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+127 | ):
+128 |     try:
+    |
+
+B904 Within an `except` clause, raise exceptions with `raise ... from err` or `raise ... from None` to distinguish them from errors in exception handling
+   --> api/main.py:132:9
+    |
+130 |           return record
+131 |       except ValidationError as e:
+132 | /         raise HTTPException(
+133 | |             status_code=400,
+134 | |             detail={"error": "Validation failed", "detail": str(e), "error_type": "ValidationError"}
+135 | |         )
+    | |_________^
+136 |       except (LLMError, EmbeddingError, VectorIndexError, RepositoryError) as e:
+137 |           logging.error(f"Service error in create_prompt: {e}")
+    |
+
+E501 Line too long (100 > 88)
+   --> api/main.py:134:89
+    |
+132 |         raise HTTPException(
+133 |             status_code=400,
+134 |             detail={"error": "Validation failed", "detail": str(e), "error_type": "ValidationError"}
+    |                                                                                         ^^^^^^^^^^^^
+135 |         )
+136 |     except (LLMError, EmbeddingError, VectorIndexError, RepositoryError) as e:
+    |
+
+B904 Within an `except` clause, raise exceptions with `raise ... from err` or `raise ... from None` to distinguish them from errors in exception handling
+   --> api/main.py:138:9
+    |
+136 |       except (LLMError, EmbeddingError, VectorIndexError, RepositoryError) as e:
+137 |           logging.error(f"Service error in create_prompt: {e}")
+138 | /         raise HTTPException(
+139 | |             status_code=500,
+140 | |             detail={"error": "Service error", "detail": "Internal processing failed", "error_type": type(e).__name__}
+141 | |         )
+    | |_________^
+142 |       except Exception as e:
+143 |           logging.error(f"Unexpected error in create_prompt: {e}")
+    |
+
+E501 Line too long (117 > 88)
+   --> api/main.py:140:89
+    |
+138 |         raise HTTPException(
+139 |             status_code=500,
+140 |             detail={"error": "Service error", "detail": "Internal processing failed", "error_type": type(e).__name__}
+    |                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+141 |         )
+142 |     except Exception as e:
+    |
+
+B904 Within an `except` clause, raise exceptions with `raise ... from err` or `raise ... from None` to distinguish them from errors in exception handling
+   --> api/main.py:144:9
+    |
+142 |       except Exception as e:
+143 |           logging.error(f"Unexpected error in create_prompt: {e}")
+144 | /         raise HTTPException(
+145 | |             status_code=500,
+146 | |             detail={"error": "Internal server error", "detail": "An unexpected error occurred", "error_type": "UnknownError"}
+147 | |         )
+    | |_________^
+148 |
+149 |   class PaginatedResponse(BaseModel):
+    |
+
+E501 Line too long (125 > 88)
+   --> api/main.py:146:89
+    |
+144 |         raise HTTPException(
+145 |             status_code=500,
+146 |             detail={"error": "Internal server error", "detail": "An unexpected error occurred", "error_type": "UnknownError"}
+    |                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+147 |         )
+    |
+
+B008 Do not perform function call `Depends` in argument defaults; instead, perform the call within the function, or read the default from a module-level singleton variable
+   --> api/main.py:164:31
+    |
+162 |     query: str = Query(..., min_length=1, max_length=settings.max_prompt_length),
+163 |     k: int = Query(3, gt=0, le=settings.max_results),
+164 |     use_case: SearchSimilar = Depends(get_search_similar_use_case),
+    |                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+165 | ):
+166 |     try:
+    |
+
+E501 Line too long (91 > 88)
+   --> api/main.py:168:89
+    |
+166 |     try:
+167 |         # Validate and sanitize query
+168 |         sanitized_query = InputValidator.validate_prompt(query, settings.max_prompt_length)
+    |                                                                                         ^^^
+169 |         records = use_case.execute(sanitized_query, k)
+170 |         return records
+    |
+
+B904 Within an `except` clause, raise exceptions with `raise ... from err` or `raise ... from None` to distinguish them from errors in exception handling
+   --> api/main.py:172:9
+    |
+170 |           return records
+171 |       except ValidationError as e:
+172 | /         raise HTTPException(
+173 | |             status_code=400,
+174 | |             detail={"error": "Validation failed", "detail": str(e), "error_type": "ValidationError"}
+175 | |         )
+    | |_________^
+176 |       except (EmbeddingError, VectorIndexError, RepositoryError) as e:
+177 |           logging.error(f"Service error in search_similar: {e}")
+    |
+
+E501 Line too long (100 > 88)
+   --> api/main.py:174:89
+    |
+172 |         raise HTTPException(
+173 |             status_code=400,
+174 |             detail={"error": "Validation failed", "detail": str(e), "error_type": "ValidationError"}
+    |                                                                                         ^^^^^^^^^^^^
+175 |         )
+176 |     except (EmbeddingError, VectorIndexError, RepositoryError) as e:
+    |
+
+B904 Within an `except` clause, raise exceptions with `raise ... from err` or `raise ... from None` to distinguish them from errors in exception handling
+   --> api/main.py:178:9
+    |
+176 |       except (EmbeddingError, VectorIndexError, RepositoryError) as e:
+177 |           logging.error(f"Service error in search_similar: {e}")
+178 | /         raise HTTPException(
+179 | |             status_code=500,
+180 | |             detail={"error": "Service error", "detail": "Internal processing failed", "error_type": type(e).__name__}
+181 | |         )
+    | |_________^
+182 |       except Exception as e:
+183 |           logging.error(f"Unexpected error in search_similar: {e}")
+    |
+
+E501 Line too long (117 > 88)
+   --> api/main.py:180:89
+    |
+178 |         raise HTTPException(
+179 |             status_code=500,
+180 |             detail={"error": "Service error", "detail": "Internal processing failed", "error_type": type(e).__name__}
+    |                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+181 |         )
+182 |     except Exception as e:
+    |
+
+B904 Within an `except` clause, raise exceptions with `raise ... from err` or `raise ... from None` to distinguish them from errors in exception handling
+   --> api/main.py:184:9
+    |
+182 |       except Exception as e:
+183 |           logging.error(f"Unexpected error in search_similar: {e}")
+184 | /         raise HTTPException(
+185 | |             status_code=500,
+186 | |             detail={"error": "Internal server error", "detail": "An unexpected error occurred", "error_type": "UnknownError"}
+187 | |         )
+    | |_________^
+188 |
+189 |   @app.get("/prompts", response_model=PaginatedResponse, responses={
+    |
+
+E501 Line too long (125 > 88)
+   --> api/main.py:186:89
+    |
+184 |         raise HTTPException(
+185 |             status_code=500,
+186 |             detail={"error": "Internal server error", "detail": "An unexpected error occurred", "error_type": "UnknownError"}
+    |                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+187 |         )
+    |
+
+B904 Within an `except` clause, raise exceptions with `raise ... from err` or `raise ... from None` to distinguish them from errors in exception handling
+   --> api/main.py:229:9
+    |
+227 |       except Exception as e:
+228 |           logging.error(f"Failed to list prompts: {e}")
+229 | /         raise HTTPException(
+230 | |             status_code=500,
+231 | |             detail={"error": "Internal server error", "detail": "Failed to retrieve prompts", "error_type": "UnknownError"}
+232 | |         )
+    | |_________^
+233 |
+234 |   @app.get("/health")
+    |
+
+E501 Line too long (123 > 88)
+   --> api/main.py:231:89
+    |
+229 |         raise HTTPException(
+230 |             status_code=500,
+231 |             detail={"error": "Internal server error", "detail": "Failed to retrieve prompts", "error_type": "UnknownError"}
+    |                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+232 |         )
+    |
+
+E501 Line too long (105 > 88)
+   --> api/main.py:251:89
+    |
+249 |             repo = container.get_repository()
+250 |             repo.count()  # Simple DB operation
+251 |             health_status["checks"]["database"] = {"status": "healthy", "message": "Database accessible"}
+    |                                                                                         ^^^^^^^^^^^^^^^^^
+252 |         except Exception as e:
+253 |             health_status["checks"]["database"] = {"status": "unhealthy", "message": f"Database error: {str(e)}"}
+    |
+
+E501 Line too long (113 > 88)
+   --> api/main.py:253:89
+    |
+251 |             health_status["checks"]["database"] = {"status": "healthy", "message": "Database accessible"}
+252 |         except Exception as e:
+253 |             health_status["checks"]["database"] = {"status": "unhealthy", "message": f"Database error: {str(e)}"}
+    |                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^
+254 |             overall_healthy = False
+    |
+
+E501 Line too long (113 > 88)
+   --> api/main.py:262:89
+    |
+260 |             test_vector = [0.1] * 384
+261 |             vector_index.search(test_vector, k=1)
+262 |             health_status["checks"]["vector_index"] = {"status": "healthy", "message": "Vector index accessible"}
+    |                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^
+263 |         except Exception as e:
+264 |             health_status["checks"]["vector_index"] = {"status": "unhealthy", "message": f"Vector index error: {str(e)}"}
+    |
+
+E501 Line too long (121 > 88)
+   --> api/main.py:264:89
+    |
+262 |             health_status["checks"]["vector_index"] = {"status": "healthy", "message": "Vector index accessible"}
+263 |         except Exception as e:
+264 |             health_status["checks"]["vector_index"] = {"status": "unhealthy", "message": f"Vector index error: {str(e)}"}
+    |                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+265 |             overall_healthy = False
+    |
+
+E501 Line too long (105 > 88)
+   --> api/main.py:271:89
+    |
+269 |             embedder = container.get_embedder()
+270 |             embedder.embed("health check test")
+271 |             health_status["checks"]["embedder"] = {"status": "healthy", "message": "Embedder functional"}
+    |                                                                                         ^^^^^^^^^^^^^^^^^
+272 |         except Exception as e:
+273 |             health_status["checks"]["embedder"] = {"status": "unhealthy", "message": f"Embedder error: {str(e)}"}
+    |
+
+E501 Line too long (113 > 88)
+   --> api/main.py:273:89
+    |
+271 |             health_status["checks"]["embedder"] = {"status": "healthy", "message": "Embedder functional"}
+272 |         except Exception as e:
+273 |             health_status["checks"]["embedder"] = {"status": "unhealthy", "message": f"Embedder error: {str(e)}"}
+    |                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^
+274 |             overall_healthy = False
+    |
+
+E501 Line too long (95 > 88)
+   --> api/main.py:280:89
+    |
+278 |             llm = container.get_llm()
+279 |             llm.generate("health check")
+280 |             health_status["checks"]["llm"] = {"status": "healthy", "message": "LLM functional"}
+    |                                                                                         ^^^^^^^
+281 |         except Exception as e:
+282 |             health_status["checks"]["llm"] = {"status": "unhealthy", "message": f"LLM error: {str(e)}"}
+    |
+
+E501 Line too long (103 > 88)
+   --> api/main.py:282:89
+    |
+280 |             health_status["checks"]["llm"] = {"status": "healthy", "message": "LLM functional"}
+281 |         except Exception as e:
+282 |             health_status["checks"]["llm"] = {"status": "unhealthy", "message": f"LLM error: {str(e)}"}
+    |                                                                                         ^^^^^^^^^^^^^^^
+283 |             overall_healthy = False
+    |
+
+B904 Within an `except` clause, raise exceptions with `raise ... from err` or `raise ... from None` to distinguish them from errors in exception handling
+   --> api/main.py:331:9
+    |
+330 |       except Exception as e:
+331 | /         raise HTTPException(
+332 | |             status_code=503,
+333 | |             detail={
+334 | |                 "status": "not_ready",
+335 | |                 "service": "prompt-service",
+336 | |                 "error": str(e),
+337 | |                 "timestamp": time.time()
+338 | |             }
+339 | |         )
+    | |_________^
+340 |
+341 |   @app.get("/stats")
+    |
+
+E501 Line too long (96 > 88)
+   --> api/main.py:360:89
+    |
+358 |         # Get embedder info
+359 |         embedder = container.get_embedder()
+360 |         embedder_info = embedder.get_model_info() if hasattr(embedder, 'get_model_info') else {}
+    |                                                                                         ^^^^^^^^
+361 |         
+362 |         return {
+    |
+
+E501 Line too long (121 > 88)
+   --> api/main.py:377:89
+    |
+375 |                 "rate_limiting_enabled": settings.enable_rate_limiting,
+376 |                 "embedding_dim": settings.embedding_dim,
+377 |                 "database_url": settings.database_url.split("///")[-1] if "///" in settings.database_url else "in-memory"
+    |                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+378 |             },
+379 |             "timestamp": time.time()
+    |
+
+B904 Within an `except` clause, raise exceptions with `raise ... from err` or `raise ... from None` to distinguish them from errors in exception handling
+   --> api/main.py:384:9
+    |
+382 |       except Exception as e:
+383 |           logging.error(f"Failed to get stats: {e}")
+384 | /         raise HTTPException(
+385 | |             status_code=500,
+386 | |             detail={
+387 | |                 "error": "Failed to retrieve service statistics",
+388 | |                 "detail": str(e),
+389 | |                 "timestamp": time.time()
+390 | |             }
+391 | |         )
+    | |_________^
+    |
+
+E501 Line too long (95 > 88)
+  --> core/config.py:13:89
+   |
+11 |     faiss_index_path: str = "data/faiss.index"
+12 |     chroma_path: str = "data/chroma"
+13 |     vector_backend: str = Field(default="faiss", description="Vector backend: faiss or chroma")
+   |                                                                                         ^^^^^^^
+14 |     max_prompt_length: int = Field(default=2000, gt=0, le=10000)
+15 |     max_results: int = Field(default=100, gt=0, le=1000)
+   |
+
+E501 Line too long (97 > 88)
+  --> core/config.py:42:89
+   |
+40 |         # Ensure data directory exists
+41 |         db_path = v.replace('sqlite:///', '')
+42 |         os.makedirs(os.path.dirname(db_path) if os.path.dirname(db_path) else '.', exist_ok=True)
+   |                                                                                         ^^^^^^^^^
+43 |         return v
+   |
+
+E501 Line too long (106 > 88)
+   --> core/container.py:123:89
+    |
+121 |         try:
+122 |             # Check vector index
+123 |             index_stats = self.vector_index.get_stats() if hasattr(self.vector_index, 'get_stats') else {}
+    |                                                                                         ^^^^^^^^^^^^^^^^^^
+124 |             health["vector_index"] = {
+125 |                 "status": "healthy",
+    |
+
+E501 Line too long (110 > 88)
+   --> core/container.py:134:89
+    |
+132 |         try:
+133 |             # Check embedder
+134 |             embedder_info = self.embedder.get_model_info() if hasattr(self.embedder, 'get_model_info') else {}
+    |                                                                                         ^^^^^^^^^^^^^^^^^^^^^^
+135 |             health["embedder"] = {
+136 |                 "status": "healthy",
+    |
+
+E501 Line too long (90 > 88)
+  --> core/logging.py:59:89
+   |
+57 |     def warning(self, message: str, **kwargs):
+58 |         sanitized = self._sanitize_message(message)
+59 |         self.logger.warning(sanitized, extra={'extra_fields': kwargs} if kwargs else None)
+   |                                                                                         ^^
+60 |     
+61 |     def debug(self, message: str, **kwargs):
+   |
+
+F821 Undefined name `metadatas`
+  --> infra/chroma_index.py:26:77
+   |
+24 |             raise ValueError("Empty embeddings")
+25 |         try:
+26 |             self.collection.add(id = [id], embeddings=embeddings, metadatas=metadatas)
+   |                                                                             ^^^^^^^^^
+27 |         except Exception as e:
+28 |             raise e 
+   |
+
+E501 Line too long (91 > 88)
+  --> infra/embedder.py:61:89
+   |
+60 |                 # Manual L2 normalization for cosine similarity
+61 |                 normalized_embedding = torch.nn.functional.normalize(embedding, p=2, dim=0)
+   |                                                                                         ^^^
+62 |                 
+63 |                 # Convert to list and validate
+   |
+
+E501 Line too long (115 > 88)
+  --> infra/embedder.py:70:89
+   |
+69 |                 # Validate that all values are finite
+70 |                 if not all(isinstance(x, (int, float)) and not (x != x or abs(x) == float('inf')) for x in result):
+   |                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+71 |                     raise EmbeddingError("Model returned invalid embedding values")
+   |
+
+E501 Line too long (104 > 88)
+  --> infra/faiss_index.py:36:89
+   |
+34 |     def add(self, id: str, vector: list[float]):
+35 |         if len(vector) != self.dim:
+36 |             raise VectorIndexError(f"Vector dimension {len(vector)} does not match expected {self.dim}")
+   |                                                                                         ^^^^^^^^^^^^^^^^
+37 |         
+38 |         with self._lock:
+   |
+
+E501 Line too long (110 > 88)
+  --> infra/faiss_index.py:61:89
+   |
+59 |     def search(self, vector: list[float], k: int) -> list[tuple[str, float]]:
+60 |         if len(vector) != self.dim:
+61 |             raise VectorIndexError(f"Query vector dimension {len(vector)} does not match expected {self.dim}")
+   |                                                                                         ^^^^^^^^^^^^^^^^^^^^^^
+62 |             
+63 |         with self._lock:
+   |
+
+E501 Line too long (90 > 88)
+  --> infra/faiss_index.py:71:89
+   |
+69 |                 vector_array = np.array([vector], dtype="float32")
+70 |                 if not np.isfinite(vector_array).all():
+71 |                     raise VectorIndexError("Query vector contains NaN or infinite values")
+   |                                                                                         ^^
+72 |                 
+73 |                 # Limit k to available vectors
+   |
+
+B007 Loop control variable `i` not used within loop body
+  --> infra/faiss_index.py:79:21
+   |
+77 |                 # Filter out invalid indices and return with scores
+78 |                 results = []
+79 |                 for i, (distance, index) in enumerate(zip(distances[0], indices[0], strict=False)):
+   |                     ^
+80 |                     if index != -1 and index < len(self.id_map):
+81 |                         results.append((self.id_map[index], float(distance)))
+   |
+help: Rename unused `i` to `_i`
+
+E501 Line too long (99 > 88)
+  --> infra/faiss_index.py:79:89
+   |
+77 |                 # Filter out invalid indices and return with scores
+78 |                 results = []
+79 |                 for i, (distance, index) in enumerate(zip(distances[0], indices[0], strict=False)):
+   |                                                                                         ^^^^^^^^^^^
+80 |                     if index != -1 and index < len(self.id_map):
+81 |                         results.append((self.id_map[index], float(distance)))
+   |
+
+F821 Undefined name `pathlib`
+  --> infra/faiss_index.py:91:16
+   |
+89 |     def _save_index(self):
+90 |         """Internal method to save index and id_map. Must be called with lock held."""
+91 |         path = pathlib.Path(self.index_path)
+   |                ^^^^^^^
+92 |         path.parent.mkdir(parents=True, exist_ok=True)
+93 |         try:
+   |
+
+E501 Line too long (97 > 88)
+  --> infra/sqlite_repo.py:48:89
+   |
+46 |             )
+47 |     
+48 |     def find_paginated(self, offset: int = 0, limit: int = 10) -> Tuple[List[PromptRecord], int]:
+   |                                                                                         ^^^^^^^^^
+49 |         """Find records with pagination."""
+50 |         with Session(self.engine) as session:
+   |
+
+E501 Line too long (97 > 88)
+  --> scripts/clean_pdf_generator.py:78:89
+   |
+77 |         # Simplificar tablas complejas
+78 |         clean_content = re.sub(r'\|.*\|', lambda m: m.group().replace('|', ' | '), clean_content)
+   |                                                                                         ^^^^^^^^^
+79 |         
+80 |         # Limpiar diagramas mermaid (problemáticos para PDF)
+   |
+
+E501 Line too long (144 > 88)
+  --> scripts/clean_pdf_generator.py:81:89
+   |
+80 | … para PDF)
+81 | …, '[DIAGRAM: Architecture diagram available in HTML version]', clean_content, flags=re.DOTALL)
+   |                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+82 | …
+83 | …8') as f:
+   |
+
+E501 Line too long (95 > 88)
+  --> scripts/clean_pdf_generator.py:92:89
+   |
+92 | def generate_clean_pdf(markdown_file: str, output_file: str, title: str = "Documento") -> bool:
+   |                                                                                         ^^^^^^^
+93 |     """Genera PDF desde markdown limpio."""
+94 |     try:
+   |
+
+E501 Line too long (99 > 88)
+   --> scripts/clean_pdf_generator.py:287:89
+    |
+285 |     pdf_file = "docs/reports/TEST_REPORT_CLEAN.pdf"
+286 |     
+287 |     if generate_clean_pdf(summary_file, pdf_file, "Reporte de Testing - Microservicio de Prompts"):
+    |                                                                                         ^^^^^^^^^^^
+288 |         print(f"[SUCCESS] Reporte PDF generado: {pdf_file}")
+    |
+
+E501 Line too long (91 > 88)
+  --> scripts/generate_docs.py:61:89
+   |
+59 |     <style>
+60 |         body {{
+61 |             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+   |                                                                                         ^^^
+62 |             line-height: 1.6;
+63 |             max-width: 1200px;
+   |
+
+E501 Line too long (92 > 88)
+   --> scripts/generate_docs.py:109:89
+    |
+107 | </head>
+108 | <body>
+109 |     <div class="timestamp">Generado el: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}</div>
+    |                                                                                         ^^^^
+110 |     {content.replace('✅', '<span class="status-pass">✅</span>')
+111 |              .replace('⚠️', '<span class="status-warn">⚠️</span>')
+    |
+
+E501 Line too long (93 > 88)
+   --> scripts/generate_docs.py:273:89
+    |
+272 | ### 🔧 Documentación Técnica  
+273 | - **HTML**: [docs/reports/TECHNICAL_DOCUMENTATION.html](reports/TECHNICAL_DOCUMENTATION.html)
+    |                                                                                         ^^^^^
+274 | - **PDF**: [docs/pdf/TECHNICAL_DOCUMENTATION.pdf](pdf/TECHNICAL_DOCUMENTATION.pdf) (si disponible)
+275 | - **Markdown**: [docs/TECHNICAL_DOCUMENTATION.md](TECHNICAL_DOCUMENTATION.md)
+    |
+
+E501 Line too long (98 > 88)
+   --> scripts/generate_docs.py:274:89
+    |
+272 | ### 🔧 Documentación Técnica  
+273 | - **HTML**: [docs/reports/TECHNICAL_DOCUMENTATION.html](reports/TECHNICAL_DOCUMENTATION.html)
+274 | - **PDF**: [docs/pdf/TECHNICAL_DOCUMENTATION.pdf](pdf/TECHNICAL_DOCUMENTATION.pdf) (si disponible)
+    |                                                                                         ^^^^^^^^^^
+275 | - **Markdown**: [docs/TECHNICAL_DOCUMENTATION.md](TECHNICAL_DOCUMENTATION.md)
+    |
+
+E501 Line too long (91 > 88)
+  --> scripts/generate_pdf_report.py:67:89
+   |
+66 |         body {
+67 |             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+   |                                                                                         ^^^
+68 |             line-height: 1.6;
+69 |             color: #333;
+   |
+
+E501 Line too long (91 > 88)
+   --> scripts/generate_pdf_report.py:243:89
+    |
+241 |     <style>
+242 |         body {{
+243 |             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    |                                                                                         ^^^
+244 |             line-height: 1.6;
+245 |             max-width: 1000px;
+    |
+
+E501 Line too long (96 > 88)
+   --> scripts/generate_pdf_report.py:345:89
+    |
+343 |         <h1>Documentación Completa</h1>
+344 |         <div class="subtitle">Microservicio de Prompts - SaptivaTekChallenge</div>
+345 |         <div class="timestamp">Generado el: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}</div>
+    |                                                                                         ^^^^^^^^
+346 |     </div>
+    |
+
+E501 Line too long (96 > 88)
+  --> scripts/seed_data.py:55:89
+   |
+53 |             {
+54 |                 "id": str(uuid.uuid5(uuid.NAMESPACE_DNS, "prompt2")),
+55 |                 "prompt": "Explain the difference between supervised and unsupervised learning",
+   |                                                                                         ^^^^^^^^
+56 |                 "created_at": "2024-01-01T01:00:00Z"
+57 |             },
+   |
+
+E501 Line too long (89 > 88)
+  --> scripts/seed_data.py:70:89
+   |
+68 |             {
+69 |                 "id": str(uuid.uuid5(uuid.NAMESPACE_DNS, "prompt5")),
+70 |                 "prompt": "How does natural language processing work with transformers?",
+   |                                                                                         ^
+71 |                 "created_at": "2024-01-01T04:00:00Z"
+72 |             },
+   |
+
+E501 Line too long (92 > 88)
+  --> scripts/seed_data.py:95:89
+   |
+93 |             {
+94 |                 "id": str(uuid.uuid5(uuid.NAMESPACE_DNS, "prompt10")),
+95 |                 "prompt": "What is the importance of unit testing in software development?",
+   |                                                                                         ^^^^
+96 |                 "created_at": "2024-01-01T09:00:00Z"
+97 |             }
+   |
+
+E501 Line too long (93 > 88)
+   --> scripts/seed_data.py:107:89
+    |
+106 |         # Clear database
+107 |         # Note: SQLitePromptRepository doesn't have a clear method, so we recreate the engine
+    |                                                                                         ^^^^^
+108 |         try:
+109 |             import os
+    |
+
+E501 Line too long (97 > 88)
+   --> scripts/seed_data.py:127:89
+    |
+125 |                 # For FAISS, recreate the index
+126 |                 if isinstance(self.vector_index, FaissVectorIndex):
+127 |                     self.vector_index = FaissVectorIndex(self.settings.faiss_index_path, dim=384)
+    |                                                                                         ^^^^^^^^^
+128 |                 logger.info("Cleared vector index")
+129 |         except Exception as e:
+    |
+
+E501 Line too long (89 > 88)
+   --> scripts/seed_data.py:189:89
+    |
+188 |             if total_records != expected_count:
+189 |                 logger.error(f"Expected {expected_count} records, found {total_records}")
+    |                                                                                         ^
+190 |                 return False
+    |
+
+E501 Line too long (127 > 88)
+   --> scripts/seed_data.py:225:89
+    |
+223 |     def get_migration_info(self) -> Dict[str, Any]:
+224 |         """Get information about the current migration state."""
+225 |         vector_path = self.settings.chroma_path if self.settings.vector_backend == "chroma" else self.settings.faiss_index_path
+    |                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+226 |         return {
+227 |             "database_url": self.settings.db_url,
+    |
+
+E501 Line too long (110 > 88)
+   --> scripts/seed_data.py:232:89
+    |
+230 |             "total_records": self.repo.count(),
+231 |             "timestamp": datetime.now(timezone.utc).isoformat(),
+232 |             "embedder_model": self.embedder.model_name if hasattr(self.embedder, 'model_name') else "unknown",
+    |                                                                                         ^^^^^^^^^^^^^^^^^^^^^^
+233 |             "embedder_dimension": self.embedder.get_dimension()
+234 |         }
+    |
+
+E501 Line too long (92 > 88)
+   --> scripts/seed_data.py:242:89
+    |
+241 |     parser = argparse.ArgumentParser(description="Seed database with reproducible data")
+242 |     parser.add_argument("--no-clear", action="store_true", help="Don't clear existing data")
+    |                                                                                         ^^^^
+243 |     parser.add_argument("--verify-only", action="store_true", help="Only verify existing data")
+244 |     parser.add_argument("--info", action="store_true", help="Show migration info")
+    |
+
+E501 Line too long (95 > 88)
+   --> scripts/seed_data.py:243:89
+    |
+241 |     parser = argparse.ArgumentParser(description="Seed database with reproducible data")
+242 |     parser.add_argument("--no-clear", action="store_true", help="Don't clear existing data")
+243 |     parser.add_argument("--verify-only", action="store_true", help="Only verify existing data")
+    |                                                                                         ^^^^^^^
+244 |     parser.add_argument("--info", action="store_true", help="Show migration info")
+    |
+
+E501 Line too long (155 > 88)
+  --> scripts/simple_pdf_generator.py:69:89
+   |
+67 | …
+68 | …
+69 | …ta y el reporte de testing del microservicio de prompts desarrollado como respuesta al reto técnico.
+   |                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+70 | …
+71 | …
+   |
+
+E501 Line too long (142 > 88)
+   --> scripts/simple_pdf_generator.py:105:89
+    |
+103 | …rimeras 5 secciones + inicio
+104 | …ed_sections)
+105 | …t + "\n\n[Documentación técnica completa disponible en docs/TECHNICAL_DOCUMENTATION.md]\n\n")
+    |                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+106 | …
+107 | …
+    |
+
+E501 Line too long (107 > 88)
+   --> scripts/simple_pdf_generator.py:120:89
+    |
+118 |     output_pdf = "docs/reports/FULL_DOCUMENTATION.pdf"
+119 |     
+120 |     if generate_simple_pdf(combined_file, output_pdf, "Documentación Completa - Microservicio de Prompts"):
+    |                                                                                         ^^^^^^^^^^^^^^^^^^^
+121 |         print(f"🎉 Reporte PDF completo generado: {output_pdf}")
+122 |         return True
+    |
+
+E501 Line too long (97 > 88)
+   --> scripts/simple_pdf_generator.py:145:89
+    |
+143 |     # Lista de documentos a convertir
+144 |     documents = [
+145 |         ("docs/EXECUTIVE_SUMMARY.md", "docs/reports/EXECUTIVE_SUMMARY.pdf", "Resumen Ejecutivo"),
+    |                                                                                         ^^^^^^^^^
+146 |         ("docs/TEST_REPORT.md", "docs/reports/TEST_REPORT.pdf", "Reporte de Testing"),
+147 |         ("docs/TECHNICAL_DOCUMENTATION.md", "docs/reports/TECHNICAL_DOCUMENTATION.pdf", "Documentación Técnica")
+    |
+
+E501 Line too long (112 > 88)
+   --> scripts/simple_pdf_generator.py:147:89
+    |
+145 |         ("docs/EXECUTIVE_SUMMARY.md", "docs/reports/EXECUTIVE_SUMMARY.pdf", "Resumen Ejecutivo"),
+146 |         ("docs/TEST_REPORT.md", "docs/reports/TEST_REPORT.pdf", "Reporte de Testing"),
+147 |         ("docs/TECHNICAL_DOCUMENTATION.md", "docs/reports/TECHNICAL_DOCUMENTATION.pdf", "Documentación Técnica")
+    |                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^
+148 |     ]
+    |
+
+E501 Line too long (99 > 88)
+  --> tests/test_api.py:38:89
+   |
+36 | def test_create_prompt_with_sanitization(client):
+37 |     # Test HTML escaping
+38 |     response = client.post("/prompt", json={"prompt": "test <script>alert('xss')</script> prompt"})
+   |                                                                                         ^^^^^^^^^^^
+39 |     assert response.status_code == 200
+40 |     data = response.json()
+   |
+
+E501 Line too long (96 > 88)
+   --> tests/test_api.py:197:89
+    |
+195 |     def make_request():
+196 |         try:
+197 |             response = client.post("/prompt", json={"prompt": f"concurrent test {time.time()}"})
+    |                                                                                         ^^^^^^^^
+198 |             results.append(response.status_code)
+199 |         except Exception as e:
+    |
+
+B007 Loop control variable `i` not used within loop body
+   --> tests/test_api.py:204:9
+    |
+202 |     # Create multiple threads
+203 |     threads = []
+204 |     for i in range(5):
+    |         ^
+205 |         thread = threading.Thread(target=make_request)
+206 |         threads.append(thread)
+    |
+help: Rename unused `i` to `_i`
+
+B007 Loop control variable `description` not used within loop body
+   --> tests/test_chroma_integration.py:230:29
+    |
+228 |         ]
+229 |         
+230 |         for vector, doc_id, description in vectors_with_context:
+    |                             ^^^^^^^^^^^
+231 |             # Normalize vector
+232 |             import numpy as np
+    |
+help: Rename unused `description` to `_description`
+
+B017 Do not assert blind exception: `Exception`
+   --> tests/test_chroma_integration.py:252:14
+    |
+250 |         """Test error handling in ChromaDB operations."""
+251 |         # Test with invalid vector dimensions
+252 |         with pytest.raises(Exception):
+    |              ^^^^^^^^^^^^^^^^^^^^^^^^
+253 |             # This should fail as we expect 384-dimensional vectors
+254 |             # But ChromaDB might handle dimension mismatches differently than FAISS
+    |
+
+B007 Loop control variable `i` not used within loop body
+  --> tests/test_security.py:84:13
+   |
+82 |         client_id = "test_client"
+83 |         
+84 |         for i in range(5):
+   |             ^
+85 |             assert self.rate_limiter.is_allowed(client_id, limit=10, window_seconds=60)
+   |
+help: Rename unused `i` to `_i`
+
+B007 Loop control variable `i` not used within loop body
+  --> tests/test_security.py:91:13
+   |
+90 |         # Fill up the limit
+91 |         for i in range(10):
+   |             ^
+92 |             assert self.rate_limiter.is_allowed(client_id, limit=10, window_seconds=60)
+   |
+help: Rename unused `i` to `_i`
+
+B007 Loop control variable `i` not used within loop body
+   --> tests/test_security.py:114:13
+    |
+113 |         # Fill up the limit
+114 |         for i in range(3):
+    |             ^
+115 |             assert self.rate_limiter.is_allowed(client_id, limit=3, window_seconds=1)
+    |
+help: Rename unused `i` to `_i`
+
+E501 Line too long (89 > 88)
+  --> tests/test_seed_integration.py:21:89
+   |
+19 |         # Create test settings
+20 |         self.test_settings = Settings()
+21 |         self.test_settings.db_url = f"sqlite:///{os.path.join(self.temp_dir, 'test.db')}"
+   |                                                                                         ^
+22 |         self.test_settings.faiss_index_path = os.path.join(self.temp_dir, "test_index")
+23 |         self.test_settings.chroma_path = os.path.join(self.temp_dir, "test_chroma")
+   |
+
+E501 Line too long (92 > 88)
+   --> tests/test_seed_integration.py:158:89
+    |
+156 |             record = self.seed_manager.repo.find_by_id(result_id)
+157 |             if record and any(keyword in record.prompt.lower() 
+158 |                             for keyword in ["machine learning", "neural", "deep learning"]):
+    |                                                                                         ^^^^
+159 |                 found_ml_content = True
+160 |                 break
+    |
+
+E501 Line too long (91 > 88)
+   --> tests/test_seed_integration.py:162:89
+    |
+160 |                 break
+161 |         
+162 |         assert found_ml_content, "Should find ML-related content in top similarity results"
+    |                                                                                         ^^^
+163 |     
+164 |     def test_seed_no_clear_existing(self):
+    |
+
+E501 Line too long (98 > 88)
+   --> tests/test_seed_integration.py:193:89
+    |
+191 |                 worker_temp_dir = tempfile.mkdtemp()
+192 |                 worker_settings = Settings()
+193 |                 worker_settings.db_url = f"sqlite:///{os.path.join(worker_temp_dir, 'worker.db')}"
+    |                                                                                         ^^^^^^^^^^
+194 |                 worker_settings.faiss_index_path = os.path.join(worker_temp_dir, "worker_index")
+195 |                 worker_settings.vector_backend = "faiss"
+    |
+
+E501 Line too long (96 > 88)
+   --> tests/test_seed_integration.py:194:89
+    |
+192 |                 worker_settings = Settings()
+193 |                 worker_settings.db_url = f"sqlite:///{os.path.join(worker_temp_dir, 'worker.db')}"
+194 |                 worker_settings.faiss_index_path = os.path.join(worker_temp_dir, "worker_index")
+    |                                                                                         ^^^^^^^^
+195 |                 worker_settings.vector_backend = "faiss"
+    |
+
+B007 Loop control variable `i` not used within loop body
+   --> tests/test_seed_integration.py:209:13
+    |
+207 |         # Start multiple threads
+208 |         threads = []
+209 |         for i in range(3):
+    |             ^
+210 |             thread = threading.Thread(target=seed_worker)
+211 |             threads.append(thread)
+    |
+help: Rename unused `i` to `_i`
+
+E501 Line too long (95 > 88)
+  --> tests/test_similarity_validation.py:19:89
+   |
+17 |     def setup_method(self):
+18 |         self.temp_dir = tempfile.mkdtemp()
+19 |         self.faiss_index = FaissVectorIndex(os.path.join(self.temp_dir, "test.index"), dim=384)
+   |                                                                                         ^^^^^^^
+20 |         self.chroma_index = ChromaVectorIndex(self.temp_dir)
+   |
+
+E501 Line too long (95 > 88)
+   --> tests/test_similarity_validation.py:149:89
+    |
+147 |                 programming_positions.append(i)
+148 |         
+149 |         cooking_position = ids.index("cooking_recipe") if "cooking_recipe" in ids else len(ids)
+    |                                                                                         ^^^^^^^
+150 |         
+151 |         # Programming topics should generally rank higher than cooking
+    |
+
+E501 Line too long (98 > 88)
+   --> tests/test_similarity_validation.py:178:89
+    |
+177 |             # Check for valid float values
+178 |             assert all(isinstance(x, (int, float)) for x in embedding), "Invalid embedding values"
+    |                                                                                         ^^^^^^^^^^
+179 |             assert all(not (x != x or abs(x) == float('inf')) for x in embedding), "NaN or inf in embedding"
+    |
+
+E501 Line too long (108 > 88)
+   --> tests/test_similarity_validation.py:179:89
+    |
+177 |             # Check for valid float values
+178 |             assert all(isinstance(x, (int, float)) for x in embedding), "Invalid embedding values"
+179 |             assert all(not (x != x or abs(x) == float('inf')) for x in embedding), "NaN or inf in embedding"
+    |                                                                                         ^^^^^^^^^^^^^^^^^^^^
+180 |     
+181 |     def test_deterministic_llm_responses(self):
+    |
+
+E501 Line too long (121 > 88)
+   --> tests/test_similarity_validation.py:190:89
+    |
+188 |             "How does a neural network work?",
+189 |             "Short prompt",
+190 |             "A much longer prompt with many words and detailed descriptions that should still produce consistent results"
+    |                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+191 |         ]
+    |
+
+E501 Line too long (106 > 88)
+   --> tests/test_similarity_validation.py:198:89
+    |
+197 |             # All responses should be identical
+198 |             assert all(r == responses[0] for r in responses), f"Non-deterministic responses for: {prompt}"
+    |                                                                                         ^^^^^^^^^^^^^^^^^^
+199 |             
+200 |             # Response should contain the SimResponse prefix
+    |
+
+E501 Line too long (91 > 88)
+   --> tests/test_similarity_validation.py:201:89
+    |
+200 |             # Response should contain the SimResponse prefix
+201 |             assert "[SimResponse-" in responses[0], "Response doesn't have expected format"
+    |                                                                                         ^^^
+202 |             
+203 |             # Response should contain some keywords from the prompt
+    |
+
+E501 Line too long (108 > 88)
+   --> tests/test_similarity_validation.py:208:89
+    |
+207 |             # At least one prompt word should appear in response
+208 |             assert any(word in response_lower for word in prompt_words), "Response doesn't relate to prompt"
+    |                                                                                         ^^^^^^^^^^^^^^^^^^^^
+209 |     
+210 |     def test_cosine_similarity_calculation(self):
+    |
+
+E501 Line too long (98 > 88)
+   --> tests/test_similarity_validation.py:293:89
+    |
+292 |         # Scores should be monotonically decreasing
+293 |         assert scores == sorted(scores, reverse=True), f"Scores not in descending order: {scores}"
+    |                                                                                         ^^^^^^^^^^
+    |
+
+E501 Line too long (92 > 88)
+   --> tests/test_use_cases.py:160:89
+    |
+159 |         record1 = PromptRecord("id1", "prompt1", "response1", "2023-01-01T00:00:00")
+160 |         self.prompt_repo.find_by_id.side_effect = [record1, None]  # Second record not found
+    |                                                                                         ^^^^
+161 |         
+162 |         # Act
+    |
+
+E501 Line too long (89 > 88)
+   --> tests/test_vector_index.py:152:89
+    |
+151 |         assert len(results) <= 2
+152 |         # Chroma might return different ordering than FAISS, so just check we get results
+    |                                                                                         ^
+153 |         result_ids = [result[0] for result in results]
+154 |         assert "v1" in result_ids
+    |
+
+E501 Line too long (118 > 88)
+  --> use_cases/create_prompt.py:75:89
+   |
+74 |                         self.vector_index.add(record.id, embedding)
+75 |                         logger.info("Added prompt to vector index", record_id=record.id, embedding_dim=len(embedding))
+   |                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+76 |                     except Exception as e:
+77 |                         logger.error("Vector indexing failed", error=str(e))
+   |
+
+E501 Line too long (97 > 88)
+  --> use_cases/create_prompt.py:80:89
+   |
+78 |                         # Try to clean up the saved record if embedding fails
+79 |                         try:
+80 |                             # Note: This is a simplified cleanup. In production, use transactions
+   |                                                                                         ^^^^^^^^^
+81 |                             pass
+82 |                         except Exception:
+   |
+
+E501 Line too long (92 > 88)
+  --> use_cases/create_prompt.py:83:89
+   |
+81 |                             pass
+82 |                         except Exception:
+83 |                             logger.error("Failed to cleanup record after embedding failure")
+   |                                                                                         ^^^^
+84 |                         raise VectorIndexError(f"Failed to index prompt: {str(e)}") from e
+   |
+
+E501 Line too long (90 > 88)
+  --> use_cases/create_prompt.py:84:89
+   |
+82 |                         except Exception:
+83 |                             logger.error("Failed to cleanup record after embedding failure")
+84 |                         raise VectorIndexError(f"Failed to index prompt: {str(e)}") from e
+   |                                                                                         ^^
+85 |                 
+86 |                 perf_monitor.increment_counter("prompts_created_success")
+   |
+
+E501 Line too long (98 > 88)
+  --> use_cases/create_prompt.py:89:89
+   |
+87 |                 return record
+88 |                 
+89 |             except (ValidationError, LLMError, EmbeddingError, VectorIndexError, RepositoryError):
+   |                                                                                         ^^^^^^^^^^
+90 |                 perf_monitor.increment_counter("prompts_created_failed")
+91 |                 # Re-raise known errors
+   |
+
+E501 Line too long (96 > 88)
+  --> use_cases/search_similar.py:35:89
+   |
+34 |             query = query.strip()
+35 |             logger.info(f"Searching for {k} similar prompts to query with length: {len(query)}")
+   |                                                                                         ^^^^^^^^
+36 |             
+37 |             # Generate embedding for query
+   |
+
+E501 Line too long (89 > 88)
+  --> use_cases/search_similar.py:52:89
+   |
+50 |             except Exception as e:
+51 |                 logger.error(f"Vector search failed: {e}")
+52 |                 raise VectorIndexError(f"Failed to search vector index: {str(e)}") from e
+   |                                                                                         ^
+53 |             
+54 |             # Retrieve records from repository
+   |
+
+B007 Loop control variable `score` not used within loop body
+  --> use_cases/search_similar.py:58:21
+   |
+56 |             failed_lookups = 0
+57 |             
+58 |             for id, score in similar_ids:
+   |                     ^^^^^
+59 |                 try:
+60 |                     record = self.prompt_repo.find_by_id(id)
+   |
+help: Rename unused `score` to `_score`
+
+Found 107 errors.
+No fixes available (8 hidden fixes can be enabled with the `--unsafe-fixes` option).
+infra/chroma_index.py:26: error: Unexpected keyword argument "id" for "add" of "Collection"; did you mean "ids"?  [call-arg]
+infra/chroma_index.py:26: error: Name "metadatas" is not defined  [name-defined]
+api/main.py:31: error: "Settings" has no attribute "database_url"  [attr-defined]
+api/main.py:56: error: Name "JSONResponse" is not defined  [name-defined]
+Found 4 errors in 2 files (checked 38 source files)
+2025-08-21 23:34:46,864 - faiss.loader - INFO - Loading faiss with AVX512 support.
+2025-08-21 23:34:46,883 - faiss.loader - INFO - Successfully loaded faiss with AVX512 support.
+ImportError while loading conftest '/home/jazzzfm/Documents/JazzDataSolutions/SaptivaTekChallenge/tests/conftest.py'.
+tests/conftest.py:7: in <module>
+    from api.main import app
+api/main.py:31: in <module>
+    _ensure_sqlite_dir(settings.database_url)
+                       ^^^^^^^^^^^^^^^^^^^^^
+../../Courses/curso-mcp/clase9/.venv/lib/python3.12/site-packages/pydantic/main.py:991: in __getattr__
+    raise AttributeError(f'{type(self).__name__!r} object has no attribute {item!r}')
+E   AttributeError: 'Settings' object has no attribute 'database_url'
+(.venv) 
+jazzzfm@jazzzfm [23:34:48] [~/Documents/JazzDataSolutions/SaptivaTekChallenge] [main *]
+-> % 
+

@@ -1,11 +1,13 @@
 """Tests for vector index implementations."""
 
-import pytest
-import tempfile
 import os
-from infra.faiss_index import FaissVectorIndex
-from infra.chroma_index import ChromaVectorIndex
+import tempfile
+
+import pytest
+
 from domain.exceptions import VectorIndexError
+from infra.chroma_index import ChromaVectorIndex
+from infra.faiss_index import FaissVectorIndex
 
 
 class TestFaissVectorIndex:
@@ -27,7 +29,7 @@ class TestFaissVectorIndex:
         ]
         ids = ["v1", "v2", "v3"]
         
-        for vec_id, vector in zip(ids, vectors):
+        for vec_id, vector in zip(ids, vectors, strict=False):
             self.index.add(vec_id, vector)
         
         # Search for similar to first vector
@@ -140,7 +142,7 @@ class TestChromaVectorIndex:
         ]
         ids = ["v1", "v2", "v3"]
         
-        for vec_id, vector in zip(ids, vectors):
+        for vec_id, vector in zip(ids, vectors, strict=False):
             self.index.add(vec_id, vector)
         
         # Search for similar to first vector
@@ -186,7 +188,7 @@ def test_vector_index_compatibility():
         ]
         ids = ["v1", "v2", "v3"]
         
-        for vec_id, vector in zip(ids, vectors):
+        for vec_id, vector in zip(ids, vectors, strict=False):
             faiss_index.add(vec_id, vector)
             chroma_index.add(vec_id, vector)
         

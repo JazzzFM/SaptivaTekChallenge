@@ -4,8 +4,6 @@ Generador de reportes PDF usando pypandoc y weasyprint como alternativas.
 """
 
 import os
-import sys
-from pathlib import Path
 from datetime import datetime
 
 try:
@@ -15,8 +13,7 @@ except ImportError:
     HAS_PYPANDOC = False
 
 try:
-    import weasyprint
-    from weasyprint import HTML, CSS
+    from weasyprint import CSS, HTML
     HAS_WEASYPRINT = True
 except ImportError:
     HAS_WEASYPRINT = False
@@ -34,7 +31,7 @@ def generate_pdf_with_pypandoc(markdown_file: str, output_file: str):
             '--variable=fontsize=11pt'
         ]
         
-        output = pypandoc.convert_file(
+        pypandoc.convert_file(
             markdown_file, 
             'pdf', 
             outputfile=output_file,

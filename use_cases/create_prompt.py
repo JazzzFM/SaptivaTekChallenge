@@ -1,9 +1,16 @@
 import uuid
 from datetime import datetime, timezone
+
+from core.logging import get_logger, perf_monitor, time_operation
 from domain.entities import PromptRecord
-from domain.ports import LLMProvider, PromptRepository, VectorIndex, Embedder
-from domain.exceptions import ValidationError, LLMError, EmbeddingError, VectorIndexError, RepositoryError
-from core.logging import get_logger, time_operation, perf_monitor
+from domain.exceptions import (
+    EmbeddingError,
+    LLMError,
+    RepositoryError,
+    ValidationError,
+    VectorIndexError,
+)
+from domain.ports import Embedder, LLMProvider, PromptRepository, VectorIndex
 
 logger = get_logger(__name__)
 
@@ -66,6 +73,8 @@ class CreatePrompt:
                         
                         self.vector_index.add(record.id, embedding)
                         logger.info("Added prompt to vector index", record_id=record.id, embedding_dim=len(embedding))
+                    except EmbeddingError as e:
+                        raise e
                     except Exception as e:
                         logger.error("Vector indexing failed", error=str(e))
                         # Try to clean up the saved record if embedding fails

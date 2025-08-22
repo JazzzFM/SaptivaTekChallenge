@@ -6,8 +6,6 @@ Genera PDFs usando pandoc si está disponible, y formatos alternativos.
 
 import os
 import subprocess
-import sys
-from pathlib import Path
 from datetime import datetime
 
 
@@ -248,14 +246,14 @@ def main():
     # Generar índice de documentación
     generate_docs_index()
     
-    print(f"\n📊 Resumen:")
+    print("\n📊 Resumen:")
     print(f"✅ Documentos procesados: {success_count}/{total_docs}")
-    print(f"📁 Ubicación: docs/")
+    print("📁 Ubicación: docs/")
     
     if has_pandoc:
-        print(f"📄 PDFs generados en: docs/pdf/")
-    print(f"🌐 HTMLs generados en: docs/reports/")
-    print(f"\n🎯 Documentación completa lista!")
+        print("📄 PDFs generados en: docs/pdf/")
+    print("🌐 HTMLs generados en: docs/reports/")
+    print("\n🎯 Documentación completa lista!")
 
 
 def generate_docs_index():

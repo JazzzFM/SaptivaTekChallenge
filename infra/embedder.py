@@ -1,10 +1,12 @@
-from sentence_transformers import SentenceTransformer
-import torch
 import threading
 from typing import Optional
-from domain.ports import Embedder
-from domain.exceptions import EmbeddingError
+
+import torch
+from sentence_transformers import SentenceTransformer
+
 from core.logging import get_logger
+from domain.exceptions import EmbeddingError
+from domain.ports import Embedder
 
 logger = get_logger(__name__)
 

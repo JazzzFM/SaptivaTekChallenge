@@ -103,7 +103,7 @@ def generate_clean_pdf(markdown_file: str, output_file: str, title: str = "Docum
             '--toc-depth=2',
             f'--metadata=title:{title}',
             f'--metadata=date:{datetime.now().strftime("%Y-%m-%d")}',
-            f'--metadata=author:SaptivaTekChallenge Documentation System',
+            '--metadata=author:SaptivaTekChallenge Documentation System',
             '--variable=geometry:margin=1in',
             '--variable=fontsize=11pt',
             '--variable=documentclass:article',
@@ -292,7 +292,7 @@ def main():
             size_kb = os.path.getsize(pdf_file) / 1024
             print(f"[INFO] Tamaño del PDF: {size_kb:.1f} KB")
         
-        print(f"\n[COMPLETE] Documentacion PDF lista!")
+        print("\n[COMPLETE] Documentacion PDF lista!")
         print(f"[LOCATION] {pdf_file}")
         
     else:

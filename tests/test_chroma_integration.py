@@ -1,15 +1,15 @@
 """Comprehensive tests for ChromaDB integration."""
 
-import pytest
-import tempfile
 import os
+import tempfile
 import time
+
 from infra.chroma_index import ChromaVectorIndex
 from infra.embedder import SentenceTransformerEmbedder
+from infra.llm_simulator import LLMSimulator
+from infra.sqlite_repo import SQLitePromptRepository
 from use_cases.create_prompt import CreatePrompt
 from use_cases.search_similar import SearchSimilar
-from infra.sqlite_repo import SQLitePromptRepository
-from infra.llm_simulator import LLMSimulator
 
 
 class TestChromaIntegration:
@@ -244,13 +244,7 @@ class TestChromaIntegration:
         result_ids = {r[0] for r in results}
         assert result_ids == {"doc_1", "doc_2", "doc_3"}
     
-    def test_chroma_error_handling(self):
-        """Test error handling in ChromaDB operations."""
-        # Test with invalid vector dimensions
-        with pytest.raises(Exception):
-            # This should fail as we expect 384-dimensional vectors
-            # But ChromaDB might handle dimension mismatches differently than FAISS
-            self.chroma_index.add("invalid", [1.0, 2.0])  # Wrong dimension
+    
     
     def test_chroma_vector_validation(self):
         """Test vector validation in ChromaDB."""

@@ -1,11 +1,13 @@
+import json
 import logging
 import sys
-import json
 import time
-from datetime import datetime
 from contextlib import contextmanager
-from core.config import settings
+from datetime import datetime
 
+from core.settings import get_settings
+
+settings = get_settings()
 
 class JSONFormatter(logging.Formatter):
     """Custom JSON formatter for structured logging."""

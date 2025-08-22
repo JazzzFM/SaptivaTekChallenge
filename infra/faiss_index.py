@@ -1,32 +1,37 @@
-import faiss
-import numpy as np
+import pathlib
 import threading
 import time
-from domain.ports import VectorIndex
-from domain.exceptions import VectorIndexError
+
+import faiss
+import numpy as np
+
 from core.logging import get_logger
+from domain.exceptions import VectorIndexError
+from domain.ports import VectorIndex
 
 logger = get_logger(__name__)
 
 class FaissVectorIndex(VectorIndex):
     def __init__(self, index_path: str, dim: int = 384, auto_save_interval: int = 60):
         self.index_path = index_path
+        self.index = faiss.IndexFlatL2(dim)
         self.dim = dim
         self.auto_save_interval = auto_save_interval
         self._lock = threading.Lock()
         self._pending_saves = 0
         self._last_save_time = time.time()
         
-        try:
-            self.index = faiss.read_index(self.index_path)
-            # Helper to map faiss index to our id
-            self.id_map = np.load(f"{self.index_path}.map.npy").tolist()
-            logger.info(f"Loaded existing FAISS index with {self.index.ntotal} vectors")
-        except (RuntimeError, FileNotFoundError, OSError) as e:
-            logger.info(f"Creating new FAISS index: {e}")
-            self.index = faiss.IndexFlatIP(self.dim)
-            self.id_map = []
-            self._save_index()
+        with self._lock:
+            try:
+                self.index = faiss.read_index(self.index_path)
+                # Helper to map faiss index to our id
+                self.id_map = np.load(f"{self.index_path}.map.npy").tolist()
+                logger.info(f"Loaded existing FAISS index with {self.index.ntotal} vectors")
+            except (RuntimeError, FileNotFoundError, OSError) as e:
+                logger.info(f"Creating new FAISS index: {e}")
+                self.index = faiss.IndexFlatIP(self.dim)
+                self.id_map = []
+                self._save_index()
 
     def add(self, id: str, vector: list[float]):
         if len(vector) != self.dim:
@@ -73,7 +78,7 @@ class FaissVectorIndex(VectorIndex):
                 
                 # Filter out invalid indices and return with scores
                 results = []
-                for i, (distance, index) in enumerate(zip(distances[0], indices[0])):
+                for _i, (distance, index) in enumerate(zip(distances[0], indices[0], strict=False)):
                     if index != -1 and index < len(self.id_map):
                         results.append((self.id_map[index], float(distance)))
                 
@@ -85,8 +90,10 @@ class FaissVectorIndex(VectorIndex):
 
     def _save_index(self):
         """Internal method to save index and id_map. Must be called with lock held."""
+        path = pathlib.Path(self.index_path)
+        path.parent.mkdir(parents=True, exist_ok=True)
         try:
-            faiss.write_index(self.index, self.index_path)
+            faiss.write_index(self.index, str(path))
             np.save(f"{self.index_path}.map.npy", np.array(self.id_map))
             self._pending_saves = 0
             self._last_save_time = time.time()

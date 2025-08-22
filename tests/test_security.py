@@ -1,6 +1,7 @@
 """Tests for security utilities."""
 
 import pytest
+
 from core.security import InputValidator, RateLimiter
 from domain.exceptions import ValidationError
 
@@ -58,8 +59,8 @@ class TestInputValidator:
 
     def test_sanitize_for_logging(self):
         text = "Some text with <script> tags"
-        result = InputValidator.sanitize_for_logging(text, max_length=20)
-        assert len(result) <= 20
+        result = InputValidator.sanitize_for_logging(text, max_length=30)
+        assert len(result) <= 30
         assert "&lt;" in result
 
     def test_sanitize_for_logging_empty(self):

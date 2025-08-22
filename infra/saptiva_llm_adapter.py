@@ -1,5 +1,6 @@
 from domain.ports import LLMProvider
 
+
 class SaptivaLLMAdapter(LLMProvider):
     def generate(self, prompt: str) -> str:
         # This is a stub for a future implementation.

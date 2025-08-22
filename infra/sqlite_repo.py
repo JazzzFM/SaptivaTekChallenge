@@ -1,9 +1,7 @@
-# infra/sqlite_repo.py
-from __future__ import annotations
+import threading
+from typing import List, Optional, Tuple
 
-from typing import Optional, Tuple, List
-
-from sqlmodel import SQLModel, Field, Session, create_engine, select, func
+from sqlmodel import Field, Session, SQLModel, create_engine, func, select
 
 from domain.entities import PromptRecord
 from domain.ports import PromptRepository
@@ -17,9 +15,15 @@ class PromptModel(SQLModel, table=True):
 
 
 class SQLitePromptRepository(PromptRepository):
+    _lock = threading.Lock()
+    _created_dbs: set[str] = set()
+
     def __init__(self, db_url: str):
         self.engine = create_engine(db_url, echo=False)
-        SQLModel.metadata.create_all(self.engine)
+        with self._lock:
+            if db_url not in self._created_dbs:
+                SQLModel.metadata.create_all(self.engine)
+                self._created_dbs.add(db_url)
 
     def save(self, record: PromptRecord) -> None:
         # Evitamos model_validate (Pydantic v2) para compatibilidad con SQLModel

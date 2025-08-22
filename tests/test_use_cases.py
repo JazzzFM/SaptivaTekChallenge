@@ -1,9 +1,17 @@
 """Tests for use cases."""
 
-import pytest
 from unittest.mock import Mock
+
+import pytest
+
 from domain.entities import PromptRecord
-from domain.exceptions import ValidationError, LLMError, EmbeddingError, VectorIndexError, RepositoryError
+from domain.exceptions import (
+    EmbeddingError,
+    LLMError,
+    RepositoryError,
+    ValidationError,
+    VectorIndexError,
+)
 from use_cases.create_prompt import CreatePrompt
 from use_cases.search_similar import SearchSimilar
 
@@ -58,10 +66,10 @@ class TestCreatePrompt:
     def test_create_prompt_embedding_failure(self):
         # Arrange
         self.llm_provider.generate.return_value = "Test response"
-        self.embedder.embed.side_effect = Exception("Embedding failed")
+        self.embedder.embed.side_effect = EmbeddingError("Embedding failed")
         
         # Act & Assert
-        with pytest.raises(VectorIndexError, match="Failed to index prompt"):
+        with pytest.raises(EmbeddingError, match="Embedding failed"):
             self.use_case.execute("test prompt")
 
     def test_create_prompt_empty_embedding(self):

@@ -1,11 +1,13 @@
 """Integration tests for seed data script."""
 
-import pytest
-import tempfile
 import os
 import shutil
+import tempfile
+
+import pytest
+
+from core.settings import Settings, get_settings
 from scripts.seed_data import SeedDataManager
-from core.config import Settings
 
 
 class TestSeedIntegration:
@@ -15,7 +17,7 @@ class TestSeedIntegration:
         self.temp_dir = tempfile.mkdtemp()
         
         # Create test settings
-        self.test_settings = Settings()
+        self.test_settings = get_settings()
         self.test_settings.db_url = f"sqlite:///{os.path.join(self.temp_dir, 'test.db')}"
         self.test_settings.faiss_index_path = os.path.join(self.temp_dir, "test_index")
         self.test_settings.chroma_path = os.path.join(self.temp_dir, "test_chroma")
@@ -40,7 +42,7 @@ class TestSeedIntegration:
         # Should produce identical records
         assert len(records1) == len(records2)
         
-        for r1, r2 in zip(records1, records2):
+        for r1, r2 in zip(records1, records2, strict=False):
             assert r1.id == r2.id
             assert r1.prompt == r2.prompt
             assert r1.response == r2.response

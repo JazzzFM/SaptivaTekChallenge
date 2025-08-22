@@ -9,3 +9,14 @@ warn_unused_ignores = true
 module = ["infra.sqlite_repo"]
 disable_error_code = ["call-arg"]
 
+[tool.ruff]
+target-version = "py311"
+line-length = 160
+
+[tool.ruff.lint]
+select = ["F","E","I","B"]  
+ignore = []                 
+
+[tool.ruff.lint.per-file-ignores]
+"api/main.py" = ["B008"]
+"tests/*" = ["E501","B007","B017"]

@@ -1,5 +1,6 @@
 from domain.ports import VectorIndex
 
+
 class SaptivaRAGAdapter(VectorIndex):
     def add(self, id: str, vector: list[float]):
         # This is a stub for a future implementation.
