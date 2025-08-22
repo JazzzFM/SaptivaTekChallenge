@@ -3,6 +3,7 @@ python_version = "3.11"
 ignore_missing_imports = true
 no_implicit_optional = true
 strict = false
+warn_unused_ignores = true
 
 [[tool.mypy.overrides]]
 module = ["infra.sqlite_repo"]
