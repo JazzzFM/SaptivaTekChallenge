@@ -1,5 +1,5 @@
-[tool.ruff]
-line-length = 88
-
 [tool.mypy]
-ignore_missing_imports = true
+python_version = "3.11"
+strict = false
+warn_unused_ignores = true
+no_implicit_optional = true
