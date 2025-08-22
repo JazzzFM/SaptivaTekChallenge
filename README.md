@@ -36,14 +36,14 @@ Este proyecto responde a un **reto técnico** con objetivo explícito:
 
 ```mermaid
 flowchart TD
-    Client[Cliente] -->|HTTP| API[FastAPI Routers]
-    API --> UC[Casos de Uso]
-    UC --> Repo[PromptRepository (SQLite)]
-    UC --> IndexFAISS[VectorIndex (FAISS)]
-    UC --> IndexChroma[VectorIndex (Chroma, opcional)]
-    IndexFAISS --> Emb[Sentence-Transformers]
-    IndexChroma --> Emb
-    Repo --> DB[(SQLite DB)]
+  Client[Client] -->|HTTP| API[FastAPI Routers];
+  API --> UC[Use Cases];
+  UC --> Repo[PromptRepository / SQLite];
+  UC --> VFaiss[VectorIndex / FAISS];
+  UC --> VChroma[VectorIndex / Chroma optional];
+  VFaiss --> Emb[Sentence Transformers];
+  VChroma --> Emb;
+  Repo --> DB[(SQLite Database)];
 ```
 ---
 
@@ -146,22 +146,22 @@ export VECTOR_BACKEND=chroma   # por defecto: faiss
 
 ---
 
-## Extensiones futuras: Saptiva (documentado, no activo)
+## Extensiones futuras: Saptiva (planteamiento de extension futura, no activo)
 
 El diseño permite integrar **Saptiva LLM** y **Saptiva RAG** como adaptadores:
 
 ```mermaid
 flowchart TD
-    UC[Casos de Uso] --> LLMProvider[LLM Provider]
-    UC --> VectorIndex[Vector Index]
-    LLMProvider --> Sim[LLM Simulator (default)]
-    LLMProvider --> SaptivaLLM[Saptiva LLM (futuro)]
-    VectorIndex --> FAISS[FAISS]
-    VectorIndex --> Chroma[ChromaDB]
-    VectorIndex --> SaptivaRAG[Saptiva RAG (futuro)]
+  UC[Use Cases] --> LLMProv[LLM Provider];
+  UC --> VIdx[Vector Index];
+  LLMProv --> Sim[LLM Simulator default];
+  LLMProv --> SapLLM[Saptiva LLM future];
+  VIdx --> F[FAISS];
+  VIdx --> C[ChromaDB];
+  VIdx --> SapRAG[Saptiva RAG future];
 ```
 
-> Se documenta **cómo** enchufarlo, pero no se incluye runtime ni claves para preservar **reproducibilidad**.
+> Se documenta **cómo** enchufarlo, pero no se incluye ningun runtime ni claves para preservar **reproducibilidad**.
 
 ---
 
