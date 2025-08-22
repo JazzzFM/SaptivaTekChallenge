@@ -1,8 +1,10 @@
 fastapi
 uvicorn
+pydantic-settings
 sqlmodel
 sentence-transformers
 faiss-cpu
+chromadb
 ruff
 mypy
 pytest

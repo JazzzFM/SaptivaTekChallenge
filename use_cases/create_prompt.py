@@ -1,7 +1,10 @@
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 from domain.entities import PromptRecord
 from domain.ports import LLMProvider, PromptRepository, VectorIndex, Embedder
+from core.logging import get_logger
+
+logger = get_logger(__name__)
 
 class CreatePrompt:
     def __init__(
@@ -17,14 +20,17 @@ class CreatePrompt:
         self.embedder = embedder
 
     def execute(self, prompt: str) -> PromptRecord:
+        logger.info(f"Creating prompt: {prompt}")
         response = self.llm_provider.generate(prompt)
         record = PromptRecord(
             id=str(uuid.uuid4()),
             prompt=prompt,
             response=response,
-            created_at=datetime.utcnow().isoformat(),
+            created_at=datetime.now(timezone.utc).isoformat(),
         )
         self.prompt_repo.save(record)
+        logger.info(f"Saved prompt record: {record.id}")
         embedding = self.embedder.embed(prompt)
         self.vector_index.add(record.id, embedding)
+        logger.info(f"Added prompt to vector index: {record.id}")
         return record

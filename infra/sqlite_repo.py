@@ -15,7 +15,7 @@ class SQLitePromptRepository(PromptRepository):
 
     def save(self, record: PromptRecord):
         with Session(self.engine) as session:
-            model = PromptModel.from_orm(record)
+            model = PromptModel.model_validate(record)
             session.add(model)
             session.commit()
 
@@ -23,5 +23,5 @@ class SQLitePromptRepository(PromptRepository):
         with Session(self.engine) as session:
             model = session.get(PromptModel, id)
             if model:
-                return PromptRecord(**model.dict())
+                return PromptRecord(**model.model_dump())
             return None

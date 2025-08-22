@@ -1,5 +1,9 @@
 # Reto Técnico – Microservicio de Prompts con FastAPI + FAISS (Core) + Chroma (Opcional)
 
+[![CI](https://github.com/JazzzFM/SaptivaTekChallenge/actions/workflows/ci.yml/badge.svg)](https://github.com/JazzzFM/SaptivaTekChallenge/actions/workflows/ci.yml)
+
+> **Enfoque de ingeniería**: Programación Orientada a Objetos (POO), principios **SOLID**, tipado estático y **`@dataclass`** para entidades de dominio. Arquitectura hexagonal con puertos y adaptadores.
+
 Este proyecto responde a un **reto técnico** con objetivo explícito:
 
 1. Exponer una **API REST** con dos endpoints:
@@ -27,7 +31,7 @@ Este proyecto responde a un **reto técnico** con objetivo explícito:
 
 ---
 
-##  Arquitectura (Hexagonal)
+## Arquitectura (Hexagonal)
 
 - **Dominio (POO + `@dataclass`)**: entidades inmutables y objetos de valor.
 - **Puertos (interfaces)**: `PromptRepository`, `VectorIndex`, `Embedder`, `LLMProvider`.
@@ -36,18 +40,19 @@ Este proyecto responde a un **reto técnico** con objetivo explícito:
 
 ```mermaid
 flowchart TD
-  Client[Client] -->|HTTP| API[FastAPI Routers];
-  API --> UC[Use Cases];
-  UC --> Repo[PromptRepository / SQLite];
-  UC --> VFaiss[VectorIndex / FAISS];
-  UC --> VChroma[VectorIndex / Chroma optional];
-  VFaiss --> Emb[Sentence Transformers];
-  VChroma --> Emb;
-  Repo --> DB[(SQLite Database)];
+    Client[Cliente] -->|HTTP| API[FastAPI Routers]
+    API --> UC[Casos de Uso]
+    UC --> Repo[PromptRepository / SQLite]
+    UC --> IndexFAISS[VectorIndex / FAISS]
+    UC --> IndexChroma[VectorIndex / Chroma opcional]
+    IndexFAISS --> Emb[Sentence Transformers]
+    IndexChroma --> Emb
+    Repo --> DB[SQLite DB]
 ```
+
 ---
 
-## LLM Simulado (determinista, testeable)
+## LLM Simulado: determinista y testeable
 
 ```python
 from dataclasses import dataclass
@@ -98,7 +103,7 @@ class PromptRecord:
 
 ---
 
-##  Instalación y ejecución (Core = FAISS)
+## 🔧 Instalación y ejecución (Core = FAISS)
 
 **Requisitos**: Python 3.9+, FAISS 1.7+, Torch 2.0+, pip 24+
 
@@ -109,6 +114,9 @@ cd SaptivaTekChallenge
 python -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
+
+# (Opcional) Poblar la base de datos con datos de ejemplo
+python scripts/seed.py
 
 uvicorn api.main:app --reload
 ```
@@ -122,7 +130,9 @@ ReDoc: http://localhost:8000/redoc
 
 ```bash
 # Crear un prompt
-curl -s -X POST http://localhost:8000/prompt   -H "Content-Type: application/json"   -d '{"prompt":"Cómo optimizo un ETL con PySpark?"}' | jq
+curl -s -X POST http://localhost:8000/prompt \
+  -H "Content-Type: application/json" \
+  -d '{"prompt":"Cómo optimizo un ETL con PySpark?"}' | jq
 
 # Buscar similares
 curl -s "http://localhost:8000/similar?query=Optimizar jobs de Spark&k=3" | jq
@@ -130,7 +140,7 @@ curl -s "http://localhost:8000/similar?query=Optimizar jobs de Spark&k=3" | jq
 
 ---
 
-##  Backend vectorial alternativo: Chroma (opcional)
+## Backend vectorial alternativo: Chroma (opcional)
 
 Se soporta **ChromaDB** como “librería similar” a FAISS sin alterar los casos de uso.
 
@@ -152,16 +162,16 @@ El diseño permite integrar **Saptiva LLM** y **Saptiva RAG** como adaptadores:
 
 ```mermaid
 flowchart TD
-  UC[Use Cases] --> LLMProv[LLM Provider];
-  UC --> VIdx[Vector Index];
-  LLMProv --> Sim[LLM Simulator default];
-  LLMProv --> SapLLM[Saptiva LLM future];
-  VIdx --> F[FAISS];
-  VIdx --> C[ChromaDB];
-  VIdx --> SapRAG[Saptiva RAG future];
+    UC[Casos de Uso] --> LLMProvider
+    UC --> VectorIndex
+    LLMProvider --> Sim[LLM Simulator default]
+    LLMProvider --> SaptivaLLM[Saptiva LLM futuro]
+    VectorIndex --> FAISS[FAISS]
+    VectorIndex --> Chroma[ChromaDB]
+    VectorIndex --> SaptivaRAG[Saptiva RAG futuro]
 ```
 
-> Se documenta **cómo** enchufarlo, pero no se incluye ningun runtime ni claves para preservar **reproducibilidad**.
+> Se documenta **cómo** enchufarlo, pero no se incluye runtime ni claves para preservar **reproducibilidad**.
 
 ---
 
@@ -187,10 +197,10 @@ docker run -p 8000:8000 -e VECTOR_BACKEND=faiss prompt-service
 
 ## 📌 Roadmap
 
-- [ ] API key simple (rate limit + CORS).
-- [ ] Exportar embeddings a Parquet.
-- [ ] Backend alternativo **Chroma** (activable por env) con filtros de metadata.
-- [ ] Stubs de `SaptivaLLMAdapter` y `SaptivaRAGAdapter` + docs.
+- [x] API key simple (rate limit + CORS).
+- [x] Exportar embeddings a Parquet.
+- [x] Backend alternativo **Chroma** (activable por env) con filtros de metadata.
+- [x] Stubs de `SaptivaLLMAdapter` y `SaptivaRAGAdapter` + docs.
 
 ---
 
