@@ -1,7 +1,5 @@
 # Reto Técnico – Microservicio de Prompts con FastAPI + FAISS (Core) + Chroma (Opcional)
 
-> **Enfoque de ingeniería**: Programación Orientada a Objetos (POO), principios **SOLID**, tipado estático y **`@dataclass`** para entidades de dominio. Arquitectura hexagonal con puertos y adaptadores.
-
 Este proyecto responde a un **reto técnico** con objetivo explícito:
 
 1. Exponer una **API REST** con dos endpoints:
@@ -11,7 +9,7 @@ Este proyecto responde a un **reto técnico** con objetivo explícito:
 
 ---
 
-## 🚀 Núcleo del proyecto (lo evaluado)
+## Núcleo del proyecto: lo que se esta evaluando
 
 - **API REST con FastAPI**
   - `POST /prompt`: genera respuesta simulada y persiste; calcula embedding y lo indexa en FAISS.
@@ -29,7 +27,7 @@ Este proyecto responde a un **reto técnico** con objetivo explícito:
 
 ---
 
-## 🧱 Arquitectura (Hexagonal)
+##  Arquitectura (Hexagonal)
 
 - **Dominio (POO + `@dataclass`)**: entidades inmutables y objetos de valor.
 - **Puertos (interfaces)**: `PromptRepository`, `VectorIndex`, `Embedder`, `LLMProvider`.
@@ -47,10 +45,9 @@ flowchart TD
     IndexChroma --> Emb
     Repo --> DB[(SQLite DB)]
 ```
-
 ---
 
-## 🧠 LLM Simulado (determinista, testeable)
+## LLM Simulado (determinista, testeable)
 
 ```python
 from dataclasses import dataclass
@@ -84,7 +81,7 @@ class PromptRecord:
 
 ---
 
-## 📂 Estructura del proyecto
+## Estructura del proyecto
 
 ```
 .
@@ -101,7 +98,7 @@ class PromptRecord:
 
 ---
 
-## 🔧 Instalación y ejecución (Core = FAISS)
+##  Instalación y ejecución (Core = FAISS)
 
 **Requisitos**: Python 3.9+, FAISS 1.7+, Torch 2.0+, pip 24+
 
@@ -121,13 +118,11 @@ ReDoc: http://localhost:8000/redoc
 
 ---
 
-## 📡 Ejemplos
+## Ejemplos
 
 ```bash
 # Crear un prompt
-curl -s -X POST http://localhost:8000/prompt \
-  -H "Content-Type: application/json" \
-  -d '{"prompt":"Cómo optimizo un ETL con PySpark?"}' | jq
+curl -s -X POST http://localhost:8000/prompt   -H "Content-Type: application/json"   -d '{"prompt":"Cómo optimizo un ETL con PySpark?"}' | jq
 
 # Buscar similares
 curl -s "http://localhost:8000/similar?query=Optimizar jobs de Spark&k=3" | jq
@@ -135,7 +130,7 @@ curl -s "http://localhost:8000/similar?query=Optimizar jobs de Spark&k=3" | jq
 
 ---
 
-## 🗄️ Backend vectorial alternativo: Chroma (opcional)
+##  Backend vectorial alternativo: Chroma (opcional)
 
 Se soporta **ChromaDB** como “librería similar” a FAISS sin alterar los casos de uso.
 
@@ -151,14 +146,14 @@ export VECTOR_BACKEND=chroma   # por defecto: faiss
 
 ---
 
-## 🔮 Extensiones futuras: Saptiva (documentado, no activo)
+## Extensiones futuras: Saptiva (documentado, no activo)
 
 El diseño permite integrar **Saptiva LLM** y **Saptiva RAG** como adaptadores:
 
 ```mermaid
 flowchart TD
-    UC[Casos de Uso] --> LLMProvider
-    UC --> VectorIndex
+    UC[Casos de Uso] --> LLMProvider[LLM Provider]
+    UC --> VectorIndex[Vector Index]
     LLMProvider --> Sim[LLM Simulator (default)]
     LLMProvider --> SaptivaLLM[Saptiva LLM (futuro)]
     VectorIndex --> FAISS[FAISS]

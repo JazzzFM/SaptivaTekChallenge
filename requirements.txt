@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+sqlmodel
+sentence-transformers
+faiss-cpu
+ruff
+mypy
+pytest
+pytest-cov
