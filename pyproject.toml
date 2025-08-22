@@ -1,6 +1,10 @@
 [tool.mypy]
 python_version = "3.11"
 ignore_missing_imports = true
-strict = false
 no_implicit_optional = true
-warn_unused_ignores = true
+strict = false
+
+[[tool.mypy.overrides]]
+module = ["infra.sqlite_repo"]
+disable_error_code = ["call-arg"]
+

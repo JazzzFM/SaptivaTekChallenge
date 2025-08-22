@@ -1,11 +1,11 @@
 fastapi
 uvicorn
 pydantic-settings
-sqlmodel
+sqlmodel==0.0.22
 sentence-transformers
 faiss-cpu
 chromadb
-ruff
-mypy
+ruff==0.12.10
+mypy==1.17.1
 pytest
 pytest-cov

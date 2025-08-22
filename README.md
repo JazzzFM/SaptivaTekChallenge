@@ -176,7 +176,7 @@ flowchart TD
 ## ✅ Tests
 
 ```bash
-pytest --cov=.
+pytest --cov=. --cov-report=xml --cov-report=term-missing
 ```
 
 - **Unitarios**: simulador, normalización de embeddings, contrato de `VectorIndex` (doble fáctico vs. brute-force).
