@@ -21,5 +21,7 @@ class FaissVectorIndex(VectorIndex):
         np.save(f"{self.index_path}.map.npy", np.array(self.id_map))
 
     def search(self, vector: list[float], k: int) -> list[tuple[str, float]]:
+        if self.index.ntotal == 0:
+            return []
         distances, indices = self.index.search(np.array([vector], dtype="float32"), k)
         return [(self.id_map[i], d) for d, i in zip(distances[0], indices[0])]

@@ -3,7 +3,7 @@ from fastapi import FastAPI, Depends, Query
 from pydantic import BaseModel, Field
 from typing import List
 
-from domain.entities import PromptRecord
+
 from use_cases.create_prompt import CreatePrompt
 from use_cases.search_similar import SearchSimilar
 from infra.sqlite_repo import SQLitePromptRepository
