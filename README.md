@@ -27,27 +27,27 @@ flowchart TD
     Container --> UC[Casos de Uso<br/>CreatePrompt<br/>SearchSimilar]
     
     UC --> Repo[PromptRepository<br/>SQLite + SQLModel]
-    UC --> Vector[VectorIndex<br/>FAISS | ChromaDB]
+    UC --> Vector[VectorIndex<br/>FAISS or ChromaDB]
     UC --> LLM[LLMProvider<br/>Simulator]
     UC --> Emb[Embedder<br/>SentenceTransformers]
     
     Vector --> Storage[Vector Storage<br/>Disk Persistence]
     Repo --> DB[(SQLite Database)]
     
-    subgraph Security[🔒 Seguridad]
+    subgraph Security[Seguridad]
         RateLimit[Rate Limiting]
         InputVal[Input Validation]
         Sanitize[Data Sanitization]
         SecLog[Secure Logging]
     end
     
-    subgraph Monitoring[📊 Observabilidad]
+    subgraph Monitoring[Observabilidad]
         Health[Health Checks]
         Metrics[Performance Metrics]
         Logging[Structured Logging]
     end
     
-    subgraph Performance[⚡ Performance]
+    subgraph Performance[Performance]
         Cache[Embedder Cache]
         Batch[Batch Operations]
         AutoSave[Auto-save Index]
@@ -378,7 +378,7 @@ except RepositoryError as e:
 
 ## Extensibilidad Futura
 
-### Saptiva Integration (Planificado)
+### Saptiva Integration (En el futuro...)
 
 ```python
 # Adaptadores futuros sin cambiar casos de uso
