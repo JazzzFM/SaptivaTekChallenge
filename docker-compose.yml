@@ -1,0 +1,66 @@
+version: '3.8'
+
+services:
+  prompt-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: prompt-service
+    ports:
+      - "8080:8080"
+    environment:
+      - PORT=8080
+      - ENVIRONMENT=production
+      - DATABASE_URL=sqlite:///./data/prompts.db
+      - VECTOR_BACKEND=faiss
+      - ENABLE_RATE_LIMITING=true
+      - RATE_LIMIT_PER_MINUTE=60
+      - LOG_LEVEL=INFO
+      - ENABLE_PERFORMANCE_MONITORING=true
+      - ENABLE_METRICS=true
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    restart: unless-stopped
+    networks:
+      - prompt-network
+
+  # Servicio de monitoreo básico (opcional)
+  healthcheck:
+    image: curlimages/curl:latest
+    container_name: prompt-healthcheck
+    depends_on:
+      - prompt-service
+    command: >
+      sh -c "
+        echo 'Esperando que el servicio esté listo...' &&
+        sleep 30 &&
+        while true; do
+          echo '=== Health Check ===' &&
+          curl -s http://prompt-service:8080/health | jq '.' || echo 'Health check failed' &&
+          echo '=== Stats Check ===' &&
+          curl -s http://prompt-service:8080/stats | jq '.performance' || echo 'Stats check failed' &&
+          echo 'Esperando 60 segundos para el próximo check...' &&
+          sleep 60
+        done
+      "
+    networks:
+      - prompt-network
+    profiles:
+      - monitoring
+
+networks:
+  prompt-network:
+    driver: bridge
+
+volumes:
+  prompt_data:
+    driver: local
+  prompt_logs:
+    driver: local

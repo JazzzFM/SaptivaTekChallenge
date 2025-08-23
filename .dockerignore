@@ -1,0 +1,61 @@
+# === ARCHIVOS DE DESARROLLO ===
+.git/
+.gitignore
+.github/
+.vscode/
+.idea/
+*.pyc
+__pycache__/
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+
+# === ENTORNOS VIRTUALES ===
+venv/
+env/
+.venv/
+.env/
+
+# === ARCHIVOS DE CONFIGURACIÓN LOCAL ===
+.env
+.env.local
+.env.development
+.env.test
+
+# === DOCUMENTACIÓN Y LOGS ===
+logs/
+*.log
+# Excluir requirements.txt de la exclusión
+!requirements.txt
+
+# === ARCHIVOS TEMPORALES ===
+*.tmp
+*.temp
+.DS_Store
+Thumbs.db
+
+# === DATOS DE DESARROLLO ===
+data/
+!data/.gitkeep
+
+# === ARCHIVOS DE TESTING ===
+tests/
+*.test
+test_*
+
+# === ARCHIVOS DE BUILD LOCAL ===
+build/
+dist/
+*.egg-info/
+
+# === SCRIPTS DE DESARROLLO ===
+!scripts/seed_data.py
+
+# === ARCHIVOS DE CONFIGURACIÓN NO NECESARIOS ===
+Makefile
+docker-compose*.yml
+*.yml
+*.yaml
+!.env.example
