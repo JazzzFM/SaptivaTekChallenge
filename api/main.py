@@ -45,7 +45,7 @@ def create_app() -> FastAPI:
 
     app.add_middleware(
         TrustedHostMiddleware, 
-        allowed_hosts=["localhost", "127.0.0.1", "*.example.com", "testserver"]  # Configure as needed, including testserver for tests
+        allowed_hosts=["localhost", "127.0.0.1", "*.example.com", "testserver", "*.run.app"]  # Configure as needed, including testserver for tests
     )
 
     @app.exception_handler(ValidationError)
@@ -396,33 +396,3 @@ def create_app() -> FastAPI:
     return app
 
 app = create_app()
-
-if __name__ == "__main__":
-    import os
-    import uvicorn
-    
-    # Variables de entorno para Cloud Run
-    port = int(os.environ.get("PORT", 8080))
-    host = os.environ.get("HOST", "0.0.0.0")
-    environment = os.environ.get("ENVIRONMENT", "production")
-    
-    # Configuración específica por entorno
-    if environment == "development":
-        # Desarrollo local
-        uvicorn.run(
-            "api.main:app",
-            host="127.0.0.1",
-            port=8000,
-            reload=True,
-            log_level="debug"
-        )
-    else:
-        # Producción (Cloud Run)
-        uvicorn.run(
-            "api.main:app",
-            host=host,
-            port=port,
-            workers=1,  # Cloud Run maneja escalado
-            log_level="info",
-            access_log=True
-        )

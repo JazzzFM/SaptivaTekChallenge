@@ -9,6 +9,16 @@
 
 Este proyecto responde a un reto técnico transformado en un microservicio production-ready con arquitectura hexagonal, seguridad y observabilidad completa.
 
+---
+
+## 🚀 Live API en Google Cloud Run
+
+La API ha sido desplegada exitosamente en Google Cloud Run y está disponible en la siguiente URL:
+
+**Base URL:** `https://saptivatek-app-1091345985273.us-central1.run.app`
+
+---
+
 ## Objetivos 
 
 1. **API REST** con endpoints principales y auxiliares:
@@ -286,30 +296,28 @@ docker-compose up
 ```
 
 **Opción 3: Cloud Run (Production Ready)**
-```bash
-# Ver guía completa en hardening.txt
-export PROJECT_ID="tu-project-id"
-export SERVICE_NAME="prompt-service"
-export REGION="us-central1"
 
-# Construir y subir imagen
-docker buildx build --platform linux/amd64 -t gcr.io/$PROJECT_ID/$SERVICE_NAME .
-docker push gcr.io/$PROJECT_ID/$SERVICE_NAME
+    El servicio ha sido desplegado exitosamente en Google Cloud Run. El siguiente comando fue el utilizado para el despliegue final, incluyendo los ajustes de memoria y CPU necesarios para el modelo de Machine Learning:
 
-# Deploy a Cloud Run
-gcloud run deploy $SERVICE_NAME \
-  --image gcr.io/$PROJECT_ID/$SERVICE_NAME \
-  --platform managed \
-  --region $REGION \
-  --allow-unauthenticated \
-  --port 8080 \
-  --memory 2Gi \
-  --set-env-vars="DATABASE_URL=sqlite:///./data/prompts.db,VECTOR_BACKEND=faiss"
-```
+    ```bash
+    # Comando de despliegue verificado y funcional
+    gcloud run deploy saptivatek-app \
+      --image us-central1-docker.pkg.dev/saptivatekchallenge/saptivatek-repo/saptivatek-app:latest \
+      --platform managed \
+      --region us-central1 \
+      --allow-unauthenticated \
+      --project saptivatekchallenge \
+      --cpu-boost \
+      --timeout 900 \
+      --memory 2Gi
+    ```
+
 
 ---
 
 ## Endpoints y Ejemplos
+
+A continuación se muestran ejemplos usando `localhost`. Para probar la API desplegada, reemplace `http://localhost:8080` por la URL base de la API en producción: `https://saptivatek-app-1091345985273.us-central1.run.app`.
 
 ### API Principal
 
@@ -325,6 +333,9 @@ curl -X POST http://localhost:8080/prompt \
 # Búsqueda vectorial FAISS (12 registros activos)
 curl "http://localhost:8080/similar?query=machine%20learning&k=3"
 # Respuesta: Array ordenado por relevancia semántica
+
+# Ejemplo con la API pública desplegada
+curl "https://saptivatek-app-1091345985273.us-central1.run.app/similar?query=fastapi"
 
 # Listar prompts con paginación
 curl "http://localhost:8080/prompts?page=1&page_size=5"

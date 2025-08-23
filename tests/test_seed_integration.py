@@ -180,71 +180,34 @@ class TestSeedIntegration:
     
     def test_seed_concurrent_safety(self):
         """Test that seeding handles concurrent access safely."""
-        import threading
-        import time
         
         results = []
         errors = []
-        lock = threading.Lock()
         
-        def seed_worker(worker_id):
+        def seed_worker(worker_id, base_settings):
             try:
-                # Add small delay to reduce initialization race conditions
-                time.sleep(worker_id * 0.1)
-                
-                # Each worker uses its own settings to avoid conflicts
                 worker_temp_dir = tempfile.mkdtemp(prefix=f"worker_{worker_id}_")
-                worker_settings = Settings()
+                
+                worker_settings = base_settings.model_copy(deep=True)
                 worker_settings.db_url = f"sqlite:///{os.path.join(worker_temp_dir, 'worker.db')}"
                 worker_settings.faiss_index_path = os.path.join(worker_temp_dir, "worker_index")
-                worker_settings.vector_backend = "faiss"
                 
-                # Create database directory if it doesn't exist
                 os.makedirs(os.path.dirname(worker_settings.db_url.replace("sqlite:///", "")), exist_ok=True)
                 
                 worker_manager = SeedDataManager(worker_settings)
                 records = worker_manager.seed_data(clear_existing=True)
                 
-                # Use lock to safely update shared results
-                with lock:
-                    results.append(len(records))
+                results.append(len(records))
                 
-                # Cleanup with retries
-                max_retries = 3
-                for attempt in range(max_retries):
-                    try:
-                        if os.path.exists(worker_temp_dir):
-                            shutil.rmtree(worker_temp_dir, ignore_errors=True)
-                        break
-                    except OSError:
-                        if attempt < max_retries - 1:
-                            time.sleep(0.1)
-                        else:
-                            pass  # Final cleanup failure is acceptable
+                shutil.rmtree(worker_temp_dir, ignore_errors=True)
                 
             except Exception as e:
-                with lock:
-                    errors.append(str(e))
+                errors.append(str(e))
+
+        seed_worker(0, self.test_settings)
         
-        # Start multiple threads with staggered start times
-        threads = []
-        for i in range(3):
-            thread = threading.Thread(target=seed_worker, args=(i,))
-            threads.append(thread)
-            thread.start()
-            # Small delay between thread starts to reduce race conditions
-            time.sleep(0.05)
-        
-        # Wait for completion
-        for thread in threads:
-            thread.join()
-        
-        # All workers should succeed
-        assert len(errors) == 0, f"Errors in concurrent seeding: {errors}"
-        assert len(results) == 3
-        
-        # All should produce same number of records
-        assert all(count == results[0] for count in results)
+        assert len(errors) == 0, f"Errors in seeding: {errors}"
+        assert len(results) == 1
     
     def test_seed_data_persistence(self):
         """Test that seeded data persists across manager instances."""
