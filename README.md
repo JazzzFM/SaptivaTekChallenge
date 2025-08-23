@@ -11,7 +11,7 @@ Este proyecto responde a un reto técnico transformado en un microservicio produ
 
 ---
 
-## 🚀 Live API en Google Cloud Run
+## Live API en Google Cloud Run
 
 La API ha sido desplegada exitosamente en Google Cloud Run y está disponible en la siguiente URL:
 
